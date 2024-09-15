@@ -7,9 +7,6 @@
 [submodule "Catch2"]
 	path = Catch2
 	url = https://github.com/catchorg/Catch2.git
-[submodule "mpg123"]
-	path = mpg123
-	url = https://github.com/mileswu/mpg123.git
 [submodule "minimp3"]
 	path = minimp3
 	url = https://github.com/lieff/minimp3.git
