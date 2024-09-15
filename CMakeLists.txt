@@ -14,6 +14,7 @@ if (MSVC)
         /wd4305  # Truncation from 'type1' to 'type2'
     )
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
     # Suppress equivalent GCC/Clang warnings
     add_compile_options(
         -D_CRT_SECURE_NO_WARNINGS  # Define macro (harmless on non-MSVC compilers)
