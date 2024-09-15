@@ -19,6 +19,8 @@ add_executable(lib-loop-tempo-estimator-test
    WavFileIO.h
    WavMirAudioReader.cpp
    WavMirAudioReader.h
+        Mp3MirAudioReader.cpp
+        Mp3MirAudioReader.h
 )
 
 target_link_libraries(lib-loop-tempo-estimator-test PRIVATE

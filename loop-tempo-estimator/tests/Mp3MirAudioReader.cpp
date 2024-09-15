@@ -3,56 +3,57 @@
 
   Audacity: A Digital Audio Editor
 
-  WaveMirAudioReader.cpp
+  Mp3MirAudioReader.cpp
 
-  Matthieu Hodgkinson
+  Alfredo Gonzalez-Martinez
 
 **********************************************************************/
-#include "WavMirAudioReader.h"
-#include "AudioFileIO.h"
+#include "Mp3MirAudioReader.h"
+#include "Mp3FileReader.h"
 #include "AudioFileInfo.h"
 
+#include <algorithm>
 #include <cassert>
 #include <exception>
+#include <limits>
 #include <stdexcept>
 
 namespace MIR
 {
-WavMirAudioReader::WavMirAudioReader(
+Mp3MirAudioReader::Mp3MirAudioReader(
    const std::string& filename, std::optional<double> timeLimit)
 {
    AudioFileInfo info;
    std::vector<std::vector<float>> samples;
-   if (!AudioFileIO::Read(filename, samples, info))
-      throw std::runtime_error(std::string { "(WavMirAudioReader) Failed to read " } + filename);
+   if (!Mp3FileReader::Read(filename, samples, info))
+      throw std::runtime_error(std::string { "(Mp3MirAudioReader) Failed to read " } + filename);
 
-   const_cast<double&>(mSampleRate) = info.sampleRate;
+   mSampleRate = info.sampleRate;
    const auto limit = timeLimit.has_value() ?
                          static_cast<long long>(*timeLimit * info.sampleRate) :
                          std::numeric_limits<long long>::max();
-   auto& mutableSamples = const_cast<std::vector<float>&>(mSamples);
    const auto numFrames = std::min<long long>(info.numFrames, limit);
-   mutableSamples.resize(numFrames);
+   mSamples.resize(numFrames);
    if (info.numChannels == 2)
       for (size_t i = 0; i < numFrames; ++i)
-         mutableSamples[i] = (samples[0][i] + samples[1][i]) / 2.f;
+         mSamples[i] = (samples[0][i] + samples[1][i]) / 2.f;
    else
       std::copy(
          samples[0].begin(), samples[0].begin() + numFrames,
-         mutableSamples.begin());
+         mSamples.begin());
 }
 
-double WavMirAudioReader::GetSampleRate() const
+double Mp3MirAudioReader::GetSampleRate() const
 {
    return mSampleRate;
 }
 
-long long WavMirAudioReader::GetNumSamples() const
+long long Mp3MirAudioReader::GetNumSamples() const
 {
    return mSamples.size();
 }
 
-void WavMirAudioReader::ReadFloats(
+void Mp3MirAudioReader::ReadFloats(
    float* buffer, long long start, size_t numFrames) const
 {
    assert(start >= 0);

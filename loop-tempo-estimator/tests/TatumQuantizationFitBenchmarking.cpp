@@ -2,6 +2,7 @@
 #include "MirTestUtils.h"
 #include "MusicInformationRetrieval.h"
 #include "WavMirAudioReader.h"
+#include "Mp3MirAudioReader.h"
 
 #include <catch2/catch_test_macros.hpp>
 #include <chrono>
@@ -70,6 +71,11 @@ std::string Pretty(const std::string& filename)
    std::replace(tmp.begin(), tmp.end(), '\\', '/');
    return tmp;
 }
+
+bool isMP3File(const std::string& filename) {
+    return filename.substr(filename.find_last_of(".") + 1) == "mp3";
+}
+
 } // namespace
 
 TEST_CASE("GetRocInfo")
@@ -207,18 +213,26 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
    std::chrono::milliseconds computationTime { 0 };
    std::transform(
       audioFiles.begin(), audioFiles.begin() + numFiles,
-      std::back_inserter(samples), [&](const std::string& wavFile) {
-         const WavMirAudioReader audio { wavFile };
-         checksum += GetChecksum(audio);
+      std::back_inserter(samples), [&](const std::string& audioFile) {
+         std::unique_ptr<MirAudioReader> audio;
+
+         if (isMP3File(audioFile)) {
+            audio = std::make_unique<Mp3MirAudioReader>(audioFile);
+         } else {
+            audio = std::make_unique<WavMirAudioReader>(audioFile);
+         }
+
+         checksum += GetChecksum(*audio);
          QuantizationFitDebugOutput debugOutput;
          std::function<void(double)> progressCb;
          const auto now = std::chrono::steady_clock::now();
-         GetMusicalMeterFromSignal(audio, tolerance, progressCb, &debugOutput);
+         GetMusicalMeterFromSignal(*audio, tolerance, progressCb, &debugOutput);
+
          computationTime +=
             std::chrono::duration_cast<std::chrono::milliseconds>(
                std::chrono::steady_clock::now() - now);
          ProgressBar(progressBarWidth, 100 * count++ / numFiles);
-         const auto expected = GetBpmFromFilename(wavFile);
+         const auto expected = GetBpmFromFilename(audioFile);
          const auto truth = expected.has_value();
          const std::optional<OctaveError> error =
             truth && debugOutput.bpm > 0 ?
@@ -233,7 +247,7 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
                         << (error.has_value() ? error->factor : 0.) << ","
                         << (error.has_value() ? error->remainder : 0.) << ","
                         << debugOutput.tatumQuantization.lag << ","
-                        << Pretty(wavFile) << "\n";
+                        << Pretty(audioFile) << "\n";
          return Sample { truth, debugOutput.score, error };
       });
 
