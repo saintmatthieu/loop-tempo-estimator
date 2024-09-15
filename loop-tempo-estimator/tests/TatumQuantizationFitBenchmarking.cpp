@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <cmath>
 
 #define USE_FILESYSTEM (__has_include(<filesystem>) && _WIN32)
 

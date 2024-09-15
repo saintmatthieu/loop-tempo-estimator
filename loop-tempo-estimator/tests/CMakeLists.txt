@@ -9,8 +9,8 @@ add_executable(lib-loop-tempo-estimator-test
    MirFakes.h
    MirTestUtils.cpp
    MirTestUtils.h
-   # Mp3FileReader.cpp proper integration of mpg123 or minimp3 is required for this guy.
-   # Mp3FileReader.h
+    Mp3FileReader.cpp
+    Mp3FileReader.h
    MusicInformationRetrievalTests.cpp
    StftFrameProviderTests.cpp
    TatumQuantizationFitBenchmarking.cpp
@@ -24,6 +24,7 @@ add_executable(lib-loop-tempo-estimator-test
 target_link_libraries(lib-loop-tempo-estimator-test PRIVATE
    loop-tempo-estimator
    # mpg123
+   minimp3
    sndfile
    Catch2::Catch2WithMain
-   )
+)
