@@ -39,13 +39,20 @@ bool Mp3FileReader::Read(
     }
 
     // Convert the integer PCM data to float and de-interleave
-    const int16_t* pcm_data = dec.buffer;
-    for (size_t i = 0; i < num_frames; ++i) {
-        for (int c = 0; c < num_channels; ++c) {
-            int16_t sample_int16 = pcm_data[i * num_channels + c];
-            float sample_float = sample_int16 / 32768.0f; // Normalize to [-1.0, 1.0]
-            floats[c].push_back(sample_float);
-        }
+    mp3d_sample_t* buffer = nullptr;
+    mp3dec_frame_info_t frameInfo;
+    constexpr auto maxSamplesPerFrame = 1024;
+    while (const auto numSamples = mp3dec_ex_read_frame(
+              &dec, &buffer, &frameInfo, maxSamplesPerFrame))
+    {
+       for (size_t i = 0; i < numSamples / num_channels; ++i)
+          for (int c = 0; c < num_channels; ++c)
+          {
+             int16_t sample_int16 = buffer[i * num_channels + c];
+             float sample_float =
+                sample_int16 / 32768.0f; // Normalize to [-1.0, 1.0]
+             floats[c].push_back(sample_float);
+          }
     }
 
     // Populate the AudioFileInfo struct
