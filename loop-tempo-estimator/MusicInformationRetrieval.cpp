@@ -21,7 +21,6 @@
 #include <cassert>
 #include <cmath>
 #include <numeric>
-#include <regex>
 
 namespace MIR
 {
@@ -43,31 +42,6 @@ auto RemovePathPrefix(const std::string& filename)
 constexpr std::array<double, numTimeSignatures> quarternotesPerBeat { 2., 1.,
                                                                       1., 1.5 };
 } // namespace
-
-std::optional<double> GetBpmFromFilename(const std::string& filename)
-{
-   // regex matching a forward or backward slash:
-
-   // Regex: <(anything + (directory) separator) or nothing> <2 or 3 digits>
-   // <optional separator> <bpm (case-insensitive)> <separator or nothing>
-   const std::regex bpmRegex {
-      R"((?:.*(?:_|-|\s|\.|/|\\))?(\d+)(?:_|-|\s|\.)?bpm(?:(?:_|-|\s|\.).*)?)",
-      std::regex::icase
-   };
-   std::smatch matches;
-   if (std::regex_match(filename, matches, bpmRegex))
-      try
-      {
-         const auto value = std::stoi(matches[1]);
-         return 30 <= value && value <= 300 ? std::optional<double> { value } :
-                                              std::nullopt;
-      }
-      catch (const std::invalid_argument& e)
-      {
-         assert(false);
-      }
-   return {};
-}
 
 std::optional<MusicalMeter> GetMusicalMeterFromSignal(
    const MirAudioReader& audio, FalsePositiveTolerance tolerance,

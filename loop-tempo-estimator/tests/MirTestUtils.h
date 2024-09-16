@@ -18,6 +18,7 @@
 #include <fstream>
 #include <functional>
 #include <numeric>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -179,5 +180,8 @@ template <int bufferSize = 1024> float GetChecksum(const MirAudioReader& source)
    }
    return checksum;
 }
+
+// Used internally by `MusicInformation`, made public for testing.
+std::optional<double> GetBpmFromFilename(const std::string& filename);
 
 } // namespace MIR

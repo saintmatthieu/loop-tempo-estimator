@@ -50,9 +50,6 @@ static const std::unordered_map<FalsePositiveTolerance, LoopClassifierSettings>
       { FalsePositiveTolerance::Lenient, { .1, 0.7129778875046098 } },
    };
 
-// Used internally by `MusicInformation`, made public for testing.
-std::optional<double> GetBpmFromFilename(const std::string& filename);
-
 std::optional<MusicalMeter> GetMusicalMeterFromSignal(
    const MirAudioReader& source, FalsePositiveTolerance tolerance,
    const std::function<void(double)>& progressCallback,
