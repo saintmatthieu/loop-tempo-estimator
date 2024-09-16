@@ -51,42 +51,4 @@ class SquareWaveMirAudioReader : public MirAudioReader
    }
 };
 
-class FakeAnalyzedAudioClip final : public AnalyzedAudioClip
-{
-public:
-   struct Params
-   {
-      const double tempo;
-      const TempoObtainedFrom method;
-   };
-
-   FakeAnalyzedAudioClip(std::optional<Params> params)
-       : syncInfo { params.has_value() ? std::make_optional<ProjectSyncInfo>(
-                                            { params->tempo, params->method }) :
-                                         std::nullopt }
-   {
-   }
-
-   ~FakeAnalyzedAudioClip() override = default;
-
-   const std::optional<MIR::ProjectSyncInfo> syncInfo;
-   std::optional<double> rawAudioTempo;
-   bool synchronizeCalled = false;
-
-   const std::optional<MIR::ProjectSyncInfo>& GetSyncInfo() const override
-   {
-      return syncInfo;
-   }
-
-   void SetRawAudioTempo(double tempo) override
-   {
-      rawAudioTempo = tempo;
-   }
-
-   void Synchronize() override
-   {
-      synchronizeCalled = true;
-   }
-};
-
 } // namespace MIR
