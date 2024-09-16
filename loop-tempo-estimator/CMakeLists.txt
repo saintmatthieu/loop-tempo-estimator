@@ -5,7 +5,6 @@ set(SOURCES
    GetMeterUsingTatumQuantizationFit.h
    MirDsp.cpp
    MirDsp.h
-   MirProjectInterface.h
    MirTypes.h
    MirUtils.cpp
    MirUtils.h
