@@ -31,7 +31,6 @@ add_subdirectory(loop-tempo-estimator)
 
 add_subdirectory(Catch2)
 include(minimp3.cmake)
-# add_subdirectory(mpg123)  # Uncomment if you add a CMakeLists.txt for mpg123
 
 set(BUILD_TESTING OFF)
 set(BUILD_PROGRAMS OFF)
