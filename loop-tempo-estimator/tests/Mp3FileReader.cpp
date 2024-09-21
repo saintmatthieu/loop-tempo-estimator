@@ -8,66 +8,62 @@
   Matthieu Hodgkinson
 
 **********************************************************************/
+
 #include "Mp3FileReader.h"
 #include "AudioFileInfo.h"
 
-#include <mpg123.h>
+#define MINIMP3_IMPLEMENTATION
+#include "minimp3_ex.h"
 
 bool Mp3FileReader::Read(
    const std::string& path, std::vector<std::vector<float>>& floats,
    AudioFileInfo& info)
 {
-   int error = MPG123_OK;
-   mpg123_handle* handle = mpg123_new(nullptr, &error);
-   if (handle == nullptr)
+   mp3dec_ex_t dec;
+   int loadResult = mp3dec_ex_open(&dec, path.c_str(), MP3D_SEEK_TO_SAMPLE);
+   if (loadResult != 0)
+   {
+      // Failed to open or decode the MP3 file
       return false;
+   }
 
-   if (mpg123_open(handle, path.c_str()) != MPG123_OK)
-      return false;
+   int totalSamples =
+      int(dec.samples); // Total number of samples (including all channels)
+   int numChannels = dec.info.channels;
+   int sampleRate = dec.info.hz;
 
-   mpg123_param(handle, MPG123_FLAGS, MPG123_GAPLESS | MPG123_FORCE_FLOAT, 0.0);
-   if (mpg123_scan(handle) != MPG123_OK)
-      return false;
+   int numFrames = totalSamples / numChannels;
 
-   if (
-      mpg123_decode_frame(handle, nullptr, nullptr, nullptr) !=
-      MPG123_NEW_FORMAT)
-      return false;
-
-   long long framesCount = mpg123_framelength(handle);
-   long rate;
-   int channels;
-   int encoding = MPG123_ENC_FLOAT_32;
-   mpg123_getformat(handle, &rate, &channels, &encoding);
-   const auto numChannels = channels == MPG123_MONO ? 1 : 2;
-   if (encoding != MPG123_ENC_FLOAT_32)
-      return false;
-
+   // Resize the floats vector to hold num_channels channels
    floats.resize(numChannels);
-   off_t frameIndex { 0 };
-   unsigned char* data { nullptr };
-   size_t dataSize { 0 };
-   std::vector<float> conversionBuffer;
-   int ret = MPG123_OK;
-   while ((ret = mpg123_decode_frame(handle, &frameIndex, &data, &dataSize)) ==
-          MPG123_OK)
-      for (auto channelIndex = 0; channelIndex < numChannels; ++channelIndex)
-         for (auto frameIndex = 0;
-              frameIndex < dataSize / numChannels / sizeof(float); ++frameIndex)
+   for (int c = 0; c < numChannels; ++c)
+   {
+      floats[c].reserve(numFrames);
+   }
+
+   // Convert the integer PCM data to float and de-interleave
+   mp3d_sample_t* buffer = nullptr;
+   mp3dec_frame_info_t frameInfo;
+   constexpr auto maxSamplesPerFrame = 1024;
+   while (const auto numSamples = mp3dec_ex_read_frame(
+             &dec, &buffer, &frameInfo, maxSamplesPerFrame))
+   {
+      for (size_t i = 0; i < numSamples / numChannels; ++i)
+         for (int c = 0; c < numChannels; ++c)
          {
-            const auto floatIndex = channelIndex + frameIndex * numChannels;
-            const auto value =
-               *reinterpret_cast<float*>(data + floatIndex * sizeof(float));
-            floats[channelIndex].push_back(value);
+            int16_t sampleInt16 = buffer[i * numChannels + c];
+            float sampleFloat =
+               float(sampleInt16) / 32768.0f; // Normalize to [-1.0, 1.0]
+            floats[c].push_back(sampleFloat);
          }
+   }
 
-   mpg123_close(handle);
-   mpg123_delete(handle);
-   mpg123_exit();
-
-   info.sampleRate = rate;
+   // Populate the AudioFileInfo struct
+   info.sampleRate = sampleRate;
    info.numChannels = numChannels;
-   info.numFrames = floats[0].size();
+   info.numFrames = numFrames;
+
+   mp3dec_ex_close(&dec);
 
    return true;
 }

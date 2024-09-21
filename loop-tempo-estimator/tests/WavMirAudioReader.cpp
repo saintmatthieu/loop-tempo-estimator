@@ -24,7 +24,7 @@ WavMirAudioReader::WavMirAudioReader(
    AudioFileInfo info;
    std::vector<std::vector<float>> samples;
    if (!AudioFileIO::Read(filename, samples, info))
-      throw std::runtime_error(std::string { "Failed to read " } + filename);
+      throw std::runtime_error(std::string { "(WavMirAudioReader) Failed to read " } + filename);
 
    const_cast<double&>(mSampleRate) = info.sampleRate;
    const auto limit = timeLimit.has_value() ?
