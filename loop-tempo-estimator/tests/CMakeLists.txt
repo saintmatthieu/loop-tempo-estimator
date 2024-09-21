@@ -11,7 +11,6 @@ add_executable(lib-loop-tempo-estimator-test
         MirTestUtils.h
         Mp3FileReader.cpp
         Mp3FileReader.h
-        MusicInformationRetrievalTests.cpp
         StftFrameProviderTests.cpp
         TatumQuantizationFitBenchmarking.cpp
         TatumQuantizationFitVisualization.cpp

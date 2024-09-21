@@ -19,8 +19,8 @@ TEST_CASE("TatumQuantizationFitVisualization")
    if (!runLocally)
       return;
 
-   const auto wavFile =
-      "C:/Users/saint/Downloads/looperman/looperman-l-4881796-0338438-1970-sex-drums.wav";
+   const auto wavFile = std::string { CMAKE_CURRENT_SOURCE_DIR } +
+                        "/audio/[Drumbeats (Melodic)] 120 bpm house loop.mp3";
    const WavMirAudioReader audio { wavFile };
    QuantizationFitDebugOutput debugOutput;
    const auto result = GetMusicalMeterFromSignal(

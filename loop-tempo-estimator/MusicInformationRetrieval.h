@@ -10,7 +10,6 @@
 **********************************************************************/
 #pragma once
 
-#include "AcidizerTags.h"
 #include "MirTypes.h"
 
 #include <functional>
@@ -22,7 +21,6 @@
 namespace MIR
 {
 class MirAudioReader;
-class ProjectInterface;
 
 struct LoopClassifierSettings
 {
@@ -51,30 +49,8 @@ static const std::unordered_map<FalsePositiveTolerance, LoopClassifierSettings>
       { FalsePositiveTolerance::Lenient, { .1, 0.7129778875046098 } },
    };
 
-struct ProjectSyncInfoInput
-{
-   const MirAudioReader& source;
-   std::string filename;
-   std::optional<LibFileFormats::AcidizerTags> tags;
-   std::function<void(double progress)> progressCallback;
-   double projectTempo = 120.;
-   bool projectWasEmpty = false;
-   bool viewIsBeatsAndMeasures = false;
-};
-
-std::optional<ProjectSyncInfo>
-GetProjectSyncInfo(const ProjectSyncInfoInput& input);
-
-// Used internally by `MusicInformation`, made public for testing.
-std::optional<double> GetBpmFromFilename(const std::string& filename);
-
 std::optional<MusicalMeter> GetMusicalMeterFromSignal(
    const MirAudioReader& source, FalsePositiveTolerance tolerance,
    const std::function<void(double)>& progressCallback,
    QuantizationFitDebugOutput* debugOutput = nullptr);
-
-void SynchronizeProject(
-   const std::vector<std::shared_ptr<AnalyzedAudioClip>>& clips,
-   ProjectInterface& project, bool projectWasEmpty);
-
 } // namespace MIR
