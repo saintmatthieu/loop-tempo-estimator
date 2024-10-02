@@ -167,11 +167,11 @@ auto ToString(const std::optional<TimeSignature>& ts)
 
 TEST_CASE("TatumQuantizationFitBenchmarking")
 {
-   // For this test to run, you will need to set `runLocally` to `true`, and
-   // you'll also need the benchmarking sound files. To get these, just open
-   // `download-benchmarking-dataset.html` in a browser. This will download a
-   // zip file that you'll need to extract and place in a `benchmarking-dataset`
-   // directory under this directory.
+   // For this test to run, you will need to set `runLocally` to `true`, you'll
+   // need the benchmarking sound files. To get these, just run
+   // `download-benchmarking-dataset.py`. This will download the necessary mp3
+   // files and place them in the `benchmarking-dataset` directory under this
+   // directory.
 
    // Running this test will update
    // `TatumQuantizationFitBenchmarkingOutput/summary.txt`. The summary contains
@@ -190,8 +190,6 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
    // We only observe the results for the most lenient classifier. The other,
    // stricter classifier will yield the same results, only with fewer false
    // positives.
-   if (!runLocally)
-      return;
 
    constexpr auto tolerance = FalsePositiveTolerance::Lenient;
    constexpr int progressBarWidth = 50;

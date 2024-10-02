@@ -33,11 +33,6 @@
 
 namespace LTE
 {
-
-// Some tests, such as benchmarking and visualization, are not meant to be run
-// on CI. This variable is used to disable them.
-static constexpr auto runLocally = true;
-
 struct RocInfo
 {
    const double areaUnderCurve;

@@ -35,13 +35,10 @@ Some visualization of some aspects of the algorithm was implemented: `TatumQuant
 file as input, runs the algorithm with debug output, and writes this output to python files, which can afterwards be run
 to show plots.
 
-1. Set `static constexpr auto runLocally = true;` in LteTestUtils.h (should be committed as `false` to avoid CI running
-   visualization and benchmarking)
-2. In `TatumQuantizationFitVisualization.cpp`, Set the value of `const auto wavFile =` to the path of the wav file you
+1. In `TatumQuantizationFitVisualization.cpp`, Set the value of `const auto wavFile =` to the path of the wav file you
    want to analyze.
-3. Build and run the `lib-loop-tempo-estimator-test` target. (The benchmarking will run and fail if you haven't set it
-   up, but you can ignore it.)
-4. In `tests/TatumQuantizationFitVisualization/`, you will find `visualize_debug_output.py` and
+2. Build and run the `visualization` target.
+3. In `tests/TatumQuantizationFitVisualization/`, you will find `visualize_debug_output.py` and
    `visualize_post-processed_STFT.py`. You can execute them using Python.
 
 E.g. ![image](https://github.com/user-attachments/assets/1e9fe296-cad7-4ad1-a5af-b6dd43c4156c) shows the onset detection

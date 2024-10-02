@@ -15,10 +15,6 @@ TEST_CASE("TatumQuantizationFitVisualization")
    // `visualize_debug_output.py` to visualize the working of the algorithm, or
    // `visualize_post-processed_STFT.py` to visualize the STFT used to produce
    // the ODF.
-
-   if (!runLocally)
-      return;
-
    const auto wavFile =
       std::string { CMAKE_CURRENT_SOURCE_DIR } +
       "/../audio/[Drumbeats (Melodic)] 120 bpm house loop.mp3";
