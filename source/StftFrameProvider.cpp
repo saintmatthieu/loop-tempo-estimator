@@ -18,7 +18,7 @@
 
  */
 #include "StftFrameProvider.h"
-#include "LteTypes.h"
+#include "LoopTempoEstimator/LteTypes.h"
 #include "LteUtils.h"
 
 #include <algorithm>

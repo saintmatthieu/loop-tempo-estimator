@@ -1,4 +1,4 @@
-#include "LoopTempoEstimator.h"
+#include "LoopTempoEstimator/LoopTempoEstimator.h"
 #include "LteFakes.h"
 #include "LteTestUtils.h"
 #include "TestLteAudioReader.h"

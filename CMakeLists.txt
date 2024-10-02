@@ -29,8 +29,8 @@ endif()
 include(pffft.cmake)
 
 set(SOURCES
-   include/LoopTempoEstimator.h
-   include/LteTypes.h
+   include/LoopTempoEstimator/LoopTempoEstimator.h
+   include/LoopTempoEstimator/LteTypes.h
    source/DecimatingLteAudioReader.cpp
    source/DecimatingLteAudioReader.h
    source/GetMeterUsingTatumQuantizationFit.cpp

@@ -17,10 +17,10 @@
  when renaming files. The algorithm remains the same.
 
  */
-#include "LoopTempoEstimator.h"
+#include "LoopTempoEstimator/LoopTempoEstimator.h"
 #include "DecimatingLteAudioReader.h"
 #include "GetMeterUsingTatumQuantizationFit.h"
-#include "LteTypes.h"
+#include "LoopTempoEstimator/LteTypes.h"
 #include "LteUtils.h"
 #include "StftFrameProvider.h"
 

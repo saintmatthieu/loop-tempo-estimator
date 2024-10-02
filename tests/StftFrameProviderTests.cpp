@@ -17,7 +17,7 @@
  when renaming files. The algorithm remains the same.
 
  */
-#include "LteTypes.h"
+#include "LoopTempoEstimator/LteTypes.h"
 #include "LteUtils.h"
 #include "StftFrameProvider.h"
 

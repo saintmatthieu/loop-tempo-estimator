@@ -65,7 +65,7 @@ was faster than all others""
 
 #pragma once
 
-#include "LteTypes.h"
+#include "LoopTempoEstimator/LteTypes.h"
 
 #include <functional>
 #include <optional>

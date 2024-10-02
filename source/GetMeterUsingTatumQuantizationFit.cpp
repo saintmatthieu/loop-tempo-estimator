@@ -20,10 +20,10 @@ Matthieu Hodgkinson
 
 #include "GetMeterUsingTatumQuantizationFit.h"
 #include "IteratorX.h"
-#include "LoopTempoEstimator.h"
+#include "LoopTempoEstimator/LoopTempoEstimator.h"
 #include "LteDsp.h"
 #include "MapToPositiveHalfIndex.h"
-#include "LteTypes.h"
+#include "LoopTempoEstimator/LteTypes.h"
 #include "LteUtils.h"
 #include <array>
 #include <cassert>

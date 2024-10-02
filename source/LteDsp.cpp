@@ -20,7 +20,7 @@
 
 #include "LteDsp.h"
 #include "IteratorX.h"
-#include "LteTypes.h"
+#include "LoopTempoEstimator/LteTypes.h"
 #include "LteUtils.h"
 #include "MathApprox.h"
 #include "MemoryX.h"

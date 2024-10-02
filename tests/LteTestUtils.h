@@ -19,7 +19,7 @@
  */
 #pragma once
 
-#include "LteTypes.h"
+#include "LoopTempoEstimator/LteTypes.h"
 
 #include <algorithm>
 #include <array>
