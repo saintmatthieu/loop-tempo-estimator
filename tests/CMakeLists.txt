@@ -5,8 +5,6 @@ add_compile_definitions(
 include(cmake/Catch2.cmake)
 include(cmake/minimp3.cmake)
 
-find_package(SndFile REQUIRED)
-
 add_executable(lib-loop-tempo-estimator-test
         AudioFileInfo.h
         AudioFileIO.cpp
@@ -29,9 +27,17 @@ add_executable(lib-loop-tempo-estimator-test
 target_link_libraries(lib-loop-tempo-estimator-test PRIVATE
         loop-tempo-estimator
         minimp3
-        SndFile::sndfile
         Catch2::Catch2WithMain
 )
+
+option(USE_LIBSNDFILE "Use libsndfile for audio file I/O" OFF)
+if (USE_LIBSNDFILE)
+        add_compile_definitions(USE_LIBSNDFILE)
+        find_package(SndFile REQUIRED)
+        target_link_libraries(lib-loop-tempo-estimator-test PRIVATE
+                SndFile::sndfile
+        )
+endif()
 
 target_include_directories(lib-loop-tempo-estimator-test PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}

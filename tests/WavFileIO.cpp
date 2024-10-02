@@ -22,7 +22,10 @@
 
 #include <cassert>
 #include <iostream>
+
+#ifdef USE_LIBSNDFILE
 #include <sndfile.h>
+#endif
 
 using namespace std::literals::string_literals;
 
@@ -30,6 +33,7 @@ bool WavFileIO::Read(
    const std::string& inputPath, std::vector<std::vector<float>>& audio,
    AudioFileInfo& info, const std::optional<std::chrono::seconds>& upTo)
 {
+#ifdef USE_LIBSNDFILE
    SF_INFO sfInfo;
    auto sndfile = sf_open(inputPath.c_str(), SFM_READ, &sfInfo);
    if (!sndfile)
@@ -58,12 +62,16 @@ bool WavFileIO::Read(
    info.numChannels = sfInfo.channels;
    info.numFrames = numFramesToRead;
    return true;
+#else
+   return false;
+#endif
 }
 
 bool WavFileIO::Write(
    const std::string& outputPath, const std::vector<std::vector<float>>& audio,
    int sampleRate)
 {
+#ifdef USE_LIBSNDFILE
    const auto numChannels = audio.size();
    const auto numFrames = audio[0].size();
    SF_INFO sfInfo;
@@ -94,4 +102,7 @@ bool WavFileIO::Write(
    assert(numFramesWritten == numFrames);
    sf_close(sndfile);
    return true;
+#else
+   return false;
+#endif
 }
