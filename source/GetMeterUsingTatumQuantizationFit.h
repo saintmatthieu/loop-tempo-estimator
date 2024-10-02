@@ -53,6 +53,15 @@ https://en.wikipedia.org/wiki/Tatum_(music): "The term was coined by Jeff Bilmes
 was faster than all others""
 
 **********************************************************************/
+/*
+
+ This file was copied from Audacity 3.5.1,
+ https://github.com/audacity/audacity/releases/tag/Audacity-3.5.1.
+
+ Modifications might have been made to remove dependencies on Audacity code and
+ when renaming files. The algorithm remains the same.
+
+ */
 
 #pragma once
 
