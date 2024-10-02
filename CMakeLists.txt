@@ -29,7 +29,6 @@ endif()
 # Rest of your CMakeLists.txt
 add_subdirectory(loop-tempo-estimator)
 
-add_subdirectory(Catch2)
 include(minimp3.cmake)
 
 # pffft library setup

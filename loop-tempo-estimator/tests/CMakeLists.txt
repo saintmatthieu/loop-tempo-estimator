@@ -2,7 +2,8 @@ add_compile_definitions(
         CMAKE_CURRENT_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}"
 )
 
-# Find libsndfile
+include(cmake/Catch2.cmake)
+
 find_package(SndFile REQUIRED)
 
 add_executable(lib-loop-tempo-estimator-test
