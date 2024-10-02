@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.12)
 
 project(loop-tempo-estimator)
+
+# Option to build tests:
+option(BUILD_TESTS "Build tests" ON)
+
 set(CMAKE_CXX_STANDARD 17)
 
 if (MSVC)
@@ -65,4 +69,6 @@ target_include_directories(loop-tempo-estimator
       ${CMAKE_CURRENT_SOURCE_DIR}/source
 )
 
-add_subdirectory(tests)
+if (BUILD_TESTS)
+    add_subdirectory(tests)
+endif()

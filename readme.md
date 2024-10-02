@@ -4,39 +4,20 @@
 
 ## Building
 
-### Dependencies
-
-The project depends on libsndfile.
-
-#### Windows
-
-Download the precompiled binaries e.g. from https://github.com/libsndfile/libsndfile. Extract the contents of the archive to a folder and add the path to the bin folder to your PATH environment variable.
-
-#### Linux
-
-TODO
-
-#### MacOS
-
-```sh
-brew install libsndfile
-```
-
-### CMake
-
 Build the project using CMake:
 
 ```sh
 mkdir build
 cd build
-cmake ..
+cmake .. -DBUILD_TESTS=ON # ON per default; if you just need the library without tests, set to OFF
 cmake --build .
 ```
 
+To build the tests, you need [libsnfile](https://github.com/libsndfile/libsndfile) to be installed on you machine.
+
 ## Usage
 
-The main contribution of this repo is just a library, not an executable. It is in the loop-tempo-estimator directory and
-the entry-point header file is `MusicInformationRetrieval.h`.
+The main contribution of this repo is just a library, not an executable.
 
 However, the project includes a benchmarking framework as well as visualization tools. If you want to make sure that the
 code works, you may want to look at `TatumQuantizationFitBenchmarking.cpp` and `TatumQuantizationFitVisualization.cpp`.
