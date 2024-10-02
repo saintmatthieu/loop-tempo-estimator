@@ -4,3 +4,8 @@ cmake-build-release
 
 # IDE stuff
 .idea
+
+benchmarking-dataset
+__pycache__
+stft_log.py
+debug_output.py

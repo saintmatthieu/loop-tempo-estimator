@@ -19,8 +19,9 @@ TEST_CASE("TatumQuantizationFitVisualization")
    if (!runLocally)
       return;
 
-   const auto wavFile = std::string { CMAKE_CURRENT_SOURCE_DIR } +
-                        "/audio/[Drumbeats (Melodic)] 120 bpm house loop.mp3";
+   const auto wavFile =
+      std::string { CMAKE_CURRENT_SOURCE_DIR } +
+      "/../audio/[Drumbeats (Melodic)] 120 bpm house loop.mp3";
    const TestLteAudioReader audio { wavFile };
    QuantizationFitDebugOutput debugOutput;
    const auto result = GetMusicalMeterFromSignal(
