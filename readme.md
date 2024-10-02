@@ -13,10 +13,12 @@ cmake .. -DBUILD_TESTS=ON -DUSE_LIBSNDFILE=ON
 cmake --build .
 ```
 
-If you want to consume this library in your own project, you'll probably want to set `BUILD_TESTS` to `OFF`.
+### `BUILD_TESTS`
+Defaults to `ON`.<br/>If you want to consume this library in your own project, you'll probably want to set it to `OFF`.
 
-The `USE_LIBSNDFILE` flag is only relevant if `BUILD_TESTS` is set to `ON`.
-The test framework uses minimp3 for to read mp3 files. If you would like to run the algorithm on some wav file, either convert it to mp3 first, or have [libsnfile](https://github.com/libsndfile/libsndfile) installed and set `USE_LIBSNDFILE` to `ON`.
+### `USE_LIBSNDFILE`
+Relevant if `BUILD_TESTS` is set to `ON`.<br/>
+The test framework uses minimp3 for to read mp3 files. If you want to run the algorithm on some wav file, either convert it to mp3 first, or have [libsnfile](https://github.com/libsndfile/libsndfile) installed and set `USE_LIBSNDFILE` to `ON`.
 
 ## Usage
 
