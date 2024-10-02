@@ -92,7 +92,7 @@ struct QuantizationFitDebugOutput
    double bpm = 0;
    std::optional<TimeSignature> timeSignature;
    double score = 0.;
-   std::vector<PffftFloatVector> postProcessedStft;
+   std::vector<std::vector<float>> postProcessedStft;
    std::vector<float> rawOdf;
    std::vector<float> movingAverage;
    std::vector<float> odf;

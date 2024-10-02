@@ -31,7 +31,6 @@ include(pffft.cmake)
 set(SOURCES
    include/LoopTempoEstimator.h
    include/LteTypes.h
-   include/PowerSpectrumGetter.h
    source/DecimatingLteAudioReader.cpp
    source/DecimatingLteAudioReader.h
    source/GetMeterUsingTatumQuantizationFit.cpp
@@ -48,6 +47,7 @@ set(SOURCES
    source/MemoryX.cpp
    source/MemoryX.h
    source/PowerSpectrumGetter.cpp
+   source/PowerSpectrumGetter.h
    source/StftFrameProvider.cpp
    source/StftFrameProvider.h
 )

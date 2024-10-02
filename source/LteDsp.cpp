@@ -20,10 +20,10 @@
 
 #include "LteDsp.h"
 #include "IteratorX.h"
-#include "MathApprox.h"
-#include "MemoryX.h"
 #include "LteTypes.h"
 #include "LteUtils.h"
+#include "MathApprox.h"
+#include "MemoryX.h"
 #include "PowerSpectrumGetter.h"
 #include "StftFrameProvider.h"
 #include <cassert>
@@ -155,7 +155,8 @@ std::vector<float> GetOnsetDetectionFunction(
          odf.push_back(GetNoveltyMeasure(prevPowSpec, powSpec));
 
       if (debugOutput)
-         debugOutput->postProcessedStft.push_back(powSpec);
+         debugOutput->postProcessedStft.push_back(
+            { powSpec.begin(), powSpec.end() });
 
       std::swap(prevPowSpec, powSpec);
 
