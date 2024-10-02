@@ -2,6 +2,8 @@
 
 [Upcoming talk at the 2024 Audio Developer Conference](https://conference.audio.dev/session/2024/an-efficient-open-source-c-loop-classifier-and-tempo-estimator/)
 
+![An Efficient, Open-Source C++ Loop Classifier and Tempo Estimator](./An%20Efficient,%20Open-Source%20C++%20Loop%20Classifier%20and%20Tempo%20Estimator_TitleCard.png)
+
 ## Building
 
 Build the project using CMake:
