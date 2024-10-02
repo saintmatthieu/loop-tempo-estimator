@@ -39,12 +39,12 @@ set(SOURCES
    source/IteratorX.cpp
    source/IteratorX.h
    source/LoopTempoEstimator.cpp
+   source/LteDsp.cpp
+   source/LteDsp.h
    source/MapToPositiveHalfIndex.h
    source/MathApprox.h
    source/MemoryX.cpp
    source/MemoryX.h
-   source/MirDsp.cpp
-   source/MirDsp.h
    source/MirUtils.cpp
    source/MirUtils.h
    source/PowerSpectrumGetter.cpp

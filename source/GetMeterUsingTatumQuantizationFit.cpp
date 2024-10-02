@@ -21,8 +21,8 @@ Matthieu Hodgkinson
 #include "GetMeterUsingTatumQuantizationFit.h"
 #include "IteratorX.h"
 #include "LoopTempoEstimator.h"
+#include "LteDsp.h"
 #include "MapToPositiveHalfIndex.h"
-#include "MirDsp.h"
 #include "MirTypes.h"
 #include "MirUtils.h"
 #include <array>
