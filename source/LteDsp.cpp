@@ -22,7 +22,7 @@
 #include "IteratorX.h"
 #include "MathApprox.h"
 #include "MemoryX.h"
-#include "MirTypes.h"
+#include "LteTypes.h"
 #include "LteUtils.h"
 #include "PowerSpectrumGetter.h"
 #include "StftFrameProvider.h"

@@ -18,7 +18,7 @@
 
  */
 #include "StftFrameProvider.h"
-#include "MirTypes.h"
+#include "LteTypes.h"
 #include "LteUtils.h"
 
 #include <algorithm>

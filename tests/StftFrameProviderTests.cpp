@@ -17,7 +17,7 @@
  when renaming files. The algorithm remains the same.
 
  */
-#include "MirTypes.h"
+#include "LteTypes.h"
 #include "LteUtils.h"
 #include "StftFrameProvider.h"
 

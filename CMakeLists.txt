@@ -30,7 +30,7 @@ include(pffft.cmake)
 
 set(SOURCES
    include/LoopTempoEstimator.h
-   include/MirTypes.h
+   include/LteTypes.h
    include/PowerSpectrumGetter.h
    source/DecimatingMirAudioReader.cpp
    source/DecimatingMirAudioReader.h

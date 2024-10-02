@@ -19,7 +19,7 @@
  */
 #pragma once
 
-#include "MirTypes.h"
+#include "LteTypes.h"
 
 #include <optional>
 #include <string>

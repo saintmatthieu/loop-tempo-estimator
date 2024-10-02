@@ -23,7 +23,7 @@ Matthieu Hodgkinson
 #include "LoopTempoEstimator.h"
 #include "LteDsp.h"
 #include "MapToPositiveHalfIndex.h"
-#include "MirTypes.h"
+#include "LteTypes.h"
 #include "LteUtils.h"
 #include <array>
 #include <cassert>

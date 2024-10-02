@@ -20,7 +20,7 @@
 #include "LoopTempoEstimator.h"
 #include "DecimatingMirAudioReader.h"
 #include "GetMeterUsingTatumQuantizationFit.h"
-#include "MirTypes.h"
+#include "LteTypes.h"
 #include "LteUtils.h"
 #include "StftFrameProvider.h"
 

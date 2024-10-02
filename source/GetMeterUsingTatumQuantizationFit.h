@@ -65,7 +65,7 @@ was faster than all others""
 
 #pragma once
 
-#include "MirTypes.h"
+#include "LteTypes.h"
 
 #include <functional>
 #include <optional>
