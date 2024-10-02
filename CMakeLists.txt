@@ -41,12 +41,12 @@ set(SOURCES
    source/LoopTempoEstimator.cpp
    source/LteDsp.cpp
    source/LteDsp.h
+   source/LteUtils.cpp
+   source/LteUtils.h
    source/MapToPositiveHalfIndex.h
    source/MathApprox.h
    source/MemoryX.cpp
    source/MemoryX.h
-   source/MirUtils.cpp
-   source/MirUtils.h
    source/PowerSpectrumGetter.cpp
    source/StftFrameProvider.cpp
    source/StftFrameProvider.h

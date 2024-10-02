@@ -23,7 +23,7 @@
 #include "MathApprox.h"
 #include "MemoryX.h"
 #include "MirTypes.h"
-#include "MirUtils.h"
+#include "LteUtils.h"
 #include "PowerSpectrumGetter.h"
 #include "StftFrameProvider.h"
 #include <cassert>

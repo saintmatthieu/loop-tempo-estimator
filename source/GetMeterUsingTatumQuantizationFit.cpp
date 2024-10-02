@@ -24,7 +24,7 @@ Matthieu Hodgkinson
 #include "LteDsp.h"
 #include "MapToPositiveHalfIndex.h"
 #include "MirTypes.h"
-#include "MirUtils.h"
+#include "LteUtils.h"
 #include <array>
 #include <cassert>
 #include <cmath>

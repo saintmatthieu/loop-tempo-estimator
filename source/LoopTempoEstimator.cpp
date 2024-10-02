@@ -21,7 +21,7 @@
 #include "DecimatingMirAudioReader.h"
 #include "GetMeterUsingTatumQuantizationFit.h"
 #include "MirTypes.h"
-#include "MirUtils.h"
+#include "LteUtils.h"
 #include "StftFrameProvider.h"
 
 #include "MemoryX.h"

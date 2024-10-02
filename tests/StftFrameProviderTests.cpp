@@ -18,7 +18,7 @@
 
  */
 #include "MirTypes.h"
-#include "MirUtils.h"
+#include "LteUtils.h"
 #include "StftFrameProvider.h"
 
 #include <catch2/catch_test_macros.hpp>

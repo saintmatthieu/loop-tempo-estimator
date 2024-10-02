@@ -19,7 +19,7 @@
  */
 #include "StftFrameProvider.h"
 #include "MirTypes.h"
-#include "MirUtils.h"
+#include "LteUtils.h"
 
 #include <algorithm>
 #include <cassert>
