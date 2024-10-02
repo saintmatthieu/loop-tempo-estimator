@@ -9,11 +9,14 @@ Build the project using CMake:
 ```sh
 mkdir build
 cd build
-cmake .. -DBUILD_TESTS=ON # ON per default; if you just need the library without tests, set to OFF
+cmake .. -DBUILD_TESTS=ON -DUSE_LIBSNDFILE=ON
 cmake --build .
 ```
 
-To build the tests, you need [libsnfile](https://github.com/libsndfile/libsndfile) to be installed on you machine.
+If you want to consume this library in your own project, you'll probably want to set `BUILD_TESTS` to `OFF`.
+
+The `USE_LIBSNDFILE` flag is only relevant if `BUILD_TESTS` is set to `ON`.
+The test framework uses minimp3 for to read mp3 files. If you would like to run the algorithm on some wav file, either convert it to mp3 first, or have [libsnfile](https://github.com/libsndfile/libsndfile) installed and set `USE_LIBSNDFILE` to `ON`.
 
 ## Usage
 
