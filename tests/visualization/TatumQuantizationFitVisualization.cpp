@@ -16,16 +16,16 @@ TEST_CASE("TatumQuantizationFitVisualization")
    // `visualize_post-processed_STFT.py` to visualize the STFT used to produce
    // the ODF.
    const auto wavFile =
-      std::string { CMAKE_CURRENT_SOURCE_DIR } +
-      "/../audio/[Drumbeats (Melodic)] 120 bpm house loop.mp3";
+      std::string { CMAKE_SOURCE_DIR } +
+      "/tests/audio/[Drumbeats (Melodic)] 120 bpm house loop.mp3";
    const TestLteAudioReader audio { wavFile };
    QuantizationFitDebugOutput debugOutput;
    const auto result = GetMusicalMeterFromSignal(
       audio, FalsePositiveTolerance::Lenient, nullptr, &debugOutput);
 
    std::ofstream debug_output_module {
-      std::string(CMAKE_CURRENT_SOURCE_DIR) +
-      "/TatumQuantizationFitVisualization/debug_output.py"
+      std::string(CMAKE_SOURCE_DIR) +
+      "/tests/visualization/TatumQuantizationFitVisualization/debug_output.py"
    };
    debug_output_module << "wavFile = \"" << wavFile << "\"\n";
    debug_output_module << "odfSr = " << debugOutput.odfSr << "\n";
@@ -55,8 +55,8 @@ TEST_CASE("TatumQuantizationFitVisualization")
       "odfAutoCorrPeakIndices");
 
    std::ofstream stft_log_module {
-      std::string { CMAKE_CURRENT_SOURCE_DIR } +
-      "/TatumQuantizationFitVisualization/stft_log.py"
+      std::string { CMAKE_SOURCE_DIR } +
+      "/tests/visualization/TatumQuantizationFitVisualization/stft_log.py"
    };
    stft_log_module << "wavFile = \"" << wavFile << "\"\n";
    stft_log_module << "sampleRate = " << audio.GetSampleRate() << "\n";

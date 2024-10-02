@@ -1,16 +1,14 @@
-# This script creates the ./tests/benchmarking-dataset directory (./ being the root of this git repo) if it doesn't exist.
-
 import os
-import requests
+import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 import threading
 import time
 
 # Get the root path of this git repo
 this_path = os.path.dirname(os.path.realpath(__file__))
-benchmarking_dataset_path = os.path.join(this_path, 'benchmarking-dataset')
+benchmarking_dataset_path = os.path.join(this_path, 'dataset')
 
-# Create the benchmarking-dataset directory if it doesn't exist
+# Create the dataset directory if it doesn't exist
 if not os.path.exists(benchmarking_dataset_path):
     os.makedirs(benchmarking_dataset_path)
 
@@ -596,8 +594,9 @@ def download_loop(path, mp3):
             num_to_download += 1
         try:
             with open(loop_path, 'wb') as file:
-                response = requests.get(mp3['url'])
-                file.write(response.content)
+                response = urllib.request.urlopen(mp3['url'])
+                data = response.read()
+                file.write(data)
                 with lock:
                     num_downloads += 1
         except Exception as e:
@@ -620,6 +619,8 @@ with ThreadPoolExecutor(max_workers=5) as executor:
                for loop in loops]
     futures += [executor.submit(download_loop, nonLoop_path, nonLoop)
                 for nonLoop in nonLoops]
+    
+print("Downloading benchmarking dataset...")
 
 # Optional: Wait for all downloads to complete (not strictly necessary as executor will do this)
 for future in futures:

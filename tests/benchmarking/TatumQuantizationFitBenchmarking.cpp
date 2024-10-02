@@ -22,7 +22,7 @@ namespace LTE
 namespace
 {
 const auto datasetRoot =
-   std::string(CMAKE_CURRENT_SOURCE_DIR) + "/benchmarking-dataset";
+   std::string(CMAKE_SOURCE_DIR) + "/tests/benchmarking/dataset";
 
 std::vector<std::string> GetBenchmarkingAudioFiles()
 {
@@ -282,8 +282,8 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
    if (classifierQualityHasChanged)
    {
       std::ofstream summaryFile {
-         std::string(CMAKE_CURRENT_SOURCE_DIR) +
-         "/TatumQuantizationFitBenchmarkingOutput/summary.txt"
+         std::string(CMAKE_SOURCE_DIR) +
+         "tests/benchmarking/TatumQuantizationFitBenchmarkingOutput/summary.txt"
       };
       summaryFile << std::setprecision(
                         std::numeric_limits<double>::digits10 + 1)
@@ -296,8 +296,8 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
                   << "Audio file checksum: " << checksum << "\n";
       // Write sampleValueCsv to a file.
       std::ofstream sampleValueCsvFile {
-         std::string(CMAKE_CURRENT_SOURCE_DIR) +
-         "/TatumQuantizationFitBenchmarkingOutput/sampleValues.csv"
+         std::string(CMAKE_SOURCE_DIR) +
+         "tests/benchmarking/TatumQuantizationFitBenchmarkingOutput/sampleValues.csv"
       };
       sampleValueCsvFile << sampleValueCsv.rdbuf();
    }
