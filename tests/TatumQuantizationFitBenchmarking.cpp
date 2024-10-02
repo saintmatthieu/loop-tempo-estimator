@@ -17,7 +17,7 @@
 #include <filesystem>
 #endif
 
-namespace MIR
+namespace LTE
 {
 namespace
 {
@@ -312,4 +312,4 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
    // inadvertent bug, and if it is deliberate, should be well justified.
    REQUIRE(!classifierQualityHasChanged);
 }
-} // namespace MIR
+} // namespace LTE

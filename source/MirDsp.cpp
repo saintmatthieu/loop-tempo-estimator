@@ -31,7 +31,7 @@
 #include <numeric>
 #include <pffft.h>
 
-namespace MIR
+namespace LTE
 {
 namespace
 {
@@ -183,4 +183,4 @@ std::vector<float> GetOnsetDetectionFunction(
 
    return odf;
 }
-} // namespace MIR
+} // namespace LTE

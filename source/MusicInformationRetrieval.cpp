@@ -31,7 +31,7 @@
 #include <cmath>
 #include <numeric>
 
-namespace MIR
+namespace LTE
 {
 namespace
 {
@@ -68,4 +68,4 @@ std::optional<MusicalMeter> GetMusicalMeterFromSignal(
    return GetMeterUsingTatumQuantizationFit(
       decimatedAudio, tolerance, progressCallback, debugOutput);
 }
-} // namespace MIR
+} // namespace LTE

@@ -23,7 +23,7 @@
 #include <vector>
 
 
-namespace MIR
+namespace LTE
 {
 class MirAudioReader;
 
@@ -54,4 +54,4 @@ private:
    const long long mNumSamples;
    int mNumFramesProvided = 0;
 };
-} // namespace MIR
+} // namespace LTE

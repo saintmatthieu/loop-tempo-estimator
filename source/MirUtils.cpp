@@ -23,7 +23,7 @@
 #include <cmath>
 #include <numeric>
 
-namespace MIR
+namespace LTE
 {
 namespace
 {
@@ -98,4 +98,4 @@ std::vector<float> GetNormalizedHann(int size)
       [windowSum](float w) { return w / windowSum; });
    return window;
 }
-} // namespace MIR
+} // namespace LTE

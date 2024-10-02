@@ -31,7 +31,7 @@
 #include <iostream>
 #include <regex>
 
-namespace MIR
+namespace LTE
 {
 void ProgressBar(int width, int percent)
 {
@@ -87,4 +87,4 @@ std::optional<double> GetBpmFromFilename(const std::string& filename)
       }
    return {};
 }
-} // namespace MIR
+} // namespace LTE

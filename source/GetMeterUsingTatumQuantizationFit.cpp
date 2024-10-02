@@ -34,7 +34,7 @@ Matthieu Hodgkinson
 #include <unordered_map>
 #include <unordered_set>
 
-namespace MIR
+namespace LTE
 {
 namespace
 {
@@ -466,4 +466,4 @@ std::optional<MusicalMeter> GetMeterUsingTatumQuantizationFit(
              std::optional<MusicalMeter> {} :
              winnerMeter;
 }
-} // namespace MIR
+} // namespace LTE

@@ -23,7 +23,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-namespace MIR
+namespace LTE
 {
 namespace
 {
@@ -80,4 +80,4 @@ TEST_CASE("StftFrameProvider")
          ;
    }
 }
-} // namespace MIR
+} // namespace LTE

@@ -22,7 +22,7 @@
 #include <algorithm>
 #include <vector>
 
-namespace MIR
+namespace LTE
 {
 /*!
  * @brief Function to generate numbers whose prime factorization contains only
@@ -50,4 +50,4 @@ static_assert(IsPowOfTwo(1));
 static_assert(IsPowOfTwo(2));
 static_assert(!IsPowOfTwo(3));
 static_assert(IsPowOfTwo(4));
-} // namespace MIR
+} // namespace LTE

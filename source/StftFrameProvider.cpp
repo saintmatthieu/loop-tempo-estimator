@@ -26,7 +26,7 @@
 #include <cmath>
 #include <numeric>
 
-namespace MIR
+namespace LTE
 {
 namespace
 {
@@ -110,4 +110,4 @@ int StftFrameProvider::GetFftSize() const
 {
    return mFftSize;
 }
-} // namespace MIR
+} // namespace LTE

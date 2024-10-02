@@ -70,7 +70,7 @@ was faster than all others""
 #include <functional>
 #include <optional>
 
-namespace MIR
+namespace LTE
 {
 class MirAudioReader;
 
@@ -83,4 +83,4 @@ std::optional<MusicalMeter> GetMeterUsingTatumQuantizationFit(
    const std::function<void(double)>& progressCallback,
    QuantizationFitDebugOutput* debugOutput);
 
-} // namespace MIR
+} // namespace LTE

@@ -6,7 +6,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <fstream>
 
-namespace MIR
+namespace LTE
 {
 TEST_CASE("TatumQuantizationFitVisualization")
 {
@@ -76,4 +76,4 @@ TEST_CASE("TatumQuantizationFitVisualization")
       });
    stft_log_module << "]\n";
 }
-} // namespace MIR
+} // namespace LTE

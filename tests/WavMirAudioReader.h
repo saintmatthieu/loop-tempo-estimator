@@ -25,7 +25,7 @@
 #include <string>
 #include <vector>
 
-namespace MIR
+namespace LTE
 {
 class WavMirAudioReader : public MirAudioReader
 {
@@ -42,4 +42,4 @@ private:
    const std::vector<float> mSamples;
    const double mSampleRate = 0.;
 };
-} // namespace MIR
+} // namespace LTE

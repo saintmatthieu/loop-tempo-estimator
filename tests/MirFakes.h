@@ -21,7 +21,7 @@
 
 #include "MirTypes.h"
 
-namespace MIR
+namespace LTE
 {
 
 class EmptyMirAudioReader : public MirAudioReader
@@ -60,4 +60,4 @@ class SquareWaveMirAudioReader : public MirAudioReader
    }
 };
 
-} // namespace MIR
+} // namespace LTE

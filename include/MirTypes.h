@@ -28,7 +28,7 @@
 #include <vector>
 #include "PowerSpectrumGetter.h"
 
-namespace MIR
+namespace LTE
 {
 enum class FalsePositiveTolerance
 {
@@ -102,4 +102,4 @@ struct QuantizationFitDebugOutput
    std::vector<float> odfAutoCorr;
    std::vector<int> odfAutoCorrPeakIndices;
 };
-} // namespace MIR
+} // namespace LTE

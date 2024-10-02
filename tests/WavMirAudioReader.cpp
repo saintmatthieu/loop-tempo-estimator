@@ -25,7 +25,7 @@
 #include <exception>
 #include <stdexcept>
 
-namespace MIR
+namespace LTE
 {
 WavMirAudioReader::WavMirAudioReader(
    const std::string& filename, std::optional<double> timeLimit)
@@ -69,4 +69,4 @@ void WavMirAudioReader::ReadFloats(
    std::copy(
       mSamples.begin() + start, mSamples.begin() + start + numFrames, buffer);
 }
-} // namespace MIR
+} // namespace LTE

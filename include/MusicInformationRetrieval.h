@@ -27,7 +27,7 @@
 #include <unordered_map>
 #include <vector>
 
-namespace MIR
+namespace LTE
 {
 class MirAudioReader;
 
@@ -62,4 +62,4 @@ std::optional<MusicalMeter> GetMusicalMeterFromSignal(
    const MirAudioReader& source, FalsePositiveTolerance tolerance,
    const std::function<void(double)>& progressCallback,
    QuantizationFitDebugOutput* debugOutput = nullptr);
-} // namespace MIR
+} // namespace LTE

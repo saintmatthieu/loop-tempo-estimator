@@ -22,7 +22,7 @@
 #include <cmath>
 #include <vector>
 
-namespace MIR
+namespace LTE
 {
 DecimatingMirAudioReader::DecimatingMirAudioReader(const MirAudioReader& reader)
     : mReader { reader }
@@ -56,4 +56,4 @@ void DecimatingMirAudioReader::ReadFloats(
    for (auto i = 0; i < numDecimatedFrames; ++i)
       decimated[i] = mBuffer[i * mDecimationFactor];
 }
-} // namespace MIR
+} // namespace LTE

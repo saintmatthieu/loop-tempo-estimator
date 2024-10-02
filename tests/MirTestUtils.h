@@ -31,7 +31,7 @@
 #include <string>
 #include <vector>
 
-namespace MIR
+namespace LTE
 {
 
 // Some tests, such as benchmarking and visualization, are not meant to be run
@@ -193,4 +193,4 @@ template <int bufferSize = 1024> float GetChecksum(const MirAudioReader& source)
 // Used internally by `MusicInformation`, made public for testing.
 std::optional<double> GetBpmFromFilename(const std::string& filename);
 
-} // namespace MIR
+} // namespace LTE

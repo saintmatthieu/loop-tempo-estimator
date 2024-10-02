@@ -23,10 +23,10 @@
 
 #include <vector>
 
-namespace MIR
+namespace LTE
 {
 /*!
- * @brief Our MIR operations do not need the full 44.1 or 48kHz resolution
+ * @brief Our LTE operations do not need the full 44.1 or 48kHz resolution
  * typical of audio files. It may change in the future, if we start looking at
  * chromagrams for example, but for now even a certain amount of aliasing isn't
  * an issue. In fact, for onset detection, it may even be beneficial, since it
@@ -50,4 +50,4 @@ private:
    const int mDecimationFactor;
    mutable std::vector<float> mBuffer;
 };
-} // namespace MIR
+} // namespace LTE

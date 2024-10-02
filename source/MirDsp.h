@@ -26,7 +26,7 @@
 #include <functional>
 #include <vector>
 
-namespace MIR
+namespace LTE
 {
 class MirAudioReader;
 struct QuantizationFitDebugOutput;
@@ -46,4 +46,4 @@ std::vector<float> GetOnsetDetectionFunction(
    const MirAudioReader& audio,
    const std::function<void(double)>& progressCallback,
    QuantizationFitDebugOutput* debugInfo);
-} // namespace MIR
+} // namespace LTE
