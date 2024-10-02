@@ -2,6 +2,9 @@ add_compile_definitions(
         CMAKE_CURRENT_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}"
 )
 
+# Find libsndfile
+find_package(SndFile REQUIRED)
+
 add_executable(lib-loop-tempo-estimator-test
         AudioFileInfo.h
         AudioFileIO.cpp
@@ -24,7 +27,7 @@ add_executable(lib-loop-tempo-estimator-test
 target_link_libraries(lib-loop-tempo-estimator-test PRIVATE
         loop-tempo-estimator
         minimp3
-        sndfile
+        SndFile::sndfile
         Catch2::Catch2WithMain
 )
 

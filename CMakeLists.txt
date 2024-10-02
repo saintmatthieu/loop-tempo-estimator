@@ -32,11 +32,6 @@ add_subdirectory(loop-tempo-estimator)
 add_subdirectory(Catch2)
 include(minimp3.cmake)
 
-set(BUILD_TESTING OFF)
-set(BUILD_PROGRAMS OFF)
-set(BUILD_EXAMPLES OFF)
-add_subdirectory(libsndfile)
-
 # pffft library setup
 add_definitions(-D_USE_MATH_DEFINES)
 

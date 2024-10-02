@@ -4,13 +4,27 @@
 
 ## Building
 
-This project uses CMake as its build system. To build the project, you must first update the submodules:
+### Dependencies
+
+The project depends on libsndfile.
+
+#### Windows
+
+Download the precompiled binaries e.g. from https://github.com/libsndfile/libsndfile. Extract the contents of the archive to a folder and add the path to the bin folder to your PATH environment variable.
+
+#### Linux
+
+TODO
+
+#### MacOS
 
 ```sh
-git submodule update --init --recursive
+brew install libsndfile
 ```
 
-Then, you can build the project using CMake:
+### CMake
+
+Build the project using CMake:
 
 ```sh
 mkdir build
@@ -44,4 +58,3 @@ to show plots.
 
 E.g. ![image](https://github.com/user-attachments/assets/1e9fe296-cad7-4ad1-a5af-b6dd43c4156c) shows the onset detection
 function (blue), the onsets (red) and the tatums (green) as estimated by the algorithm on a 16-bar drum loop.
-
