@@ -27,10 +27,10 @@
 
 namespace LTE
 {
-class WavMirAudioReader : public MirAudioReader
+class TestLteAudioReader : public LteAudioReader
 {
 public:
-   WavMirAudioReader(
+   TestLteAudioReader(
       const std::string& filename, std::optional<double> timeLimit = {});
 
    double GetSampleRate() const override;

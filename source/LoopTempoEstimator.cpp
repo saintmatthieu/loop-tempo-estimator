@@ -18,7 +18,7 @@
 
  */
 #include "LoopTempoEstimator.h"
-#include "DecimatingMirAudioReader.h"
+#include "DecimatingLteAudioReader.h"
 #include "GetMeterUsingTatumQuantizationFit.h"
 #include "LteTypes.h"
 #include "LteUtils.h"
@@ -53,7 +53,7 @@ constexpr std::array<double, numTimeSignatures> quarternotesPerBeat { 2., 1.,
 } // namespace
 
 std::optional<MusicalMeter> GetMusicalMeterFromSignal(
-   const MirAudioReader& audio, FalsePositiveTolerance tolerance,
+   const LteAudioReader& audio, FalsePositiveTolerance tolerance,
    const std::function<void(double)>& progressCallback,
    QuantizationFitDebugOutput* debugOutput)
 {
@@ -64,7 +64,7 @@ std::optional<MusicalMeter> GetMusicalMeterFromSignal(
       // A file longer than 1 minute is most likely not a loop, and processing
       // it would be costly.
       return {};
-   DecimatingMirAudioReader decimatedAudio { audio };
+   DecimatingLteAudioReader decimatedAudio { audio };
    return GetMeterUsingTatumQuantizationFit(
       decimatedAudio, tolerance, progressCallback, debugOutput);
 }

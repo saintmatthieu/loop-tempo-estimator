@@ -1,7 +1,7 @@
 #include "LoopTempoEstimator.h"
 #include "LteFakes.h"
 #include "LteTestUtils.h"
-#include "WavMirAudioReader.h"
+#include "TestLteAudioReader.h"
 
 #include <catch2/catch_test_macros.hpp>
 #include <fstream>
@@ -21,7 +21,7 @@ TEST_CASE("TatumQuantizationFitVisualization")
 
    const auto wavFile = std::string { CMAKE_CURRENT_SOURCE_DIR } +
                         "/audio/[Drumbeats (Melodic)] 120 bpm house loop.mp3";
-   const WavMirAudioReader audio { wavFile };
+   const TestLteAudioReader audio { wavFile };
    QuantizationFitDebugOutput debugOutput;
    const auto result = GetMusicalMeterFromSignal(
       audio, FalsePositiveTolerance::Lenient, nullptr, &debugOutput);

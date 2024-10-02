@@ -23,24 +23,7 @@
 
 namespace LTE
 {
-
-class EmptyMirAudioReader : public MirAudioReader
-{
-   double GetSampleRate() const override
-   {
-      return 0;
-   }
-   long long GetNumSamples() const override
-   {
-      return 0;
-   }
-   void
-   ReadFloats(float* buffer, long long start, size_t numFrames) const override
-   {
-   }
-};
-
-class SquareWaveMirAudioReader : public MirAudioReader
+class SquareWaveLteAudioReader : public LteAudioReader
 {
    const int period = 8;
 

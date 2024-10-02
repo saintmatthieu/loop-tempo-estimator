@@ -52,7 +52,7 @@ double GetHopSize(int sampleRate, long long numSamples)
 }
 } // namespace
 
-StftFrameProvider::StftFrameProvider(const MirAudioReader& audio)
+StftFrameProvider::StftFrameProvider(const LteAudioReader& audio)
     : mAudio { audio }
     , mFftSize { GetFrameSize(audio.GetSampleRate()) }
     , mHopSize { GetHopSize(audio.GetSampleRate(), audio.GetNumSamples()) }

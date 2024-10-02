@@ -27,12 +27,12 @@ namespace LTE
 {
 namespace
 {
-class TestMirAudioReader : public MirAudioReader
+class TestLteAudioReader : public LteAudioReader
 {
 public:
    const long long numSamples;
 
-   TestMirAudioReader(long long numSamples)
+   TestLteAudioReader(long long numSamples)
        : numSamples { numSamples }
    {
    }
@@ -56,24 +56,24 @@ TEST_CASE("StftFrameProvider")
 {
    SECTION("handles empty files")
    {
-      StftFrameProvider sut { TestMirAudioReader { 0 } };
+      StftFrameProvider sut { TestLteAudioReader { 0 } };
       PffftFloatVector frame;
       REQUIRE(!sut.GetNextFrame(frame));
    }
    SECTION("handles very short files")
    {
-      StftFrameProvider sut { TestMirAudioReader { 1 } };
+      StftFrameProvider sut { TestLteAudioReader { 1 } };
       PffftFloatVector frame;
       REQUIRE(!sut.GetNextFrame(frame));
    }
    SECTION("has power-of-two number of frames")
    {
-      StftFrameProvider sut { TestMirAudioReader { 123456 } };
+      StftFrameProvider sut { TestLteAudioReader { 123456 } };
       REQUIRE(IsPowOfTwo(sut.GetNumFrames()));
    }
-   SECTION("respects MirAudioReader boundaries")
+   SECTION("respects LteAudioReader boundaries")
    {
-      TestMirAudioReader reader { 123456 };
+      TestLteAudioReader reader { 123456 };
       StftFrameProvider sut { reader };
       PffftFloatVector frame;
       while (sut.GetNextFrame(frame))

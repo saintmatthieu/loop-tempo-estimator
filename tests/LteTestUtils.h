@@ -170,7 +170,7 @@ OctaveError GetOctaveError(double expected, double actual);
 
 // Reproducible benchmarking must use the same input. We use this to make sure
 // that it does.
-template <int bufferSize = 1024> float GetChecksum(const MirAudioReader& source)
+template <int bufferSize = 1024> float GetChecksum(const LteAudioReader& source)
 {
    // Sum samples to checksum.
    float checksum = 0.f;

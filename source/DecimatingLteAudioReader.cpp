@@ -17,14 +17,14 @@
  when renaming files. The algorithm remains the same.
 
  */
-#include "DecimatingMirAudioReader.h"
+#include "DecimatingLteAudioReader.h"
 
 #include <cmath>
 #include <vector>
 
 namespace LTE
 {
-DecimatingMirAudioReader::DecimatingMirAudioReader(const MirAudioReader& reader)
+DecimatingLteAudioReader::DecimatingLteAudioReader(const LteAudioReader& reader)
     : mReader { reader }
     , mDecimationFactor {
        // Input rate divided by this integer will be as close as possible to
@@ -34,18 +34,18 @@ DecimatingMirAudioReader::DecimatingMirAudioReader(const MirAudioReader& reader)
 {
 }
 
-double DecimatingMirAudioReader::GetSampleRate() const
+double DecimatingLteAudioReader::GetSampleRate() const
 {
    return 1. * mReader.GetSampleRate() / mDecimationFactor;
 }
 
-long long DecimatingMirAudioReader::GetNumSamples() const
+long long DecimatingLteAudioReader::GetNumSamples() const
 {
    // Return the floor
    return mReader.GetNumSamples() / mDecimationFactor;
 }
 
-void DecimatingMirAudioReader::ReadFloats(
+void DecimatingLteAudioReader::ReadFloats(
    float* decimated, long long decimatedStart, size_t numDecimatedFrames) const
 {
    const auto numFrames = numDecimatedFrames * mDecimationFactor;

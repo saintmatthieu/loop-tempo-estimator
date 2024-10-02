@@ -399,7 +399,7 @@ bool IsSingleEvent(
 } // namespace
 
 std::optional<MusicalMeter> GetMeterUsingTatumQuantizationFit(
-   const MirAudioReader& audio, FalsePositiveTolerance tolerance,
+   const LteAudioReader& audio, FalsePositiveTolerance tolerance,
    const std::function<void(double)>& progressCallback,
    QuantizationFitDebugOutput* debugOutput)
 {

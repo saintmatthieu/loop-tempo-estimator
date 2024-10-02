@@ -29,7 +29,7 @@
 
 namespace LTE
 {
-class MirAudioReader;
+class LteAudioReader;
 
 struct LoopClassifierSettings
 {
@@ -59,7 +59,7 @@ static const std::unordered_map<FalsePositiveTolerance, LoopClassifierSettings>
    };
 
 std::optional<MusicalMeter> GetMusicalMeterFromSignal(
-   const MirAudioReader& source, FalsePositiveTolerance tolerance,
+   const LteAudioReader& source, FalsePositiveTolerance tolerance,
    const std::function<void(double)>& progressCallback,
    QuantizationFitDebugOutput* debugOutput = nullptr);
 } // namespace LTE

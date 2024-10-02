@@ -72,7 +72,7 @@ struct OnsetQuantization
    int numDivisions = 0;
 };
 
-class MirAudioReader
+class LteAudioReader
 {
 public:
    virtual double GetSampleRate() const = 0;
@@ -83,7 +83,7 @@ public:
    {
       return GetSampleRate() == 0 ? 0. : GetNumSamples() / GetSampleRate();
    }
-   virtual ~MirAudioReader() = default;
+   virtual ~LteAudioReader() = default;
 };
 
 struct QuantizationFitDebugOutput

@@ -20,10 +20,10 @@ add_executable(lib-loop-tempo-estimator-test
         StftFrameProviderTests.cpp
         TatumQuantizationFitBenchmarking.cpp
         TatumQuantizationFitVisualization.cpp
+        TestLteAudioReader.cpp
+        TestLteAudioReader.h
         WavFileIO.cpp
         WavFileIO.h
-        WavMirAudioReader.cpp
-        WavMirAudioReader.h
 )
 
 target_link_libraries(lib-loop-tempo-estimator-test PRIVATE

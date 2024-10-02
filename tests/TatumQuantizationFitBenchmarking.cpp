@@ -1,7 +1,7 @@
 #include "LoopTempoEstimator.h"
 #include "LteFakes.h"
 #include "LteTestUtils.h"
-#include "WavMirAudioReader.h"
+#include "TestLteAudioReader.h"
 
 #include <catch2/catch_test_macros.hpp>
 #include <chrono>
@@ -140,7 +140,7 @@ TEST_CASE("GetRocInfo")
 TEST_CASE("GetChecksum")
 {
    constexpr auto bufferSize = 5;
-   const auto checksum = GetChecksum<bufferSize>(SquareWaveMirAudioReader {});
+   const auto checksum = GetChecksum<bufferSize>(SquareWaveLteAudioReader {});
    REQUIRE(checksum == 0.);
 }
 
@@ -214,7 +214,7 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
    std::transform(
       audioFiles.begin(), audioFiles.begin() + numFiles,
       std::back_inserter(samples), [&](const std::string& audioFile) {
-         const WavMirAudioReader audio { audioFile };
+         const TestLteAudioReader audio { audioFile };
 
          checksum += GetChecksum(audio);
          QuantizationFitDebugOutput debugOutput;

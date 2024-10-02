@@ -25,7 +25,7 @@
 
 namespace LTE
 {
-class MirAudioReader;
+class LteAudioReader;
 
 /*!
  * Utility class to provide time-domain frames ready for FFT. The returned
@@ -38,7 +38,7 @@ class MirAudioReader;
 class StftFrameProvider
 {
 public:
-   StftFrameProvider(const MirAudioReader& source);
+   StftFrameProvider(const LteAudioReader& source);
    bool GetNextFrame(PffftFloatVector& frame);
    int GetNumFrames() const;
    int GetSampleRate() const;
@@ -46,7 +46,7 @@ public:
    int GetFftSize() const;
 
 private:
-   const MirAudioReader& mAudio;
+   const LteAudioReader& mAudio;
    const int mFftSize;
    const double mHopSize;
    const std::vector<float> mWindow;

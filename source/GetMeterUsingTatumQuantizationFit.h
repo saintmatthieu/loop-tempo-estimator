@@ -72,14 +72,14 @@ was faster than all others""
 
 namespace LTE
 {
-class MirAudioReader;
+class LteAudioReader;
 
 /*!
  * @brief Get the BPM of the given audio file, using the Tatum Quantization Fit
  * method.
  */
 std::optional<MusicalMeter> GetMeterUsingTatumQuantizationFit(
-   const MirAudioReader& audio, FalsePositiveTolerance tolerance,
+   const LteAudioReader& audio, FalsePositiveTolerance tolerance,
    const std::function<void(double)>& progressCallback,
    QuantizationFitDebugOutput* debugOutput);
 

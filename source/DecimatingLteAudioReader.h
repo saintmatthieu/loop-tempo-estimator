@@ -35,10 +35,10 @@ namespace LTE
  * This is fast and easy to implement, meanwhile reducing dramatically the
  * amount of data and operations.
  */
-class DecimatingMirAudioReader : public MirAudioReader
+class DecimatingLteAudioReader : public LteAudioReader
 {
 public:
-   explicit DecimatingMirAudioReader(const MirAudioReader& reader);
+   explicit DecimatingLteAudioReader(const LteAudioReader& reader);
 
    double GetSampleRate() const override;
    long long GetNumSamples() const override;
@@ -46,7 +46,7 @@ public:
    ReadFloats(float* buffer, long long start, size_t numFrames) const override;
 
 private:
-   const MirAudioReader& mReader;
+   const LteAudioReader& mReader;
    const int mDecimationFactor;
    mutable std::vector<float> mBuffer;
 };

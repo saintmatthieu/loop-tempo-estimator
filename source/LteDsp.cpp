@@ -117,7 +117,7 @@ GetNormalizedCircularAutocorr(const std::vector<float>& ux /* unaligned x*/)
 }
 
 std::vector<float> GetOnsetDetectionFunction(
-   const MirAudioReader& audio,
+   const LteAudioReader& audio,
    const std::function<void(double)>& progressCallback,
    QuantizationFitDebugOutput* debugOutput)
 {

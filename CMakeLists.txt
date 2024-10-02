@@ -32,8 +32,8 @@ set(SOURCES
    include/LoopTempoEstimator.h
    include/LteTypes.h
    include/PowerSpectrumGetter.h
-   source/DecimatingMirAudioReader.cpp
-   source/DecimatingMirAudioReader.h
+   source/DecimatingLteAudioReader.cpp
+   source/DecimatingLteAudioReader.h
    source/GetMeterUsingTatumQuantizationFit.cpp
    source/GetMeterUsingTatumQuantizationFit.h
    source/IteratorX.cpp

@@ -17,7 +17,7 @@
  when renaming files. The algorithm remains the same.
 
  */
-#include "WavMirAudioReader.h"
+#include "TestLteAudioReader.h"
 #include "AudioFileIO.h"
 #include "AudioFileInfo.h"
 
@@ -27,13 +27,13 @@
 
 namespace LTE
 {
-WavMirAudioReader::WavMirAudioReader(
+TestLteAudioReader::TestLteAudioReader(
    const std::string& filename, std::optional<double> timeLimit)
 {
    AudioFileInfo info;
    std::vector<std::vector<float>> samples;
    if (!AudioFileIO::Read(filename, samples, info))
-      throw std::runtime_error(std::string { "(WavMirAudioReader) Failed to read " } + filename);
+      throw std::runtime_error(std::string { "(TestLteAudioReader) Failed to read " } + filename);
 
    const_cast<double&>(mSampleRate) = info.sampleRate;
    const auto limit = timeLimit.has_value() ?
@@ -51,17 +51,17 @@ WavMirAudioReader::WavMirAudioReader(
          mutableSamples.begin());
 }
 
-double WavMirAudioReader::GetSampleRate() const
+double TestLteAudioReader::GetSampleRate() const
 {
    return mSampleRate;
 }
 
-long long WavMirAudioReader::GetNumSamples() const
+long long TestLteAudioReader::GetNumSamples() const
 {
    return mSamples.size();
 }
 
-void WavMirAudioReader::ReadFloats(
+void TestLteAudioReader::ReadFloats(
    float* buffer, long long start, size_t numFrames) const
 {
    assert(start >= 0);
