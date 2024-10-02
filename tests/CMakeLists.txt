@@ -13,8 +13,8 @@ add_executable(lib-loop-tempo-estimator-test
         AudioFileIO.h
         LteFakes.h
         MathApproxTest.cpp
-        MirTestUtils.cpp
-        MirTestUtils.h
+        LteTestUtils.cpp
+        LteTestUtils.h
         Mp3FileReader.cpp
         Mp3FileReader.h
         StftFrameProviderTests.cpp

@@ -1,6 +1,6 @@
 #include "LoopTempoEstimator.h"
 #include "LteFakes.h"
-#include "MirTestUtils.h"
+#include "LteTestUtils.h"
 #include "WavMirAudioReader.h"
 
 #include <catch2/catch_test_macros.hpp>

@@ -47,7 +47,7 @@ Some visualization of some aspects of the algorithm was implemented: `TatumQuant
 file as input, runs the algorithm with debug output, and writes this output to python files, which can afterwards be run
 to show plots.
 
-1. Set `static constexpr auto runLocally = true;` in MirTestUtils.h (should be committed as `false` to avoid CI running
+1. Set `static constexpr auto runLocally = true;` in LteTestUtils.h (should be committed as `false` to avoid CI running
    visualization and benchmarking)
 2. In `TatumQuantizationFitVisualization.cpp`, Set the value of `const auto wavFile =` to the path of the wav file you
    want to analyze.

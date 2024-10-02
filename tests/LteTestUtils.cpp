@@ -17,7 +17,7 @@
  when renaming files. The algorithm remains the same.
 
  */
-#include "MirTestUtils.h"
+#include "LteTestUtils.h"
 
 #define USE_FILESYSTEM (__has_include(<filesystem>) && _WIN32)
 
