@@ -4,9 +4,7 @@ This project contains a benchmarking tool for the Loop Tempo Estimator algorithm
 
 ## Setup
 
-Download the benchmarking dataset:
-- Open `download-benchmarking-dataset.html` in a web browser, this will download a zip file containing the audio samples
-- Extract the contents of the zip file into a folder named `benchmarking-dataset` in the `tests` directory of the project
+Run `download-benchmarking-dataset.py`.
 
 ## Running the Test
 
