@@ -26,3 +26,8 @@ target_link_libraries(lib-loop-tempo-estimator-test PRIVATE
         sndfile
         Catch2::Catch2WithMain
 )
+
+target_include_directories(lib-loop-tempo-estimator-test PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/../source
+)
