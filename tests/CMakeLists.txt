@@ -11,8 +11,8 @@ add_executable(lib-loop-tempo-estimator-test
         AudioFileInfo.h
         AudioFileIO.cpp
         AudioFileIO.h
+        LteFakes.h
         MathApproxTest.cpp
-        MirFakes.h
         MirTestUtils.cpp
         MirTestUtils.h
         Mp3FileReader.cpp

@@ -1,5 +1,5 @@
 #include "LoopTempoEstimator.h"
-#include "MirFakes.h"
+#include "LteFakes.h"
 #include "MirTestUtils.h"
 #include "WavMirAudioReader.h"
 
