@@ -28,15 +28,3 @@ endif()
 
 # Rest of your CMakeLists.txt
 add_subdirectory(loop-tempo-estimator)
-
-# pffft library setup
-add_definitions(-D_USE_MATH_DEFINES)
-
-add_library(pffft
-    pffft/pffft.c
-    pffft/pffft.h
-)
-
-target_include_directories(pffft PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/pffft
-)

@@ -1,3 +1,5 @@
+include(pffft.cmake)
+
 set(SOURCES
    include/MirTypes.h
    include/MusicInformationRetrieval.h
