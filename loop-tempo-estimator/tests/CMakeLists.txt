@@ -3,6 +3,7 @@ add_compile_definitions(
 )
 
 include(cmake/Catch2.cmake)
+include(cmake/minimp3.cmake)
 
 find_package(SndFile REQUIRED)
 

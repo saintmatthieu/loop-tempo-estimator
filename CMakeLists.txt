@@ -29,8 +29,6 @@ endif()
 # Rest of your CMakeLists.txt
 add_subdirectory(loop-tempo-estimator)
 
-include(minimp3.cmake)
-
 # pffft library setup
 add_definitions(-D_USE_MATH_DEFINES)
 
