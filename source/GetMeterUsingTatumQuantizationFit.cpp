@@ -20,11 +20,11 @@ Matthieu Hodgkinson
 
 #include "GetMeterUsingTatumQuantizationFit.h"
 #include "IteratorX.h"
+#include "LoopTempoEstimator.h"
 #include "MapToPositiveHalfIndex.h"
 #include "MirDsp.h"
 #include "MirTypes.h"
 #include "MirUtils.h"
-#include "MusicInformationRetrieval.h"
 #include <array>
 #include <cassert>
 #include <cmath>

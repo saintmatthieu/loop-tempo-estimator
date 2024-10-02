@@ -29,8 +29,8 @@ endif()
 include(pffft.cmake)
 
 set(SOURCES
+   include/LoopTempoEstimator.h
    include/MirTypes.h
-   include/MusicInformationRetrieval.h
    include/PowerSpectrumGetter.h
    source/DecimatingMirAudioReader.cpp
    source/DecimatingMirAudioReader.h
@@ -38,6 +38,7 @@ set(SOURCES
    source/GetMeterUsingTatumQuantizationFit.h
    source/IteratorX.cpp
    source/IteratorX.h
+   source/LoopTempoEstimator.cpp
    source/MapToPositiveHalfIndex.h
    source/MathApprox.h
    source/MemoryX.cpp
@@ -46,7 +47,6 @@ set(SOURCES
    source/MirDsp.h
    source/MirUtils.cpp
    source/MirUtils.h
-   source/MusicInformationRetrieval.cpp
    source/PowerSpectrumGetter.cpp
    source/StftFrameProvider.cpp
    source/StftFrameProvider.h

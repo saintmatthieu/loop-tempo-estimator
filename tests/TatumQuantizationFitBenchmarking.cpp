@@ -1,6 +1,6 @@
+#include "LoopTempoEstimator.h"
 #include "MirFakes.h"
 #include "MirTestUtils.h"
-#include "MusicInformationRetrieval.h"
 #include "WavMirAudioReader.h"
 
 #include <catch2/catch_test_macros.hpp>

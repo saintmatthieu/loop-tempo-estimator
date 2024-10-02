@@ -17,7 +17,7 @@
  when renaming files. The algorithm remains the same.
 
  */
-#include "MusicInformationRetrieval.h"
+#include "LoopTempoEstimator.h"
 #include "DecimatingMirAudioReader.h"
 #include "GetMeterUsingTatumQuantizationFit.h"
 #include "MirTypes.h"
