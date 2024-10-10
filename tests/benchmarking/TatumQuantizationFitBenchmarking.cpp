@@ -26,6 +26,14 @@ const auto datasetRoot =
 
 std::vector<std::string> GetBenchmarkingAudioFiles()
 {
+   const auto pythonScriptPath =
+      std::string(CMAKE_SOURCE_DIR) +
+      "/tests/benchmarking/download-benchmarking-dataset.py";
+   const auto command = "python " + pythonScriptPath + " " + datasetRoot;
+   const auto returnCode = system(command.c_str());
+   if (returnCode != 0)
+      throw std::runtime_error("Failed to download benchmarking dataset!");
+
    std::vector<std::string> files;
 #if USE_FILESYSTEM
    namespace fs = std::filesystem;
@@ -211,7 +219,9 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
    std::chrono::milliseconds computationTime { 0 };
    std::transform(
       audioFiles.begin(), audioFiles.begin() + numFiles,
-      std::back_inserter(samples), [&](const std::string& audioFile) {
+      std::back_inserter(samples),
+      [&](const std::string& audioFile)
+      {
          const TestLteAudioReader audio { audioFile };
 
          checksum += GetChecksum(audio);
@@ -261,7 +271,8 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
    // Get RMS of octave errors. Tells how good the BPM estimation is.
    const auto octaveErrors = std::accumulate(
       samples.begin(), samples.end(), std::vector<double> {},
-      [&](std::vector<double> octaveErrors, const Sample& sample) {
+      [&](std::vector<double> octaveErrors, const Sample& sample)
+      {
          if (sample.octaveError.has_value())
             octaveErrors.push_back(sample.octaveError->remainder);
          return octaveErrors;
@@ -269,9 +280,8 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
    const auto octaveErrorStd = std::sqrt(
       std::accumulate(
          octaveErrors.begin(), octaveErrors.end(), 0.,
-         [&](double sum, double octaveError) {
-            return sum + octaveError * octaveError;
-         }) /
+         [&](double sum, double octaveError)
+         { return sum + octaveError * octaveError; }) /
       octaveErrors.size());
 
    constexpr auto previousAuc = 0.9312244897959182;

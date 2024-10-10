@@ -4,9 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 import threading
 import time
 
-# Get the root path of this git repo
-this_path = os.path.dirname(os.path.realpath(__file__))
-benchmarking_dataset_path = os.path.join(this_path, 'dataset')
+benchmarking_dataset_path = os.path.abspath(os.sys.argv[1])
 
 # Create the dataset directory if it doesn't exist
 if not os.path.exists(benchmarking_dataset_path):
