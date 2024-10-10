@@ -180,8 +180,7 @@ double GetQuantizationDistance(
 OnsetQuantization RunQuantizationExperiment(
    const std::vector<float>& odf, const std::vector<int>& peakIndices,
    const std::vector<float>& peakValues,
-   const std::vector<int>& possibleNumTatums,
-   QuantizationFitDebugOutput* debugOutput)
+   const std::vector<int>& possibleNumTatums)
 {
    const auto quantizations = [&]() {
       std::unordered_map<int, OnsetQuantization> quantizations;
@@ -443,7 +442,7 @@ std::optional<MusicalMeter> GetMeterUsingTatumQuantizationFit(
    }();
 
    const auto experiment = RunQuantizationExperiment(
-      odf, peakIndices, peakValues, possibleNumTatums, debugOutput);
+      odf, peakIndices, peakValues, possibleNumTatums);
 
    const auto winnerMeter = GetMostLikelyMeterFromQuantizationExperiment(
       odf, experiment.numDivisions, possibleDivs.at(experiment.numDivisions),
