@@ -38,20 +38,6 @@ namespace LTE
 {
 namespace
 {
-constexpr auto minTatumsPerMinute = 100;
-constexpr auto maxTatumsPerMinute = 700;
-constexpr auto minBeatsPerMinute = 50.;
-constexpr auto maxBeatsPerMinute = 200.;
-constexpr auto minBeatsPerBar = 2;
-constexpr auto maxBeatsPerBar = 4;
-constexpr std::array<std::pair<int, int>, 9> possibleTatumsPerBeat {
-   std::pair<int, int> { 1, 1 }, //
-   std::pair<int, int> { 2, 1 }, std::pair<int, int> { 3, 1 },
-   std::pair<int, int> { 4, 1 }, std::pair<int, int> { 6, 1 }, //
-   std::pair<int, int> { 1, 2 }, std::pair<int, int> { 1, 3 },
-   std::pair<int, int> { 1, 4 }, std::pair<int, int> { 1, 6 } //
-};
-
 // Number of bars and beats per bar dividing the input audio recording.
 struct BarDivision
 {
@@ -64,57 +50,94 @@ struct BarDivision
 using PossibleDivHierarchies =
    std::unordered_map<int /*num tatums*/, std::vector<BarDivision>>;
 
-// Gather a collection of possible numbers of divisions based on the assumption
-// that the audio is a loop (hence there must be a round number of bars) and on
-// reasonable bar and tatum durations.
-PossibleDivHierarchies GetPossibleDivHierarchies(double audioFileDuration)
+std::vector<int> GetPossibleNumberOfBars(double audioFileDuration)
 {
    constexpr auto minBarsPerMinute = 15.; // 4s per bar
    constexpr auto maxBarsPerMinute = 60.;
    const int minNumBars =
       std::max(std::round(audioFileDuration * minBarsPerMinute / 60), 1.);
    const int maxNumBars = std::round(audioFileDuration * maxBarsPerMinute / 60);
-   PossibleDivHierarchies possibleDivHierarchies;
-   for_each_in_range(
-      IotaRange { minNumBars, maxNumBars + 1 },
-      [&](int numBars)
+   std::vector<int> possibleNumBars(maxNumBars - minNumBars + 1);
+   std::iota(possibleNumBars.begin(), possibleNumBars.end(), minNumBars);
+   return possibleNumBars;
+}
+
+std::vector<int> GetPossibleBeatsPerBar(double audioFileDuration, int numBars)
+{
+   const auto barDuration = audioFileDuration / numBars;
+   constexpr auto minBeatsPerMinute = 50.;
+   constexpr auto maxBeatsPerMinute = 200.;
+   constexpr auto minBeatsPerBar = 2;
+   constexpr auto maxBeatsPerBar = 4;
+   const auto minBpb = std::clamp<int>(
+      std::floor(minBeatsPerMinute * barDuration / 60), minBeatsPerBar,
+      maxBeatsPerBar);
+   const auto maxBpb = std::clamp<int>(
+      std::ceil(maxBeatsPerMinute * barDuration / 60), minBeatsPerBar,
+      maxBeatsPerBar);
+   std::vector<int> possibleBeatsPerBar(maxBpb - minBpb + 1);
+   // All beats-per-bar values in the range [minBpb, maxBpb] are valid, no need
+   // for further checks.
+   std::iota(possibleBeatsPerBar.begin(), possibleBeatsPerBar.end(), minBpb);
+   return possibleBeatsPerBar;
+}
+
+std::vector<int>
+GetPossibleTatumsPerBar(double audioFileDuration, int numBars, int beatsPerBar)
+{
+   constexpr std::array<std::pair<int, int>, 9> possibleTatumsPerBeat {
+      std::pair<int, int> { 1, 1 }, //
+      std::pair<int, int> { 2, 1 }, std::pair<int, int> { 3, 1 },
+      std::pair<int, int> { 4, 1 }, std::pair<int, int> { 6, 1 }, //
+      std::pair<int, int> { 1, 2 }, std::pair<int, int> { 1, 3 },
+      std::pair<int, int> { 1, 4 }, std::pair<int, int> { 1, 6 } //
+   };
+   std::vector<int> possibleTatumsPerBar;
+   std::for_each(
+      possibleTatumsPerBeat.begin(), possibleTatumsPerBeat.end(),
+      [&](const std::pair<int, int>& tatumsPerBeat)
       {
-         const auto barDuration = audioFileDuration / numBars;
-         const auto minBpb = std::clamp<int>(
-            std::floor(minBeatsPerMinute * barDuration / 60), minBeatsPerBar,
-            maxBeatsPerBar);
-         const auto maxBpb = std::clamp<int>(
-            std::ceil(maxBeatsPerMinute * barDuration / 60), minBeatsPerBar,
-            maxBeatsPerBar);
-         for_each_in_range(
-            IotaRange { minBpb, maxBpb + 1 },
-            [&](int beatsPerBar)
-            {
-               std::for_each(
-                  possibleTatumsPerBeat.begin(), possibleTatumsPerBeat.end(),
-                  [&](const std::pair<int, int>& tatumsPerBeat)
-                  {
-                     const auto [tatumsPerBeatNum, tatumsPerBeatDen] =
-                        tatumsPerBeat;
+         const auto [tatumsPerBeatNum, tatumsPerBeatDen] = tatumsPerBeat;
 
-                     // Number of tatums per bar must be round:
-                     if (
-                        (beatsPerBar * tatumsPerBeatNum) % tatumsPerBeatDen !=
-                        0)
-                        return;
+         // Number of tatums per bar must be round. For example, one tatum per
+         // three beats is by itself possible, but not in there is e.g. two
+         // beats per bar, or that would be 2/3 tatums per bar.
+         if ((beatsPerBar * tatumsPerBeatNum) % tatumsPerBeatDen != 0)
+            return;
 
-                     const int tatumsPerBar =
-                        beatsPerBar * tatumsPerBeatNum / tatumsPerBeatDen;
-                     const int numTatums = tatumsPerBar * numBars;
-                     const auto tatumRate = 60. * numTatums / audioFileDuration;
-                     if (
-                        minTatumsPerMinute < tatumRate &&
-                        tatumRate < maxTatumsPerMinute)
-                        possibleDivHierarchies[numTatums].push_back(
-                           BarDivision { numBars, beatsPerBar });
-                  });
-            });
+         const auto tatumsPerBar =
+            beatsPerBar * tatumsPerBeatNum / tatumsPerBeatDen;
+         const int numTatums = tatumsPerBar * numBars;
+         const auto tatumRate = 60. * numTatums / audioFileDuration;
+
+         constexpr auto minTatumsPerMinute = 100;
+         constexpr auto maxTatumsPerMinute = 700;
+         if (minTatumsPerMinute < tatumRate && tatumRate < maxTatumsPerMinute)
+            possibleTatumsPerBar.push_back(tatumsPerBar);
       });
+   return possibleTatumsPerBar;
+}
+
+// Gather a collection of possible numbers of divisions based on the assumption
+// that the audio is a loop (hence there must be a round number of bars) and on
+// reasonable bar and tatum durations.
+PossibleDivHierarchies GetPossibleDivHierarchies(double audioFileDuration)
+{
+
+   PossibleDivHierarchies possibleDivHierarchies;
+   for (const auto numBars : GetPossibleNumberOfBars(audioFileDuration))
+   {
+      for (const auto beatsPerBar :
+           GetPossibleBeatsPerBar(audioFileDuration, numBars))
+      {
+         for (const auto tatumsPerBar :
+              GetPossibleTatumsPerBar(audioFileDuration, numBars, beatsPerBar))
+         {
+            possibleDivHierarchies[numBars * tatumsPerBar].push_back(
+               BarDivision { numBars, beatsPerBar });
+         }
+      }
+   }
    return possibleDivHierarchies;
 }
 
