@@ -85,16 +85,18 @@ std::vector<int> GetPossibleBeatsPerBar(double audioFileDuration, int numBars)
 std::vector<int>
 GetPossibleTatumsPerBar(double audioFileDuration, int numBars, int beatsPerBar)
 {
-   constexpr std::array<std::pair<int, int>, 9> possibleTatumsPerBeat {
-      std::pair<int, int> { 1, 1 }, //
-      std::pair<int, int> { 2, 1 }, std::pair<int, int> { 3, 1 },
-      std::pair<int, int> { 4, 1 }, std::pair<int, int> { 6, 1 }, //
-      std::pair<int, int> { 1, 2 }, std::pair<int, int> { 1, 3 },
-      std::pair<int, int> { 1, 4 }, std::pair<int, int> { 1, 6 } //
-   };
+   constexpr std::array<std::pair<int, int>, 9>
+      contextFreePossibleTatumsPerBeat {
+         std::pair<int, int> { 1, 1 }, //
+         std::pair<int, int> { 2, 1 }, std::pair<int, int> { 3, 1 },
+         std::pair<int, int> { 4, 1 }, std::pair<int, int> { 6, 1 }, //
+         std::pair<int, int> { 1, 2 }, std::pair<int, int> { 1, 3 },
+         std::pair<int, int> { 1, 4 }, std::pair<int, int> { 1, 6 } //
+      };
    std::vector<int> possibleTatumsPerBar;
    std::for_each(
-      possibleTatumsPerBeat.begin(), possibleTatumsPerBeat.end(),
+      contextFreePossibleTatumsPerBeat.begin(),
+      contextFreePossibleTatumsPerBeat.end(),
       [&](const std::pair<int, int>& tatumsPerBeat)
       {
          const auto [tatumsPerBeatNum, tatumsPerBeatDen] = tatumsPerBeat;
