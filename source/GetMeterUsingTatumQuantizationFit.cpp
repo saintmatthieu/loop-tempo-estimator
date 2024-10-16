@@ -40,8 +40,8 @@ namespace
 {
 constexpr auto minTatumsPerMinute = 100;
 constexpr auto maxTatumsPerMinute = 700;
-constexpr auto minBpm = 50.;
-constexpr auto maxBpm = 200.;
+constexpr auto minBeatsPerMinute = 50.;
+constexpr auto maxBeatsPerMinute = 200.;
 constexpr auto minBeatsPerBar = 2;
 constexpr auto maxBeatsPerBar = 4;
 constexpr std::array<std::pair<int, int>, 9> possibleTatumsPerBeat {
@@ -69,20 +69,20 @@ using PossibleDivHierarchies =
 // reasonable bar and tatum durations.
 PossibleDivHierarchies GetPossibleDivHierarchies(double audioFileDuration)
 {
-   constexpr auto minBarDuration = 1.;
-   constexpr auto maxBarDuration = 4.;
+   constexpr auto minBarsPerMinute = 15.; // 4s per bar
+   constexpr auto maxBarsPerMinute = 60.;
    const int minNumBars =
-      std::max(std::round(audioFileDuration / maxBarDuration), 1.);
-   const int maxNumBars = std::round(audioFileDuration / minBarDuration);
+      std::max(std::round(audioFileDuration * minBarsPerMinute / 60), 1.);
+   const int maxNumBars = std::round(audioFileDuration * maxBarsPerMinute / 60);
    PossibleDivHierarchies possibleDivHierarchies;
    for_each_in_range(
       IotaRange { minNumBars, maxNumBars + 1 }, [&](int numBars) {
          const auto barDuration = audioFileDuration / numBars;
          const auto minBpb = std::clamp<int>(
-            std::floor(minBpm * barDuration / 60), minBeatsPerBar,
+            std::floor(minBeatsPerMinute * barDuration / 60), minBeatsPerBar,
             maxBeatsPerBar);
          const auto maxBpb = std::clamp<int>(
-            std::ceil(maxBpm * barDuration / 60), minBeatsPerBar,
+            std::ceil(maxBeatsPerMinute * barDuration / 60), minBeatsPerBar,
             maxBeatsPerBar);
          for_each_in_range(
             IotaRange { minBpb, maxBpb + 1 }, [&](int beatsPerBar) {
