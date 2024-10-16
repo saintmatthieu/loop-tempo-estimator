@@ -21,10 +21,10 @@ Matthieu Hodgkinson
 #include "GetMeterUsingTatumQuantizationFit.h"
 #include "IteratorX.h"
 #include "LoopTempoEstimator/LoopTempoEstimator.h"
-#include "LteDsp.h"
-#include "MapToPositiveHalfIndex.h"
 #include "LoopTempoEstimator/LteTypes.h"
+#include "LteDsp.h"
 #include "LteUtils.h"
+#include "MapToPositiveHalfIndex.h"
 #include <array>
 #include <cassert>
 #include <cmath>
@@ -76,7 +76,9 @@ PossibleDivHierarchies GetPossibleDivHierarchies(double audioFileDuration)
    const int maxNumBars = std::round(audioFileDuration * maxBarsPerMinute / 60);
    PossibleDivHierarchies possibleDivHierarchies;
    for_each_in_range(
-      IotaRange { minNumBars, maxNumBars + 1 }, [&](int numBars) {
+      IotaRange { minNumBars, maxNumBars + 1 },
+      [&](int numBars)
+      {
          const auto barDuration = audioFileDuration / numBars;
          const auto minBpb = std::clamp<int>(
             std::floor(minBeatsPerMinute * barDuration / 60), minBeatsPerBar,
@@ -85,10 +87,13 @@ PossibleDivHierarchies GetPossibleDivHierarchies(double audioFileDuration)
             std::ceil(maxBeatsPerMinute * barDuration / 60), minBeatsPerBar,
             maxBeatsPerBar);
          for_each_in_range(
-            IotaRange { minBpb, maxBpb + 1 }, [&](int beatsPerBar) {
+            IotaRange { minBpb, maxBpb + 1 },
+            [&](int beatsPerBar)
+            {
                std::for_each(
                   possibleTatumsPerBeat.begin(), possibleTatumsPerBeat.end(),
-                  [&](const std::pair<int, int>& tatumsPerBeat) {
+                  [&](const std::pair<int, int>& tatumsPerBeat)
+                  {
                      const auto [tatumsPerBeatNum, tatumsPerBeatDen] =
                         tatumsPerBeat;
 
@@ -128,10 +133,13 @@ int GetOnsetLag(const std::vector<float>& odf, int numTatums)
    while (true)
    {
       auto val = 0.f;
-      for_each_in_range(IotaRange { 0, numTatums }, [&](int i) {
-         const int j = std::round(i * pulseTrainPeriod) + lag;
-         val += (j < odf.size() ? odf[j] : 0.f);
-      });
+      for_each_in_range(
+         IotaRange { 0, numTatums },
+         [&](int i)
+         {
+            const int j = std::round(i * pulseTrainPeriod) + lag;
+            val += (j < odf.size() ? odf[j] : 0.f);
+         });
       if (val < max)
          break;
       max = val;
@@ -159,7 +167,8 @@ double GetQuantizationDistance(
    const auto odfSamplesPerDiv = 1. * size / numDivisions;
    std::transform(
       peakIndices.begin(), peakIndices.end(), peakDistances.begin(),
-      [&](int peakIndex) {
+      [&](int peakIndex)
+      {
          const auto shiftedIndex = peakIndex - lag;
          const auto closestDiv = std::round(shiftedIndex / odfSamplesPerDiv);
          // Normalized distance between 0 and 1:
@@ -182,11 +191,14 @@ OnsetQuantization RunQuantizationExperiment(
    const std::vector<float>& peakValues,
    const std::vector<int>& possibleNumTatums)
 {
-   const auto quantizations = [&]() {
+   const auto quantizations = [&]()
+   {
       std::unordered_map<int, OnsetQuantization> quantizations;
       std::transform(
          possibleNumTatums.begin(), possibleNumTatums.end(),
-         std::inserter(quantizations, quantizations.end()), [&](int numTatums) {
+         std::inserter(quantizations, quantizations.end()),
+         [&](int numTatums)
+         {
             const auto lag = GetOnsetLag(odf, numTatums);
             const auto distance = GetQuantizationDistance(
                peakIndices, peakValues, odf.size(), numTatums, lag);
@@ -199,9 +211,8 @@ OnsetQuantization RunQuantizationExperiment(
    const auto bestFitIt = std::min_element(
       quantizations.begin(), quantizations.end(),
       [](const std::pair<int, OnsetQuantization>& a,
-         const std::pair<int, OnsetQuantization>& b) {
-         return a.second.error < b.second.error;
-      });
+         const std::pair<int, OnsetQuantization>& b)
+      { return a.second.error < b.second.error; });
 
    const auto error = bestFitIt->second.error;
    const auto mostLikelyNumTatums = bestFitIt->first;
@@ -332,7 +343,8 @@ size_t GetBestBarDivisionIndex(
    std::unordered_map<int /*numBeats*/, double> autocorrScoreCache;
    std::transform(
       possibleBarDivisions.begin(), possibleBarDivisions.end(), scores.begin(),
-      [&](const BarDivision& barDivision) {
+      [&](const BarDivision& barDivision)
+      {
          const auto numBeats = barDivision.numBars * barDivision.beatsPerBar;
          const auto timeSignature = GetTimeSignature(barDivision, numTatums);
          const auto bpm = 1. * numBeats / audioFileDuration * 60;
@@ -355,7 +367,9 @@ MusicalMeter GetMostLikelyMeterFromQuantizationExperiment(
 {
    std::vector<BarDivision> fourFourDivs;
    for_each_in_range(
-      IotaRange<size_t>(0, possibleBarDivisions.size()), [&](size_t i) {
+      IotaRange<size_t>(0, possibleBarDivisions.size()),
+      [&](size_t i)
+      {
          if (
             GetTimeSignature(possibleBarDivisions[i], numTatums) ==
             TimeSignature::FourFour)
@@ -389,10 +403,9 @@ bool IsSingleEvent(
    const auto peakAvg =
       std::accumulate(peakValues.begin(), peakValues.end(), 0.) /
       peakIndices.size();
-   const auto numPeaksAboveAvg =
-      std::count_if(peakValues.begin(), peakValues.end(), [&](float v) {
-         return v > peakAvg;
-      });
+   const auto numPeaksAboveAvg = std::count_if(
+      peakValues.begin(), peakValues.end(),
+      [&](float v) { return v > peakAvg; });
    return numPeaksAboveAvg <= 1;
 }
 } // namespace
@@ -433,7 +446,8 @@ std::optional<MusicalMeter> GetMeterUsingTatumQuantizationFit(
       // The file is probably too short to be a loop.
       return {};
 
-   const auto possibleNumTatums = [&]() {
+   const auto possibleNumTatums = [&]()
+   {
       std::vector<int> possibleNumTatums(possibleDivs.size());
       std::transform(
          possibleDivs.begin(), possibleDivs.end(), possibleNumTatums.begin(),
