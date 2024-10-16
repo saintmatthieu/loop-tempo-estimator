@@ -19,7 +19,6 @@ Matthieu Hodgkinson
  */
 
 #include "GetMeterUsingTatumQuantizationFit.h"
-#include "IteratorX.h"
 #include "LoopTempoEstimator/LoopTempoEstimator.h"
 #include "LoopTempoEstimator/LteTypes.h"
 #include "LteDsp.h"
@@ -158,13 +157,11 @@ int GetOnsetLag(const std::vector<float>& odf, int numTatums)
    while (true)
    {
       auto val = 0.f;
-      for_each_in_range(
-         IotaRange { 0, numTatums },
-         [&](int i)
-         {
-            const int j = std::round(i * pulseTrainPeriod) + lag;
-            val += (j < odf.size() ? odf[j] : 0.f);
-         });
+      for (auto i = 0; i < numTatums; ++i)
+      {
+         const int j = std::round(i * pulseTrainPeriod) + lag;
+         val += (j < odf.size() ? odf[j] : 0.f);
+      }
       if (val < max)
          break;
       max = val;
@@ -391,15 +388,11 @@ MusicalMeter GetMostLikelyMeterFromQuantizationExperiment(
    QuantizationFitDebugOutput* debugOutput)
 {
    std::vector<BarDivision> fourFourDivs;
-   for_each_in_range(
-      IotaRange<size_t>(0, possibleBarDivisions.size()),
-      [&](size_t i)
-      {
-         if (
-            GetTimeSignature(possibleBarDivisions[i], numTatums) ==
-            TimeSignature::FourFour)
-            fourFourDivs.push_back(possibleBarDivisions[i]);
-      });
+   for (auto i = 0; i < possibleBarDivisions.size(); ++i)
+      if (
+         GetTimeSignature(possibleBarDivisions[i], numTatums) ==
+         TimeSignature::FourFour)
+         fourFourDivs.push_back(possibleBarDivisions[i]);
 
    // If there is one or more 4/4 possibilities, don't take any risk and only
    // consider these because much more frequent, especially in the world of
