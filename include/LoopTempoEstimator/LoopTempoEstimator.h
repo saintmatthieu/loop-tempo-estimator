@@ -16,6 +16,9 @@
  Modifications might have been made to remove dependencies on Audacity code and
  when renaming files. The algorithm remains the same.
 
+EDIT: Commit "Simplify and improve algorithm by considering only 4/4" improves
+quality of classifier and possibly time performance, too.
+
  */
 #pragma once
 
@@ -47,7 +50,7 @@ struct LoopClassifierSettings
 /*!
  * Tolerance-dependent thresholds, used internally by
  * `GetMusicalMeterFromSignal` to decide whether to return a null or valid
- * `MusicalMeter`. The value compared against these are scores which get higher
+ * BPM value. The value compared against these are scores which get higher
  * as the signal is more likely to contain music content. They are obtained by
  * running the `TatumQuantizationFitBenchmarking` test case. More information
  * there.
@@ -58,7 +61,7 @@ static const std::unordered_map<FalsePositiveTolerance, LoopClassifierSettings>
       { FalsePositiveTolerance::Lenient, { .1, 0.7129778875046098 } },
    };
 
-std::optional<MusicalMeter> GetMusicalMeterFromSignal(
+std::optional<double> GetBpmFromSignal(
    const LteAudioReader& source, FalsePositiveTolerance tolerance,
    const std::function<void(double)>& progressCallback,
    QuantizationFitDebugOutput* debugOutput = nullptr);

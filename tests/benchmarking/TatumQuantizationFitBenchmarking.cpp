@@ -6,16 +6,11 @@
 #include <catch2/catch_test_macros.hpp>
 #include <chrono>
 #include <cmath>
+#include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
-
-#define USE_FILESYSTEM (__has_include(<filesystem>) && _WIN32)
-
-#if USE_FILESYSTEM
-#include <filesystem>
-#endif
 
 namespace LTE
 {
@@ -35,34 +30,12 @@ std::vector<std::string> GetBenchmarkingAudioFiles()
       throw std::runtime_error("Failed to download benchmarking dataset!");
 
    std::vector<std::string> files;
-#if USE_FILESYSTEM
    namespace fs = std::filesystem;
    for (const auto& entry : fs::directory_iterator(datasetRoot))
       for (const auto& subEntry : fs::recursive_directory_iterator(entry))
          if (
             subEntry.is_regular_file() && subEntry.path().extension() == ".mp3")
             files.push_back(subEntry.path().string());
-#else
-   // Recursively find all files in the dataset directory with .mp3 extension,
-   // not using std::filesystem:
-   // https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c
-   const auto command =
-      "find -H " + datasetRoot + " -type f -name '*.mp3' -print";
-   FILE* pipe = popen(command.c_str(), "r");
-   if (!pipe)
-      throw std::runtime_error("popen() failed!");
-   constexpr auto bufferSize = 512;
-   char buffer[bufferSize];
-   while (fgets(buffer, bufferSize, pipe) != nullptr)
-   {
-      std::string file(buffer);
-      file.erase(file.find_last_not_of("\n") + 1);
-      files.push_back(file);
-   }
-   const auto returnCode = pclose(pipe);
-   if (returnCode != 0)
-      throw std::runtime_error("pclose() failed!");
-#endif
    std::sort(files.begin(), files.end());
    return files;
 }
@@ -152,26 +125,25 @@ TEST_CASE("GetChecksum")
    REQUIRE(checksum == 0.);
 }
 
-auto ToString(const std::optional<TimeSignature>& ts)
+namespace
 {
-   if (ts.has_value())
-      switch (*ts)
-      {
-      case TimeSignature::TwoTwo:
-         return std::string("2/2");
-      case TimeSignature::FourFour:
+constexpr auto precision = std::numeric_limits<double>::digits10 + 1;
 
-         return std::string("4/4");
-      case TimeSignature::ThreeFour:
-         return std::string("3/4");
-      case TimeSignature::SixEight:
-         return std::string("6/8");
-      default:
-         return std::string("none");
-      }
-   else
-      return std::string("none");
+template <typename T>
+bool ValueIsUnchanged(
+   const std::filesystem::path& filePath, T previousValue, T newValue,
+   T tolerance = 0)
+{
+   REQUIRE(std::filesystem::exists(filePath));
+   const auto hasChanged = std::abs(newValue - previousValue) > tolerance;
+   if (hasChanged)
+   {
+      std::ofstream file { filePath };
+      file << std::setprecision(precision) << newValue;
+   }
+   return !hasChanged;
 }
+} // namespace
 
 TEST_CASE("TatumQuantizationFitBenchmarking")
 {
@@ -228,7 +200,7 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
          QuantizationFitDebugOutput debugOutput;
          std::function<void(double)> progressCb;
          const auto now = std::chrono::steady_clock::now();
-         GetMusicalMeterFromSignal(audio, tolerance, progressCb, &debugOutput);
+         GetBpmFromSignal(audio, tolerance, progressCb, &debugOutput);
 
          computationTime +=
             std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -245,7 +217,6 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
                         << 60. * debugOutput.tatumQuantization.numDivisions /
                               debugOutput.audioFileDuration
                         << "," << debugOutput.bpm << ","
-                        << ToString(debugOutput.timeSignature) << ","
                         << (error.has_value() ? error->factor : 0.) << ","
                         << (error.has_value() ? error->remainder : 0.) << ","
                         << debugOutput.tatumQuantization.lag << ","
@@ -284,38 +255,39 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
          { return sum + octaveError * octaveError; }) /
       octaveErrors.size());
 
-   constexpr auto previousAuc = 0.9312244897959182;
-   const auto classifierQualityHasChanged =
-      std::abs(rocInfo.areaUnderCurve - previousAuc) >= 0.01;
+   const auto outputDir { std::filesystem::path(__FILE__).parent_path() /
+                          "TatumQuantizationFitBenchmarkingOutput" };
 
-   // Only update the summary if the figures have significantly changed.
-   if (classifierQualityHasChanged)
+   // Verify that the input has not changed between this run and the previous
+   // one, or peformance of the algorithm can't be compared either.
+   constexpr auto previousChecksum = -177205.40625f;
+   REQUIRE(
+      ValueIsUnchanged(outputDir / "checksum.txt", previousChecksum, checksum));
+
+   constexpr auto previousAuc = 0.943271221532091;
+   constexpr auto comparisonTolerance = 0.01;
+   const auto classifierQualityIsUnchanged = ValueIsUnchanged(
+      outputDir / "AUC.txt", 0.943271221532091, rocInfo.areaUnderCurve,
+      comparisonTolerance);
+
+   // If the algorithm has changed, we need to update the thresholds, too, for
+   // the algorithm to meet its false-positive requirement.
+   if (!classifierQualityIsUnchanged)
    {
-      std::ofstream summaryFile {
-         std::string(CMAKE_SOURCE_DIR) +
-         "tests/benchmarking/TatumQuantizationFitBenchmarkingOutput/summary.txt"
-      };
-      summaryFile << std::setprecision(
-                        std::numeric_limits<double>::digits10 + 1)
-                  << "AUC: " << rocInfo.areaUnderCurve << "\n"
-                  << "Strict Threshold (Minutes-and-Seconds): "
-                  << strictThreshold << "\n"
-                  << "Lenient Threshold (Beats-and-Measures): "
-                  << rocInfo.threshold << "\n"
-                  << "Octave error RMS: " << octaveErrorStd << "\n"
-                  << "Audio file checksum: " << checksum << "\n";
+      std::ofstream summaryFile { outputDir / "summary.txt" };
+      summaryFile << std::setprecision(precision)
+                  << "Strict Threshold: " << strictThreshold << "\n"
+                  << "Lenient Threshold: " << rocInfo.threshold;
       // Write sampleValueCsv to a file.
-      std::ofstream sampleValueCsvFile {
-         std::string(CMAKE_SOURCE_DIR) +
-         "tests/benchmarking/TatumQuantizationFitBenchmarkingOutput/sampleValues.csv"
-      };
+      std::ofstream sampleValueCsvFile { outputDir / "sampleValues.csv" };
       sampleValueCsvFile << sampleValueCsv.rdbuf();
    }
 
-   // If this changed, then some non-refactoring code change happened. If
-   // `rocInfo.areaUnderCurve > previousAuc`, then there's probably no argument
-   // about the change. On the contrary, though, the change is either an
-   // inadvertent bug, and if it is deliberate, should be well justified.
-   REQUIRE(!classifierQualityHasChanged);
+   // If this changed, then some non-refactoring code change happened. It may be
+   // for the better or for the worst, depending on how the AUC changed. If it
+   // decreased, then we probably have a regression. If it increased, then we
+   // still have to mark this as the new reference, to make sure we don't loose
+   // the improvement. "Vorwärts immer", like my German colleagues used to say.
+   REQUIRE(classifierQualityIsUnchanged);
 }
 } // namespace LTE

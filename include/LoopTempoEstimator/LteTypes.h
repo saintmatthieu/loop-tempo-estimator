@@ -16,6 +16,9 @@
  Modifications might have been made to remove dependencies on Audacity code and
  when renaming files. The algorithm remains the same.
 
+EDIT: Commit "Simplify and improve algorithm by considering only 4/4" improves
+quality of classifier and possibly time performance, too.
+
  */
 
 #pragma once
@@ -34,35 +37,6 @@ enum class FalsePositiveTolerance
 {
    Strict,
    Lenient,
-};
-
-enum class TimeSignature
-{
-   TwoTwo,
-   FourFour,
-   ThreeFour,
-   SixEight,
-   _count
-};
-
-inline int GetNumerator(TimeSignature ts)
-{
-   constexpr std::array<int, static_cast<int>(TimeSignature::_count)>
-      numerators = { 2, 4, 3, 6 };
-   return numerators[static_cast<int>(ts)];
-}
-
-inline int GetDenominator(TimeSignature ts)
-{
-   constexpr std::array<int, static_cast<int>(TimeSignature::_count)>
-      denominators = { 2, 4, 4, 8 };
-   return denominators[static_cast<int>(ts)];
-}
-
-struct MusicalMeter
-{
-   const double bpm;
-   const std::optional<TimeSignature> timeSignature;
 };
 
 struct OnsetQuantization
@@ -90,7 +64,6 @@ struct QuantizationFitDebugOutput
 {
    OnsetQuantization tatumQuantization;
    double bpm = 0;
-   std::optional<TimeSignature> timeSignature;
    double score = 0.;
    std::vector<std::vector<float>> postProcessedStft;
    std::vector<float> rawOdf;

@@ -61,6 +61,9 @@ was faster than all others""
  Modifications might have been made to remove dependencies on Audacity code and
  when renaming files. The algorithm remains the same.
 
+EDIT: Commit "Simplify and improve algorithm by considering only 4/4" improves
+quality of classifier and possibly time performance, too.
+
  */
 
 #pragma once
@@ -75,10 +78,9 @@ namespace LTE
 class LteAudioReader;
 
 /*!
- * @brief Get the BPM of the given audio file, using the Tatum Quantization Fit
- * method.
+ * @brief Get the BPM of the given audio file.
  */
-std::optional<MusicalMeter> GetMeterUsingTatumQuantizationFit(
+std::optional<double> GetBpm(
    const LteAudioReader& audio, FalsePositiveTolerance tolerance,
    const std::function<void(double)>& progressCallback,
    QuantizationFitDebugOutput* debugOutput);

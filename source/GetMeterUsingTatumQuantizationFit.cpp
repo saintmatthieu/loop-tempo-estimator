@@ -16,6 +16,9 @@ Matthieu Hodgkinson
  Modifications might have been made to remove dependencies on Audacity code and
  when renaming files. The algorithm remains the same.
 
+EDIT: Commit "Simplify and improve algorithm by considering only 4/4" improves
+quality of classifier and possibly time performance, too.
+
  */
 
 #include "GetMeterUsingTatumQuantizationFit.h"
@@ -37,17 +40,20 @@ namespace LTE
 {
 namespace
 {
-// Number of bars and beats per bar dividing the input audio recording.
-struct BarDivision
-{
-   const int numBars;
-   const int beatsPerBar;
-};
+// We only consider 4/4. An honest attempt was made at considering 3/4 and 6/8,
+// but databases with time signature metadata are inexistent, and in the context
+// of loops, 4/4 is overwhelmingly more common. It probably is wiser not to
+// augment the risk of false positives testing non 4/4 hypotheses. It also
+// simplifies the algorithm.
+constexpr auto beatsPerBar = 4;
+
+constexpr auto minBeatsPerMinute = 50.;
+constexpr auto maxBeatsPerMinute = 200.;
 
 // A map of possible number of tatums to a list of number of bars and beats per
 // bar which explain it.
 using PossibleDivHierarchies =
-   std::unordered_map<int /*num tatums*/, std::vector<BarDivision>>;
+   std::unordered_map<int /*num tatums*/, std::vector<int /*num bars*/>>;
 
 std::vector<int> GetPossibleNumberOfBars(double audioFileDuration)
 {
@@ -61,36 +67,19 @@ std::vector<int> GetPossibleNumberOfBars(double audioFileDuration)
    return possibleNumBars;
 }
 
-std::vector<int> GetPossibleBeatsPerBar(double audioFileDuration, int numBars)
+std::vector<int> GetPossibleTatumsPerBar(double audioFileDuration, int numBars)
 {
-   const auto barDuration = audioFileDuration / numBars;
-   constexpr auto minBeatsPerMinute = 50.;
-   constexpr auto maxBeatsPerMinute = 200.;
-   constexpr auto minBeatsPerBar = 2;
-   constexpr auto maxBeatsPerBar = 4;
-   const auto minBpb = std::clamp<int>(
-      std::floor(minBeatsPerMinute * barDuration / 60), minBeatsPerBar,
-      maxBeatsPerBar);
-   const auto maxBpb = std::clamp<int>(
-      std::ceil(maxBeatsPerMinute * barDuration / 60), minBeatsPerBar,
-      maxBeatsPerBar);
-   std::vector<int> possibleBeatsPerBar(maxBpb - minBpb + 1);
-   // All beats-per-bar values in the range [minBpb, maxBpb] are valid, no need
-   // for further checks.
-   std::iota(possibleBeatsPerBar.begin(), possibleBeatsPerBar.end(), minBpb);
-   return possibleBeatsPerBar;
-}
-
-std::vector<int>
-GetPossibleTatumsPerBar(double audioFileDuration, int numBars, int beatsPerBar)
-{
-   constexpr std::array<std::pair<int, int>, 9>
+   constexpr std::array<std::pair<int, int>, 6>
       contextFreePossibleTatumsPerBeat {
-         std::pair<int, int> { 1, 1 }, //
-         std::pair<int, int> { 2, 1 }, std::pair<int, int> { 3, 1 },
-         std::pair<int, int> { 4, 1 }, std::pair<int, int> { 6, 1 }, //
-         std::pair<int, int> { 1, 2 }, std::pair<int, int> { 1, 3 },
-         std::pair<int, int> { 1, 4 }, std::pair<int, int> { 1, 6 } //
+         // Common beat subdivisions:
+         std::pair<int, int> { 1, 1 }, std::pair<int, int> { 2, 1 },
+         std::pair<int, int> { 4, 1 },
+         // Shuffle rhythm, like in Michael Jackson's "The Way You Make Me
+         // Feel":
+         std::pair<int, int> { 3, 1 },
+         // Possible is that tatum rate is less than beat rate, e.g. if only
+         // every 2 or 4 beats get played in some piano chords:
+         std::pair<int, int> { 1, 2 }, std::pair<int, int> { 1, 4 }
       };
    std::vector<int> possibleTatumsPerBar;
    std::for_each(
@@ -99,16 +88,9 @@ GetPossibleTatumsPerBar(double audioFileDuration, int numBars, int beatsPerBar)
       [&](const std::pair<int, int>& tatumsPerBeat)
       {
          const auto [tatumsPerBeatNum, tatumsPerBeatDen] = tatumsPerBeat;
-
-         // Number of tatums per bar must be round. For example, one tatum per
-         // three beats is by itself possible, but not in there is e.g. two
-         // beats per bar, or that would be 2/3 tatums per bar.
-         if ((beatsPerBar * tatumsPerBeatNum) % tatumsPerBeatDen != 0)
-            return;
-
          const auto tatumsPerBar =
             beatsPerBar * tatumsPerBeatNum / tatumsPerBeatDen;
-         const int numTatums = tatumsPerBar * numBars;
+         const auto numTatums = tatumsPerBar * numBars;
          const auto tatumRate = 60. * numTatums / audioFileDuration;
 
          constexpr auto minTatumsPerMinute = 100;
@@ -128,15 +110,10 @@ PossibleDivHierarchies GetPossibleDivHierarchies(double audioFileDuration)
    PossibleDivHierarchies possibleDivHierarchies;
    for (const auto numBars : GetPossibleNumberOfBars(audioFileDuration))
    {
-      for (const auto beatsPerBar :
-           GetPossibleBeatsPerBar(audioFileDuration, numBars))
+      for (const auto tatumsPerBar :
+           GetPossibleTatumsPerBar(audioFileDuration, numBars))
       {
-         for (const auto tatumsPerBar :
-              GetPossibleTatumsPerBar(audioFileDuration, numBars, beatsPerBar))
-         {
-            possibleDivHierarchies[numBars * tatumsPerBar].push_back(
-               BarDivision { numBars, beatsPerBar });
-         }
+         possibleDivHierarchies[numBars * tatumsPerBar].push_back(numBars);
       }
    }
    return possibleDivHierarchies;
@@ -243,67 +220,6 @@ OnsetQuantization RunQuantizationExperiment(
    return { error, lag, mostLikelyNumTatums };
 }
 
-std::optional<TimeSignature>
-GetTimeSignature(const BarDivision& barDivision, int numTatums)
-{
-   const auto numBeats = barDivision.numBars * barDivision.beatsPerBar;
-   const auto tatumsPerBeat = 1. * numTatums / numBeats;
-   switch (barDivision.beatsPerBar)
-   {
-   case 2:
-      return (tatumsPerBeat == 3) ? TimeSignature::SixEight :
-                                    TimeSignature::TwoTwo;
-   case 3:
-      return TimeSignature::ThreeFour;
-   case 4:
-      return TimeSignature::FourFour;
-   default:
-      // Since the bar-division hypotheses are based on these very time
-      // signatures, this should never happen. But the code would need to be
-      // structured more clearly to really have confidence and risk crashing.
-      // For now we accept that the time-signature cannot be recognized in
-      // release builds.
-      assert(false);
-      return std::nullopt;
-   }
-}
-
-double
-GetTimeSignatureLikelihood(const std::optional<TimeSignature>& ts, double bpm)
-{
-   // TODO these were taken from a rather old PoC - review.
-   if (!ts.has_value())
-      return 0.;
-
-   static const std::unordered_map<TimeSignature, double> expectedBpms {
-      { TimeSignature::TwoTwo, 115. },
-      { TimeSignature::FourFour, 115. },
-      { TimeSignature::ThreeFour, 140. },
-      { TimeSignature::SixEight, 64. },
-   };
-
-   static const std::unordered_map<TimeSignature, double> bpmStdDevs {
-      { TimeSignature::TwoTwo, 25. },
-      { TimeSignature::FourFour, 25. },
-      { TimeSignature::ThreeFour, 25. },
-      { TimeSignature::SixEight, 15. },
-   };
-
-   // Add a slight bias towards 4/4, which is the most common time signature.
-   static const std::unordered_map<TimeSignature, double> tsPrior {
-      { TimeSignature::TwoTwo, .1 },
-      { TimeSignature::FourFour, .45 },
-      { TimeSignature::ThreeFour, .2 },
-      { TimeSignature::SixEight, .25 },
-   };
-
-   const auto mu = expectedBpms.at(*ts);
-   const auto sigma = bpmStdDevs.at(*ts);
-   const auto tmp = (bpm - mu) / sigma;
-   const auto likelihood = std::exp(-.5 * tmp * tmp);
-   return likelihood * tsPrior.at(*ts);
-}
-
 // To evaluate how likely a certain BPM is, we evaluate how much the ODF repeats
 // itself at that beat rate. We do this by looking at the auto-correlation of
 // the ODF, "comb-filtering" it at integer multiples of the beat period.
@@ -345,8 +261,8 @@ double GetBeatSelfSimilarityScore(
 }
 
 size_t GetBestBarDivisionIndex(
-   const std::vector<BarDivision>& possibleBarDivisions,
-   double audioFileDuration, int numTatums, const std::vector<float>& odf,
+   const std::vector<int>& possibleNumBars, double audioFileDuration,
+   int numTatums, const std::vector<float>& odf,
    QuantizationFitDebugOutput* debugOutput)
 
 {
@@ -357,59 +273,39 @@ size_t GetBestBarDivisionIndex(
    assert(IsPowOfTwo(odfAutocorrFullSize));
    const auto odfAutoCorrSampleRate = odfAutocorrFullSize / audioFileDuration;
 
-   std::vector<double> scores(possibleBarDivisions.size());
+   std::vector<double> scores(possibleNumBars.size());
    // These (still) only depend on the beat rate. We look at
    // self-similarities at beat intervals, so to say, without examining the
    // contents of the beats. Since several bar divisions may yield the same
    // number of beats, we may be able to re-use some calculations.
    std::unordered_map<int /*numBeats*/, double> autocorrScoreCache;
    std::transform(
-      possibleBarDivisions.begin(), possibleBarDivisions.end(), scores.begin(),
-      [&](const BarDivision& barDivision)
+      possibleNumBars.begin(), possibleNumBars.end(), scores.begin(),
+      [&](int numBars)
       {
-         const auto numBeats = barDivision.numBars * barDivision.beatsPerBar;
-         const auto timeSignature = GetTimeSignature(barDivision, numTatums);
+         const auto numBeats = numBars * beatsPerBar;
          const auto bpm = 1. * numBeats / audioFileDuration * 60;
-         const auto likelihood = GetTimeSignatureLikelihood(timeSignature, bpm);
          if (!autocorrScoreCache.count(numBeats))
             autocorrScoreCache[numBeats] = GetBeatSelfSimilarityScore(
                odfAutoCorrSampleRate, bpm, odfAutoCorr, odfAutocorrFullSize,
                debugOutput);
          const auto selfSimilarityScore = autocorrScoreCache.at(numBeats);
-         return likelihood * selfSimilarityScore;
+         return selfSimilarityScore;
       });
 
    return std::max_element(scores.begin(), scores.end()) - scores.begin();
 }
 
-MusicalMeter GetMostLikelyMeterFromQuantizationExperiment(
+double GetMostLikelyBpmFromQuantizationExperiment(
    const std::vector<float>& odf, int numTatums,
-   std::vector<BarDivision> possibleBarDivisions, double audioFileDuration,
+   const std::vector<int>& possibleNumBars, double audioFileDuration,
    QuantizationFitDebugOutput* debugOutput)
 {
-   std::vector<BarDivision> fourFourDivs;
-   for (auto i = 0; i < possibleBarDivisions.size(); ++i)
-      if (
-         GetTimeSignature(possibleBarDivisions[i], numTatums) ==
-         TimeSignature::FourFour)
-         fourFourDivs.push_back(possibleBarDivisions[i]);
-
-   // If there is one or more 4/4 possibilities, don't take any risk and only
-   // consider these because much more frequent, especially in the world of
-   // loops. When we get more clever about time-signature detection, we may be
-   // more assertive.
-   if (!fourFourDivs.empty())
-      std::swap(possibleBarDivisions, fourFourDivs);
-
    const auto winnerIndex = GetBestBarDivisionIndex(
-      possibleBarDivisions, audioFileDuration, numTatums, odf, debugOutput);
-
-   const auto& barDivision = possibleBarDivisions[winnerIndex];
-   const auto numBeats = barDivision.numBars * barDivision.beatsPerBar;
-   const auto signature = GetTimeSignature(barDivision, numTatums);
-   const auto bpm = 60. * numBeats / audioFileDuration;
-
-   return { bpm, signature };
+      possibleNumBars, audioFileDuration, numTatums, odf, debugOutput);
+   const auto& numBars = possibleNumBars[winnerIndex];
+   const auto numBeats = numBars * beatsPerBar;
+   return 60. * numBeats / audioFileDuration;
 }
 
 bool IsSingleEvent(
@@ -428,7 +324,7 @@ bool IsSingleEvent(
 }
 } // namespace
 
-std::optional<MusicalMeter> GetMeterUsingTatumQuantizationFit(
+std::optional<double> GetBpm(
    const LteAudioReader& audio, FalsePositiveTolerance tolerance,
    const std::function<void(double)>& progressCallback,
    QuantizationFitDebugOutput* debugOutput)
@@ -476,7 +372,7 @@ std::optional<MusicalMeter> GetMeterUsingTatumQuantizationFit(
    const auto experiment = RunQuantizationExperiment(
       odf, peakIndices, peakValues, possibleNumTatums);
 
-   const auto winnerMeter = GetMostLikelyMeterFromQuantizationExperiment(
+   const auto bpm = GetMostLikelyBpmFromQuantizationExperiment(
       odf, experiment.numDivisions, possibleDivs.at(experiment.numDivisions),
       audioFileDuration, debugOutput);
 
@@ -485,16 +381,15 @@ std::optional<MusicalMeter> GetMeterUsingTatumQuantizationFit(
    if (debugOutput)
    {
       debugOutput->tatumQuantization = experiment;
-      debugOutput->bpm = winnerMeter.bpm;
-      debugOutput->timeSignature = winnerMeter.timeSignature;
+      debugOutput->bpm = bpm;
       debugOutput->odf = odf;
       debugOutput->odfSr = odfSr;
       debugOutput->audioFileDuration = audioFileDuration;
       debugOutput->score = score;
    }
 
-   return score < loopClassifierSettings.at(tolerance).threshold ?
-             std::optional<MusicalMeter> {} :
-             winnerMeter;
+   return score >= loopClassifierSettings.at(tolerance).threshold ?
+             std::make_optional(bpm) :
+             std::nullopt;
 }
 } // namespace LTE

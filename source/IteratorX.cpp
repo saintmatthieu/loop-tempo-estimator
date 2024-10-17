@@ -15,5 +15,8 @@
  Modifications might have been made to remove dependencies on Audacity code and
  when renaming files. The algorithm remains the same.
 
+EDIT: Commit "Simplify and improve algorithm by considering only 4/4" improves
+quality of classifier and possibly time performance, too.
+
  */
 #include "IteratorX.h"

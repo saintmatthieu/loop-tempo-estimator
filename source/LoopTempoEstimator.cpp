@@ -16,6 +16,9 @@
  Modifications might have been made to remove dependencies on Audacity code and
  when renaming files. The algorithm remains the same.
 
+EDIT: Commit "Simplify and improve algorithm by considering only 4/4" improves
+quality of classifier and possibly time performance, too.
+
  */
 #include "LoopTempoEstimator/LoopTempoEstimator.h"
 #include "DecimatingLteAudioReader.h"
@@ -33,26 +36,7 @@
 
 namespace LTE
 {
-namespace
-{
-// Normal distribution parameters obtained by fitting a gaussian in the GTZAN
-// dataset tempo values.
-static constexpr auto bpmExpectedValue = 126.3333;
-
-constexpr auto numTimeSignatures = static_cast<int>(TimeSignature::_count);
-
-auto RemovePathPrefix(const std::string& filename)
-{
-   return filename.substr(filename.find_last_of("/\\") + 1);
-}
-
-// When we get time-signature estimate, we may need a map for that, since 6/8
-// has 1.5 quarter notes per beat.
-constexpr std::array<double, numTimeSignatures> quarternotesPerBeat { 2., 1.,
-                                                                      1., 1.5 };
-} // namespace
-
-std::optional<MusicalMeter> GetMusicalMeterFromSignal(
+std::optional<double> GetBpmFromSignal(
    const LteAudioReader& audio, FalsePositiveTolerance tolerance,
    const std::function<void(double)>& progressCallback,
    QuantizationFitDebugOutput* debugOutput)
@@ -65,7 +49,6 @@ std::optional<MusicalMeter> GetMusicalMeterFromSignal(
       // it would be costly.
       return {};
    DecimatingLteAudioReader decimatedAudio { audio };
-   return GetMeterUsingTatumQuantizationFit(
-      decimatedAudio, tolerance, progressCallback, debugOutput);
+   return GetBpm(decimatedAudio, tolerance, progressCallback, debugOutput);
 }
 } // namespace LTE
