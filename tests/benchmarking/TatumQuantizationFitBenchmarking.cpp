@@ -171,7 +171,7 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
    // stricter classifier will yield the same results, only with fewer false
    // positives.
 
-   constexpr auto tolerance = FalsePositiveTolerance::Lenient;
+   constexpr auto lenientTolerance = FalsePositiveTolerance::Lenient;
    constexpr int progressBarWidth = 50;
    const auto audioFiles = GetBenchmarkingAudioFiles();
    std::stringstream sampleValueCsv;
@@ -200,7 +200,7 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
          QuantizationFitDebugOutput debugOutput;
          std::function<void(double)> progressCb;
          const auto now = std::chrono::steady_clock::now();
-         GetBpmFromSignal(audio, tolerance, progressCb, &debugOutput);
+         GetBpmFromSignal(audio, lenientTolerance, progressCb, &debugOutput);
 
          computationTime +=
             std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -231,7 +231,8 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
 
    // AUC of ROC curve. Tells how good our loop/not-loop clasifier is.
    const auto rocInfo = GetRocInfo(
-      samples, loopClassifierSettings.at(tolerance).allowedFalsePositiveRate);
+      samples,
+      loopClassifierSettings.at(lenientTolerance).allowedFalsePositiveRate);
 
    const auto strictThreshold =
       GetRocInfo(
@@ -264,10 +265,10 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
    REQUIRE(
       ValueIsUnchanged(outputDir / "checksum.txt", previousChecksum, checksum));
 
-   constexpr auto previousAuc = 0.943271221532091;
+   constexpr auto previousAuc = 0.9258799171842648;
    constexpr auto comparisonTolerance = 0.01;
    const auto classifierQualityIsUnchanged = ValueIsUnchanged(
-      outputDir / "AUC.txt", 0.943271221532091, rocInfo.areaUnderCurve,
+      outputDir / "AUC.txt", previousAuc, rocInfo.areaUnderCurve,
       comparisonTolerance);
 
    // If the algorithm has changed, we need to update the thresholds, too, for

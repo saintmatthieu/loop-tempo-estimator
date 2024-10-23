@@ -57,8 +57,8 @@ struct LoopClassifierSettings
  */
 static const std::unordered_map<FalsePositiveTolerance, LoopClassifierSettings>
    loopClassifierSettings {
-      { FalsePositiveTolerance::Strict, { .04, 0.8679721717368254 } },
-      { FalsePositiveTolerance::Lenient, { .1, 0.7129778875046098 } },
+      { FalsePositiveTolerance::Strict, { .04, 0.8185122569653946 } },
+      { FalsePositiveTolerance::Lenient, { .1, 0.8004500873488557 } },
    };
 
 std::optional<double> GetBpmFromSignal(

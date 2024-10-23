@@ -49,6 +49,7 @@ constexpr auto beatsPerBar = 4;
 
 constexpr auto minBeatsPerMinute = 50.;
 constexpr auto maxBeatsPerMinute = 200.;
+constexpr auto minBarsPerMinute = minBeatsPerMinute / beatsPerBar;
 
 // A map of possible number of tatums to a list of number of bars and beats per
 // bar which explain it.
@@ -57,7 +58,6 @@ using PossibleDivHierarchies =
 
 std::vector<int> GetPossibleNumberOfBars(double audioFileDuration)
 {
-   constexpr auto minBarsPerMinute = 15.; // 4s per bar
    constexpr auto maxBarsPerMinute = 60.;
    const int minNumBars =
       std::max(std::round(audioFileDuration * minBarsPerMinute / 60), 1.);
@@ -86,7 +86,8 @@ std::vector<int> GetPossibleTatumsPerBar(double audioFileDuration, int numBars)
       {
          const auto numTatums = tatumsPerBar * numBars;
          const auto tatumRate = 60. * numTatums / audioFileDuration;
-         constexpr auto minTatumsPerMinute = 100;
+         // If 1 is the least number of tatums per bar, then these two are equal.
+         constexpr auto minTatumsPerMinute = minBarsPerMinute;
          constexpr auto maxTatumsPerMinute = 700;
          if (minTatumsPerMinute < tatumRate && tatumRate < maxTatumsPerMinute)
             possibleTatumsPerBar.push_back(tatumsPerBar);
