@@ -349,6 +349,9 @@ std::optional<double> GetBpmInternal(
    if (IsSingleEvent(peakIndices, peakValues))
       return {};
 
+   // Just based on audio duration and our prior knowledge of possible beat and
+   // tatum rates, we can get a map of possible tatum counts and, for each of
+   // them, the possible number of bars.
    const auto tatumCountToBarCounts =
       GetTatumCountToBarCounts(audioFileDuration);
    if (tatumCountToBarCounts.empty())
@@ -365,9 +368,14 @@ std::optional<double> GetBpmInternal(
       return tatumCountHypotheses;
    }();
 
+   // Now we look at the ODF and see how well it matches the different
+   // tatum-count hypotheses. The best match is returned, together with the
+   // error and the lag.
    const auto experiment = RunQuantizationExperiment(
       odf, peakIndices, peakValues, tatumCountHypotheses);
 
+   // Now that we have a tatum count winner, we still have to decide on the most
+   // likely tatum-per-bar (and hence BPM) hypothesis.
    const auto bpm = GetMostLikelyBpmFromQuantizationExperiment(
       odf, experiment.tatumCount,
       tatumCountToBarCounts.at(experiment.tatumCount), audioFileDuration,
