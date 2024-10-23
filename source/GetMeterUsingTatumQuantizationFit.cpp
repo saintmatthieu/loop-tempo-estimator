@@ -90,7 +90,7 @@ std::vector<int> GetPossibleTatumsPerBar(double audioFileDuration, int numBars)
          // If 1 is the least number of tatums per bar, then these two are
          // equal.
          constexpr auto minTatumsPerMinute = minBarsPerMinute;
-         constexpr auto maxTatumsPerMinute = 700;
+         constexpr auto maxTatumsPerMinute = 720;
          if (minTatumsPerMinute < tatumRate && tatumRate < maxTatumsPerMinute)
             possibleTatumsPerBar.push_back(tatumsPerBar);
       });
