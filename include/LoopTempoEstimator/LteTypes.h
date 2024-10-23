@@ -43,7 +43,7 @@ struct OnsetQuantization
 {
    double error = 0.;
    int lag = 0;
-   int numDivisions = 0;
+   int tatumCount = 0;
 };
 
 class LteAudioReader

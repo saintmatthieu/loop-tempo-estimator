@@ -33,7 +33,7 @@ TEST_CASE("TatumQuantizationFitVisualization")
                        << debugOutput.audioFileDuration << "\n";
    debug_output_module << "score = " << debugOutput.score << "\n";
    debug_output_module << "tatumRate = "
-                       << 60. * debugOutput.tatumQuantization.numDivisions /
+                       << 60. * debugOutput.tatumQuantization.tatumCount /
                              debugOutput.audioFileDuration
                        << "\n";
    debug_output_module << "bpm = " << (result.value_or(0.)) << "\n";

@@ -51,9 +51,7 @@ constexpr auto minBeatsPerMinute = 50.;
 constexpr auto maxBeatsPerMinute = 200.;
 constexpr auto minBarsPerMinute = minBeatsPerMinute / beatsPerBar;
 
-// A map of possible number of tatums to a list of number of bars and beats per
-// bar which explain it.
-using PossibleDivHierarchies =
+using TatumCountToBarCounts =
    std::unordered_map<int /*num tatums*/, std::vector<int /*num bars*/>>;
 
 std::vector<int> GetPossibleNumberOfBars(double audioFileDuration)
@@ -97,13 +95,13 @@ std::vector<int> GetPossibleTatumsPerBar(double audioFileDuration, int numBars)
    return possibleTatumsPerBar;
 }
 
-// Gather a collection of possible numbers of divisions based on the assumption
+// Gather a collection of possible numbers of bar counts based on the assumption
 // that the audio is a loop (hence there must be a round number of bars) and on
 // reasonable bar and tatum durations.
-PossibleDivHierarchies GetPossibleDivHierarchies(double audioFileDuration)
+TatumCountToBarCounts GetTatumCountToBarCounts(double audioFileDuration)
 {
 
-   PossibleDivHierarchies possibleDivHierarchies;
+   TatumCountToBarCounts possibleDivHierarchies;
    for (const auto numBars : GetPossibleNumberOfBars(audioFileDuration))
    {
       for (const auto tatumsPerBar :
@@ -184,13 +182,13 @@ double GetQuantizationDistance(
 OnsetQuantization RunQuantizationExperiment(
    const std::vector<float>& odf, const std::vector<int>& peakIndices,
    const std::vector<float>& peakValues,
-   const std::vector<int>& possibleNumTatums)
+   const std::vector<int>& tatumCountHypotheses)
 {
    const auto quantizations = [&]()
    {
       std::unordered_map<int, OnsetQuantization> quantizations;
       std::transform(
-         possibleNumTatums.begin(), possibleNumTatums.end(),
+         tatumCountHypotheses.begin(), tatumCountHypotheses.end(),
          std::inserter(quantizations, quantizations.end()),
          [&](int numTatums)
          {
@@ -293,12 +291,12 @@ size_t GetBestBarDivisionIndex(
 }
 
 double GetMostLikelyBpmFromQuantizationExperiment(
-   const std::vector<float>& odf, int numTatums,
+   const std::vector<float>& odf, int tatumsCount,
    const std::vector<int>& possibleNumBars, double audioFileDuration,
    QuantizationFitDebugOutput* debugOutput)
 {
    const auto winnerIndex = GetBestBarDivisionIndex(
-      possibleNumBars, audioFileDuration, numTatums, odf, debugOutput);
+      possibleNumBars, audioFileDuration, tatumsCount, odf, debugOutput);
    const auto& numBars = possibleNumBars[winnerIndex];
    const auto numBeats = numBars * beatsPerBar;
    return 60. * numBeats / audioFileDuration;
@@ -351,26 +349,29 @@ std::optional<double> GetBpmInternal(
    if (IsSingleEvent(peakIndices, peakValues))
       return {};
 
-   const auto possibleDivs = GetPossibleDivHierarchies(audioFileDuration);
-   if (possibleDivs.empty())
+   const auto tatumCountToBarCounts =
+      GetTatumCountToBarCounts(audioFileDuration);
+   if (tatumCountToBarCounts.empty())
       // The file is probably too short to be a loop.
       return {};
 
-   const auto possibleNumTatums = [&]()
+   const auto tatumCountHypotheses = [&]()
    {
-      std::vector<int> possibleNumTatums(possibleDivs.size());
+      std::vector<int> tatumCountHypotheses(tatumCountToBarCounts.size());
       std::transform(
-         possibleDivs.begin(), possibleDivs.end(), possibleNumTatums.begin(),
+         tatumCountToBarCounts.begin(), tatumCountToBarCounts.end(),
+         tatumCountHypotheses.begin(),
          [&](const auto& entry) { return entry.first; });
-      return possibleNumTatums;
+      return tatumCountHypotheses;
    }();
 
    const auto experiment = RunQuantizationExperiment(
-      odf, peakIndices, peakValues, possibleNumTatums);
+      odf, peakIndices, peakValues, tatumCountHypotheses);
 
    const auto bpm = GetMostLikelyBpmFromQuantizationExperiment(
-      odf, experiment.numDivisions, possibleDivs.at(experiment.numDivisions),
-      audioFileDuration, debugOutput);
+      odf, experiment.tatumCount,
+      tatumCountToBarCounts.at(experiment.tatumCount), audioFileDuration,
+      debugOutput);
 
    const auto score = 1 - experiment.error;
 

@@ -209,7 +209,7 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
                std::nullopt;
          sampleValueCsv << (truth ? "true" : "false") << ","
                         << debugOutput.score << ","
-                        << 60. * debugOutput.tatumQuantization.numDivisions /
+                        << 60. * debugOutput.tatumQuantization.tatumCount /
                               debugOutput.audioFileDuration
                         << "," << debugOutput.bpm << ","
                         << (error.has_value() ? error->factor : 0.) << ","
