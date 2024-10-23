@@ -20,8 +20,8 @@ TEST_CASE("TatumQuantizationFitVisualization")
       "/tests/audio/[Drumbeats (Melodic)] 120 bpm house loop.mp3";
    const TestLteAudioReader audio { wavFile };
    QuantizationFitDebugOutput debugOutput;
-   const auto result = GetBpmFromSignal(
-      audio, FalsePositiveTolerance::Lenient, nullptr, &debugOutput);
+   const auto result =
+      GetBpm(audio, FalsePositiveTolerance::Lenient, nullptr, &debugOutput);
 
    std::ofstream debug_output_module {
       std::string(CMAKE_SOURCE_DIR) +
@@ -36,8 +36,7 @@ TEST_CASE("TatumQuantizationFitVisualization")
                        << 60. * debugOutput.tatumQuantization.numDivisions /
                              debugOutput.audioFileDuration
                        << "\n";
-   debug_output_module << "bpm = " << (result.value_or(0.))
-                       << "\n";
+   debug_output_module << "bpm = " << (result.value_or(0.)) << "\n";
    debug_output_module << "lag = " << debugOutput.tatumQuantization.lag << "\n";
    debug_output_module << "odf_peak_indices = [";
    std::for_each(

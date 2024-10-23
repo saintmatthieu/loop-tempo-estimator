@@ -37,23 +37,24 @@ class LteAudioReader;
 struct LoopClassifierSettings
 {
    /*!
-    * False positive rate allowed for the classifier.
+    * False positive rate allowed for the classifier, in [0, 1]
     */
    const double allowedFalsePositiveRate;
 
    /*!
-    * Classifier score threshold above which the analyzed audio file can be
+    * Classifier score threshold above which the analyzed audio file can be. The
+    * score ranges in [0, 1], 1 meaning more likely a loop. (Threshold is
+    * consequently also in this range.)
     */
    const double threshold;
 };
 
 /*!
  * Tolerance-dependent thresholds, used internally by
- * `GetMusicalMeterFromSignal` to decide whether to return a null or valid
- * BPM value. The value compared against these are scores which get higher
- * as the signal is more likely to contain music content. They are obtained by
- * running the `TatumQuantizationFitBenchmarking` test case. More information
- * there.
+ * `GetBpm` to decide whether to return a null or valid BPM value. The value
+ * compared against these are scores which get higher as the signal is more
+ * likely to contain music content. They are obtained by running the
+ * `TatumQuantizationFitBenchmarking` test case. More information there.
  */
 static const std::unordered_map<FalsePositiveTolerance, LoopClassifierSettings>
    loopClassifierSettings {
@@ -61,7 +62,7 @@ static const std::unordered_map<FalsePositiveTolerance, LoopClassifierSettings>
       { FalsePositiveTolerance::Lenient, { .1, 0.8004500873488557 } },
    };
 
-std::optional<double> GetBpmFromSignal(
+std::optional<double> GetBpm(
    const LteAudioReader& source, FalsePositiveTolerance tolerance,
    const std::function<void(double)>& progressCallback,
    QuantizationFitDebugOutput* debugOutput = nullptr);

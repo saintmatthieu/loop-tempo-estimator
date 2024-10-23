@@ -80,7 +80,7 @@ class LteAudioReader;
 /*!
  * @brief Get the BPM of the given audio file.
  */
-std::optional<double> GetBpm(
+std::optional<double> GetBpmInternal(
    const LteAudioReader& audio, FalsePositiveTolerance tolerance,
    const std::function<void(double)>& progressCallback,
    QuantizationFitDebugOutput* debugOutput);

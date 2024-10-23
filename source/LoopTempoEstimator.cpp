@@ -36,7 +36,7 @@ quality of classifier and possibly time performance, too.
 
 namespace LTE
 {
-std::optional<double> GetBpmFromSignal(
+std::optional<double> GetBpm(
    const LteAudioReader& audio, FalsePositiveTolerance tolerance,
    const std::function<void(double)>& progressCallback,
    QuantizationFitDebugOutput* debugOutput)
@@ -49,6 +49,7 @@ std::optional<double> GetBpmFromSignal(
       // it would be costly.
       return {};
    DecimatingLteAudioReader decimatedAudio { audio };
-   return GetBpm(decimatedAudio, tolerance, progressCallback, debugOutput);
+   return GetBpmInternal(
+      decimatedAudio, tolerance, progressCallback, debugOutput);
 }
 } // namespace LTE

@@ -70,11 +70,12 @@ std::vector<int> GetPossibleNumberOfBars(double audioFileDuration)
 std::vector<int> GetPossibleTatumsPerBar(double audioFileDuration, int numBars)
 {
    constexpr std::array<int, 7> contextFreePossibleTatumsPerBar {
-      1, // Could be an atmospheric pad with one chord per bar
-      2, // Still something atmospheric,
-      4, // Could still be something atmospheric, or some heavy drum rhythm?
-      8, // Very common, could be anything
-      12, // Shuffle rhythm, like in Michael Jackson's "The Way You Make Me Feel" ?
+      1,  // Could be an atmospheric pad with one chord per bar
+      2,  // Still something atmospheric,
+      4,  // Could still be something atmospheric, or some heavy drum rhythm?
+      8,  // Very common, could be anything
+      12, // Shuffle rhythm, like in Michael Jackson's "The Way You Make Me
+          // Feel" ?
       16, // Very common, could be anything
       24, // Take a 16 rhythm, swing it, and you get 24 tatums per bar.
    };
@@ -86,7 +87,8 @@ std::vector<int> GetPossibleTatumsPerBar(double audioFileDuration, int numBars)
       {
          const auto numTatums = tatumsPerBar * numBars;
          const auto tatumRate = 60. * numTatums / audioFileDuration;
-         // If 1 is the least number of tatums per bar, then these two are equal.
+         // If 1 is the least number of tatums per bar, then these two are
+         // equal.
          constexpr auto minTatumsPerMinute = minBarsPerMinute;
          constexpr auto maxTatumsPerMinute = 700;
          if (minTatumsPerMinute < tatumRate && tatumRate < maxTatumsPerMinute)
@@ -318,7 +320,7 @@ bool IsSingleEvent(
 }
 } // namespace
 
-std::optional<double> GetBpm(
+std::optional<double> GetBpmInternal(
    const LteAudioReader& audio, FalsePositiveTolerance tolerance,
    const std::function<void(double)>& progressCallback,
    QuantizationFitDebugOutput* debugOutput)

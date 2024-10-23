@@ -154,12 +154,7 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
    // directory.
 
    // Running this test will update
-   // `TatumQuantizationFitBenchmarkingOutput/summary.txt`. The summary contains
-   //
-   // 1. the AUC metric for regression-testing,
-   // 2. the strict- and lenient-mode thresholds,
-   // 3. the octave-error RMS (Schreiber, H., et al. (2020)), and
-   // 4. the hash of the audio files used.
+   // `TatumQuantizationFitBenchmarkingOutput/thresholds.txt`.
    //
    // The AUC can only be used for comparison if the hash doesn't change. At the
    // time of writing, the benchmarking can only conveniently be run on the
@@ -200,7 +195,7 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
          QuantizationFitDebugOutput debugOutput;
          std::function<void(double)> progressCb;
          const auto now = std::chrono::steady_clock::now();
-         GetBpmFromSignal(audio, lenientTolerance, progressCb, &debugOutput);
+         GetBpm(audio, lenientTolerance, progressCb, &debugOutput);
 
          computationTime +=
             std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -275,7 +270,7 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
    // the algorithm to meet its false-positive requirement.
    if (!classifierQualityIsUnchanged)
    {
-      std::ofstream summaryFile { outputDir / "summary.txt" };
+      std::ofstream summaryFile { outputDir / "thresholds.txt" };
       summaryFile << std::setprecision(precision)
                   << "Strict Threshold: " << strictThreshold << "\n"
                   << "Lenient Threshold: " << rocInfo.threshold;
