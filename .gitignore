@@ -11,3 +11,4 @@ stft_log.py
 debug_output.py
 
 .cache
+.vscode/settings.json
