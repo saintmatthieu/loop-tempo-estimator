@@ -69,30 +69,23 @@ std::vector<int> GetPossibleNumberOfBars(double audioFileDuration)
 
 std::vector<int> GetPossibleTatumsPerBar(double audioFileDuration, int numBars)
 {
-   constexpr std::array<std::pair<int, int>, 6>
-      contextFreePossibleTatumsPerBeat {
-         // Common beat subdivisions:
-         std::pair<int, int> { 1, 1 }, std::pair<int, int> { 2, 1 },
-         std::pair<int, int> { 4, 1 },
-         // Shuffle rhythm, like in Michael Jackson's "The Way You Make Me
-         // Feel":
-         std::pair<int, int> { 3, 1 },
-         // Possible is that tatum rate is less than beat rate, e.g. if only
-         // every 2 or 4 beats get played in some piano chords:
-         std::pair<int, int> { 1, 2 }, std::pair<int, int> { 1, 4 }
-      };
+   constexpr std::array<int, 7> contextFreePossibleTatumsPerBar {
+      1, // Could be an atmospheric pad with one chord per bar
+      2, // Still something atmospheric,
+      4, // Could still be something atmospheric, or some heavy drum rhythm?
+      8, // Very common, could be anything
+      12, // Shuffle rhythm, like in Michael Jackson's "The Way You Make Me Feel" ?
+      16, // Very common, could be anything
+      24, // Take a 16 rhythm, swing it, and you get 24 tatums per bar.
+   };
    std::vector<int> possibleTatumsPerBar;
    std::for_each(
-      contextFreePossibleTatumsPerBeat.begin(),
-      contextFreePossibleTatumsPerBeat.end(),
-      [&](const std::pair<int, int>& tatumsPerBeat)
+      contextFreePossibleTatumsPerBar.begin(),
+      contextFreePossibleTatumsPerBar.end(),
+      [&](int tatumsPerBar)
       {
-         const auto [tatumsPerBeatNum, tatumsPerBeatDen] = tatumsPerBeat;
-         const auto tatumsPerBar =
-            beatsPerBar * tatumsPerBeatNum / tatumsPerBeatDen;
          const auto numTatums = tatumsPerBar * numBars;
          const auto tatumRate = 60. * numTatums / audioFileDuration;
-
          constexpr auto minTatumsPerMinute = 100;
          constexpr auto maxTatumsPerMinute = 700;
          if (minTatumsPerMinute < tatumRate && tatumRate < maxTatumsPerMinute)
