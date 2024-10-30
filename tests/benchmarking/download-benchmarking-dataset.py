@@ -14,282 +14,352 @@ loops = [
     {
         "name": "[Drumbeats (Melodic)] 120 bpm house loop.mp3",
         "url": "https://cdn.freesound.org/previews/392/392464_1676145-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "[Drumbeats (Melodic)] 120 bpm ravish loop.mp3",
         "url": "https://cdn.freesound.org/previews/242/242577_1676145-hq.mp3",
+        "tatumsPerBar": 8
     },
     {
         "name": "[Drumloop] 110 BPM Drums 001.mp3",
         "url": "https://cdn.freesound.org/previews/546/546247_1676145-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "[Drumloop] 119 bpm edm drum loop 001.mp3",
         "url": "https://cdn.freesound.org/previews/215/215003_1676145-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "[Drumloop] 120 bpm edm drum loop 010.mp3",
         "url": "https://cdn.freesound.org/previews/244/244586_1676145-hq.mp3",
+        "tatumsPerBar": 8
     },
     {
         "name": "[Drumloop] 120 bpm edm drum loop 033.mp3",
         "url": "https://cdn.freesound.org/previews/540/540729_1676145-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "[Drumloop] 120 bpm edm perc loop 017.mp3",
         "url": "https://cdn.freesound.org/previews/254/254865_1676145-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "[Drumloop] 130 bpm edm drum loop 001.mp3",
         "url": "https://cdn.freesound.org/previews/235/235409_1676145-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "[SFX] 128 bpm house lead fx.mp3",
         "url": "https://cdn.freesound.org/previews/213/213867_1676145-hq.mp3",
+        "tatumsPerBar": 4
     },
     {
         "name": "85 BPM Lofi Vibes Melody.mp3",
         "url": "https://cdn.freesound.org/previews/621/621183_12574855-hq.mp3",
+        "tatumsPerBar": 8
     },
     {
         "name": "90 bpm C Key Low Bass.mp3",
         "url": "https://cdn.freesound.org/previews/659/659198_1422197-hq.mp3",
+        "tatumsPerBar": 8
     },
     {
         "name": "99bpm tama break.mp3",
         "url": "https://cdn.freesound.org/previews/177/177006_33044-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "100 BPM Dm Chords.mp3",
         "url": "https://cdn.freesound.org/previews/523/523899_3173681-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "107bpm_808_Trance_beatz.mp3",
         "url": "https://cdn.freesound.org/previews/653/653656_33044-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "116bpm-berserk-beatz.mp3",
         "url": "https://cdn.freesound.org/previews/648/648891_33044-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "20161229 - Piano Chord Sequence C-Dmin-A7-Dmin-Emin-B7-Emin 120 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/371/371894_2518-hq.mp3",
+        "tatumsPerBar": 8
     },
     {
         "name": "Acoustic Loop Lucaz Collab 116BPM.mp3",
         "url": "https://cdn.freesound.org/previews/546/546235_2019171-hq.mp3",
+        "tatumsPerBar": 24
     },
     {
         "name": "Always With You 112 BPM.mp3",
         "url": "https://cdn.freesound.org/previews/566/566927_2019171-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Ambient Lofi Melody Loop 75 BPM.mp3",
         "url": "https://cdn.freesound.org/previews/629/629149_12574855-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "backside of the moon Elec git loop 1 90bpm.mp3",
         "url": "https://cdn.freesound.org/previews/444/444923_9221003-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Bamboo Flute  Quenacho Jethro Tull style Loop 5 D 132 BPM.mp3",
         "url": "https://cdn.freesound.org/previews/460/460201_197130-hq.mp3",
+        "tatumsPerBar": 12
     },
     {
         "name": "BANGIN' TECHNO BEAT LOOP 130 BPM.mp3",
         "url": "https://cdn.freesound.org/previews/504/504993_10538321-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Bass 130 Bpm.mp3",
         "url": "https://cdn.freesound.org/previews/323/323528_4397472-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Bass loops 001 with drums short loop 120 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/566/566160_5674468-hq.mp3",
+        "tatumsPerBar": 8
     },
     {
         "name": "Bass loops 024 short loop 120 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/585/585468_5674468-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Bass loops 025 with drums short loop 120 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/585/585338_5674468-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Bass loops 027 with drums short loop 120 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/586/586020_5674468-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Bass loops 037 short loop 120 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/593/593835_5674468-hq.mp3",
+        "tatumsPerBar": 8
     },
     {
         "name": "Bass loops 068 with drums short loop 120 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/612/612134_5674468-hq.mp3",
+        "tatumsPerBar": 24
     },
     {
         "name": "Beat Loop 4-4 80BPM.mp3",
         "url": "https://cdn.freesound.org/previews/390/390613_2481301-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Cinematic Kalimba Loopable Am 126 BPM.mp3",
         "url": "https://cdn.freesound.org/previews/466/466570_197130-hq.mp3",
+        "tatumsPerBar": 6 # Shit man! A 3/4 in my loops!
     },
     {
         "name": "compelectro_140bpm.mp3",
         "url": "https://cdn.freesound.org/previews/137/137979_2514850-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "CUSTOMIZE YOUR PAN FLUTE LOOP  Cm 134 BPM.mp3",
         "url": "https://cdn.freesound.org/previews/521/521434_197130-hq.mp3",
+        "tatumsPerBar": 8
     },
     {
         "name": "Dark loops 203 piano without melody short loop 60 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/570/570455_5674468-hq.mp3",
+        "tatumsPerBar": 8
     },
     {
         "name": "Dark loops 209 piano with melody efect short loop 60 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/582/582058_5674468-hq.mp3",
+        "tatumsPerBar": 24
     },
     {
         "name": "Dark loops 214  piano with melody short loop 60 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/583/583433_5674468-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Dark loops 220 octave piano short loop 60 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/617/617174_5674468-hq.mp3",
+        "tatumsPerBar": 8
     },
     {
         "name": "DeepHouse Loop - 120 BpM - Dminor - synthesizer beat.mp3",
         "url": "https://cdn.freesound.org/previews/643/643569_13590673-hq.mp3",
+        "tatumsPerBar": 24
     },
     {
         "name": "Disco funk loops 001 simple mix 1 short loop 120 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/567/567487_5674468-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Disco funk loops 001 remix 3 short loop with drums 120 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/572/572397_5674468-hq.mp3",
+        "tatumsPerBar": 24
     },
     {
         "name": "Disco funk loops 001 remix 1 short loop 120 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/567/567881_5674468-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "drum loop 135bpm.mp3",
         "url": "https://cdn.freesound.org/previews/577/577574_12702615-hq.mp3",
+        "tatumsPerBar": 8
     },
     {
         "name": "dubstep_drumloop_amped_glitch_140BPM.mp3",
         "url": "https://cdn.freesound.org/previews/147/147524_1735491-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Dusty Lofi Melody Loop 75 BPM.mp3",
         "url": "https://cdn.freesound.org/previews/629/629153_12574855-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Dusty Lofi Melody Loop 88 BPM.mp3",
         "url": "https://cdn.freesound.org/previews/629/629152_12574855-hq.mp3",
+        "tatumsPerBar": 16 + 24
     },
     {
         "name": "Dusty Lofi Melody Loop 95 BPM.mp3",
         "url": "https://cdn.freesound.org/previews/629/629151_12574855-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "funky breakbeat loop - 1 bar - 120 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/585/585466_8705222-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "glitch_stutter_loop_200BPM.mp3",
         "url": "https://cdn.freesound.org/previews/147/147522_1735491-hq.mp3",
+        "tatumsPerBar": 4
     },
     {
         "name": "Guiro 2....124bpm.mp3",
         "url": "https://cdn.freesound.org/previews/113/113623_649468-hq.mp3",
+        "tatumsPerBar": 8 # This one is should be removed and not considered a loop
     },
     {
         "name": "Guitar loops 003 with drums short loop 120 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/579/579677_5674468-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Guitar loops 001 with drums short loop 120 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/574/574451_5674468-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Industrial house loop (1) 122 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/217/217993_2687421-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Lofi Drum Loop 70 BPM.mp3",
         "url": "https://cdn.freesound.org/previews/629/629140_12574855-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "loop_94bpm_2bars.mp3",
         "url": "https://cdn.freesound.org/previews/66/66317_800997-hq.mp3",
+        "tatumsPerBar": 24
     },
     {
         "name": "MellifluousAnonymous 120bpm Loop YouAreEvil.mp3",
         "url": "https://cdn.freesound.org/previews/458/458538_5981766-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "pearly blips 120bpm.mp3",
         "url": "https://cdn.freesound.org/previews/161/161096_33044-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Piano loops 006 octave short loop 120 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/636/636237_5674468-hq.mp3",
+        "tatumsPerBar": 8
     },
     {
         "name": "Piano loops 020 octave down short loop 120 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/639/639460_5674468-hq.mp3",
+        "tatumsPerBar": 8
     },
     {
         "name": "Random Reggaeton 100 BPM Drum Loop.mp3",
         "url": "https://cdn.freesound.org/previews/689/689580_10403690-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Rap beat 001 simple mix 03 short loop 90 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/680/680463_5674468-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Rock Pattern Key of E 120 BPM C.mp3",
         "url": "https://cdn.freesound.org/previews/545/545900_2019171-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Sample 128 Bpm.mp3",
         "url": "https://cdn.freesound.org/previews/322/322378_4397472-hq.mp3",
+        "tatumsPerBar": 128
     },
     {
         "name": "Simple Lofi Vinyl E-Piano Loop 95 BPM.mp3",
         "url": "https://cdn.freesound.org/previews/629/629178_12574855-hq.mp3",
+        "tatumsPerBar": 8
     },
     {
         "name": "Spacey Lofi Loop 90 BPM.mp3",
         "url": "https://cdn.freesound.org/previews/629/629161_12574855-hq.mp3",
+        "tatumsPerBar": 8
     },
     {
         "name": "Spacey Lofi Melody Loop 80 BPM.mp3",
         "url": "https://cdn.freesound.org/previews/629/629157_12574855-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "SynTomBeat_113bpm.mp3",
         "url": "https://cdn.freesound.org/previews/137/137031_2514850-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Tambourine_Loop_105bpm.mp3",
         "url": "https://cdn.freesound.org/previews/219/219250_170215-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Vinyl Keyboard Loop 73 BPM.mp3",
         "url": "https://cdn.freesound.org/previews/629/629177_12574855-hq.mp3",
+        "tatumsPerBar": 16
     },
     {
         "name": "Voice loop 001 simple mix 1 120 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/627/627737_5674468-hq.mp3",
+        "tatumsPerBar": 8
     },
     {
         "name": "Voice loop 001 only guitar synth simple mix 120 bpm.mp3",
         "url": "https://cdn.freesound.org/previews/628/628630_5674468-hq.mp3",
+        "tatumsPerBar": 16
     },
 ]
 
