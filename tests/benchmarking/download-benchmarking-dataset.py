@@ -582,7 +582,7 @@ num_to_download = 0
 num_downloads = 0
 
 
-def download_loop(path, mp3):
+def download_file(path, mp3):
     global success
     global num_to_download
     global num_downloads
@@ -613,11 +613,11 @@ if not os.path.exists(nonLoop_path):
 start = time.time()
 
 with ThreadPoolExecutor(max_workers=5) as executor:
-    futures = [executor.submit(download_loop, loop_path, loop)
+    futures = [executor.submit(download_file, loop_path, loop)
                for loop in loops]
-    futures += [executor.submit(download_loop, nonLoop_path, nonLoop)
+    futures += [executor.submit(download_file, nonLoop_path, nonLoop)
                 for nonLoop in nonLoops]
-    
+
 print("Downloading benchmarking dataset...")
 
 # Optional: Wait for all downloads to complete (not strictly necessary as executor will do this)
