@@ -29,7 +29,6 @@ quality of classifier and possibly time performance, too.
 #include <optional>
 #include <string>
 #include <vector>
-#include "PowerSpectrumGetter.h"
 
 namespace LTE
 {
@@ -65,6 +64,7 @@ struct QuantizationFitDebugOutput
    OnsetQuantization tatumQuantization;
    double bpm = 0;
    double score = 0.;
+   std::vector<std::vector<float>> stft;
    std::vector<std::vector<float>> postProcessedStft;
    std::vector<float> rawOdf;
    std::vector<float> movingAverage;

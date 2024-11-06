@@ -214,6 +214,14 @@ OnsetQuantization RunQuantizationExperiment(
    return { error, lag, mostLikelyNumTatums };
 }
 
+double GetBpmLikelihood(double bpm)
+{
+   constexpr auto expectedValue = 115.;
+   constexpr auto stdDev = 25.;
+   const auto tmp = (bpm - expectedValue) / stdDev;
+   return std::exp(-.5 * tmp * tmp);
+}
+
 // To evaluate how likely a certain BPM is, we evaluate how much the ODF repeats
 // itself at that beat rate. We do this by looking at the auto-correlation of
 // the ODF, "comb-filtering" it at integer multiples of the beat period.
@@ -284,7 +292,8 @@ size_t GetBestBarDivisionIndex(
                odfAutoCorrSampleRate, bpm, odfAutoCorr, odfAutocorrFullSize,
                debugOutput);
          const auto selfSimilarityScore = autocorrScoreCache.at(numBeats);
-         return selfSimilarityScore;
+         const auto bpmLikelihood = GetBpmLikelihood(bpm);
+         return bpmLikelihood * selfSimilarityScore;
       });
 
    return std::max_element(scores.begin(), scores.end()) - scores.begin();

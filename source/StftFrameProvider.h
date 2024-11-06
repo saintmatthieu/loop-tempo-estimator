@@ -42,6 +42,10 @@ class StftFrameProvider
 {
 public:
    StftFrameProvider(const LteAudioReader& source);
+
+   static int GetFftSize(double sampleRate);
+   static int GetNumFrames(double sampleRate, int numSamples);
+
    bool GetNextFrame(PffftFloatVector& frame);
    int GetNumFrames() const;
    int GetSampleRate() const;

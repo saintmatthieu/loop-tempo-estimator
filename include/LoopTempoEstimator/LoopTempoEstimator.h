@@ -62,8 +62,21 @@ static const std::unordered_map<FalsePositiveTolerance, LoopClassifierSettings>
       { FalsePositiveTolerance::Lenient, { .1, 0.8004500873488557 } },
    };
 
+/*!
+ * A function giving a preview of the FFT size the algorithm will use. DOES NOT
+ * indicate the frequency resolution, as the input may be down-sampled before
+ * FFT.
+ */
+int GetFftSize(double sampleRate);
+
+int GetOdfSize(double sampleRate, int numSamples);
+
+/*!
+ * Get the BPM of a loop audio file, or nullopt if unlikely to be a loop.
+ */
 std::optional<double> GetBpm(
    const LteAudioReader& source, FalsePositiveTolerance tolerance,
    const std::function<void(double)>& progressCallback,
    QuantizationFitDebugOutput* debugOutput = nullptr);
+
 } // namespace LTE

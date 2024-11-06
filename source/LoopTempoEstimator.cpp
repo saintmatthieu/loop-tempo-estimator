@@ -32,11 +32,22 @@ quality of classifier and possibly time performance, too.
 #include <array>
 #include <cassert>
 #include <cmath>
+#include <fstream>
 #include <numeric>
 
-namespace LTE
+int LTE::GetFftSize(double sampleRate)
 {
-std::optional<double> GetBpm(
+   return StftFrameProvider::GetFftSize(
+      sampleRate / DecimatingLteAudioReader::GetDecimationFactor(sampleRate));
+}
+
+int LTE::GetOdfSize(double sampleRate, int numSamples)
+{
+   const auto d = DecimatingLteAudioReader::GetDecimationFactor(sampleRate);
+   return StftFrameProvider::GetNumFrames(sampleRate / d, numSamples / d);
+}
+
+std::optional<double> LTE::GetBpm(
    const LteAudioReader& audio, FalsePositiveTolerance tolerance,
    const std::function<void(double)>& progressCallback,
    QuantizationFitDebugOutput* debugOutput)
@@ -52,4 +63,3 @@ std::optional<double> GetBpm(
    return GetBpmInternal(
       decimatedAudio, tolerance, progressCallback, debugOutput);
 }
-} // namespace LTE

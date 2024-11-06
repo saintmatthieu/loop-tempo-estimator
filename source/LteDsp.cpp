@@ -144,6 +144,9 @@ std::vector<float> GetOnsetDetectionFunction(
    {
       getPowerSpectrum(buffer.aligned(), powSpec.aligned());
 
+      if (debugOutput)
+         debugOutput->stft.push_back({ powSpec.begin(), powSpec.end() });
+
       // Compress the frame as per section (6.5) in Müller, Meinard.
       // Fundamentals of music processing: Audio, analysis, algorithms,
       // applications. Vol. 5. Cham: Springer, 2015.

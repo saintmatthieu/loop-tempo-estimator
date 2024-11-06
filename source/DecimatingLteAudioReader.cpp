@@ -27,13 +27,16 @@ quality of classifier and possibly time performance, too.
 
 namespace LTE
 {
+int DecimatingLteAudioReader::GetDecimationFactor(double inputSampleRate)
+{
+   // Input rate divided by this integer will be as close as possible to
+   // 24kHz and not greater.
+   return static_cast<int>(std::ceil(inputSampleRate / 24000.));
+}
+
 DecimatingLteAudioReader::DecimatingLteAudioReader(const LteAudioReader& reader)
     : mReader { reader }
-    , mDecimationFactor {
-       // Input rate divided by this integer will be as close as possible to
-       // 24kHz and not greater.
-       static_cast<int>(std::ceil(reader.GetSampleRate() / 24000.))
-    }
+    , mDecimationFactor { GetDecimationFactor(reader.GetSampleRate()) }
 {
 }
 

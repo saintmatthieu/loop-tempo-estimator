@@ -43,6 +43,8 @@ class DecimatingLteAudioReader : public LteAudioReader
 public:
    explicit DecimatingLteAudioReader(const LteAudioReader& reader);
 
+   static int GetDecimationFactor(double inputSampleRate);
+
    double GetSampleRate() const override;
    long long GetNumSamples() const override;
    void

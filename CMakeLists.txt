@@ -4,6 +4,7 @@ project(loop-tempo-estimator)
 
 # Option to build tests:
 option(BUILD_TESTS "Build tests" ON)
+option(BUILD_VAMP_PLUGIN "Build Vamp plugin" ON)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -71,4 +72,9 @@ target_include_directories(loop-tempo-estimator
 
 if (BUILD_TESTS)
     add_subdirectory(tests)
+endif()
+
+if (BUILD_VAMP_PLUGIN)
+    include(vamp-plugin-sdk.cmake)
+    add_subdirectory(vamp-plugin)
 endif()
