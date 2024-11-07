@@ -25,25 +25,12 @@ quality of classifier and possibly time performance, too.
 
 #pragma once
 
-#include <algorithm>
 #include <functional>
-#include <vector>
 
 namespace LTE
 {
 class LteAudioReader;
 struct QuantizationFitDebugOutput;
-
-/*!
- * @brief Get the normalized, circular auto-correlation for a signal `x` whose
- * length already is a power of two. Since the output is symmetric, only the
- * left-hand side is returned, i.e., of size `N/2 + 1`, where `N` is the power
- * of two the input was upsampled to.
- *
- * @pre `x.size()` is a power of two.
- * @post returned vector has size `x.size() / 2 + 1`.
- */
-std::vector<float> GetNormalizedCircularAutocorr(const std::vector<float>& x);
 
 std::vector<float> GetOnsetDetectionFunction(
    const LteAudioReader& audio,

@@ -27,12 +27,4 @@ plt.xlim(0, len(odf) / odfSr)
 plt.grid(True)
 plt.title(wavFile)
 
-# Plot `odfAutoCorr`, whose length is half that of `odf` + 1. Add a layer where the peaks at `odfAutoCorrPeakIndices` are marked.
-plt.figure(3)
-plt.plot([i/odfSr for i in range(len(odfAutoCorr))], odfAutoCorr)
-plt.plot([i/odfSr for i in odfAutoCorrPeakIndices], [odfAutoCorr[i] for i in odfAutoCorrPeakIndices], 'ro')
-plt.xlim(0, len(odfAutoCorr) / odfSr)
-plt.grid(True)
-plt.title(wavFile)
-
 plt.show()

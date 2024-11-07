@@ -49,8 +49,6 @@ set(SOURCES
    source/LteUtils.h
    source/MapToPositiveHalfIndex.h
    source/MathApprox.h
-   source/MemoryX.cpp
-   source/MemoryX.h
    source/PowerSpectrumGetter.cpp
    source/PowerSpectrumGetter.h
    source/StftFrameProvider.cpp

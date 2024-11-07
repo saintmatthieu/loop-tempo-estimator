@@ -26,13 +26,11 @@ quality of classifier and possibly time performance, too.
 #include "LoopTempoEstimator/LteTypes.h"
 #include "LteUtils.h"
 #include "MathApprox.h"
-#include "MemoryX.h"
 #include "PowerSpectrumGetter.h"
 #include "StftFrameProvider.h"
 #include <cassert>
 #include <cmath>
 #include <numeric>
-#include <pffft.h>
 
 namespace LTE
 {
@@ -43,7 +41,9 @@ float GetNoveltyMeasure(
 {
    auto k = 0;
    return std::accumulate(
-      powSpec.begin(), powSpec.end(), 0.f, [&](float a, float mag) {
+      powSpec.begin(), powSpec.end(), 0.f,
+      [&](float a, float mag)
+      {
          // Half-wave-rectified stuff
          return a + std::max(0.f, mag - prevPowSpec[k++]);
       });
@@ -57,67 +57,35 @@ std::vector<float> GetMovingAverage(const std::vector<float>& x, double hopRate)
    const auto window = GetNormalizedHann(2 * M + 1);
    auto n = 0;
    std::vector<float> movingAverage(x.size());
-   std::transform(x.begin(), x.end(), movingAverage.begin(), [&](float) {
-      const auto m = IotaRange(-M, M + 1);
-      const auto y =
-         std::accumulate(m.begin(), m.end(), 0.f, [&](float y, int i) {
-            auto k = n + i;
-            while (k < 0)
-               k += x.size();
-            while (k >= x.size())
-               k -= x.size();
-            return y + x[k] * window[i + M];
-         });
-      ++n;
-      // The moving average of the raw ODF will be subtracted from it to yield
-      // the final ODF, negative results being set to 0. (This is to remove
-      // noise of small ODF peaks before the method's quantization step.) The
-      // larger this multiplier, the less peaks will remain. This value was
-      // found by trial and error, using the benchmarking framework
-      // (see TatumQuantizationFitBenchmarking.cpp)
-      constexpr auto thresholdRaiser = 1.5f;
-      return y * thresholdRaiser;
-   });
+   std::transform(
+      x.begin(), x.end(), movingAverage.begin(),
+      [&](float)
+      {
+         const auto m = IotaRange(-M, M + 1);
+         const auto y = std::accumulate(
+            m.begin(), m.end(), 0.f,
+            [&](float y, int i)
+            {
+               auto k = n + i;
+               while (k < 0)
+                  k += x.size();
+               while (k >= x.size())
+                  k -= x.size();
+               return y + x[k] * window[i + M];
+            });
+         ++n;
+         // The moving average of the raw ODF will be subtracted from it to
+         // yield the final ODF, negative results being set to 0. (This is to
+         // remove noise of small ODF peaks before the method's quantization
+         // step.) The larger this multiplier, the less peaks will remain. This
+         // value was found by trial and error, using the benchmarking framework
+         // (see TatumQuantizationFitBenchmarking.cpp)
+         constexpr auto thresholdRaiser = 1.5f;
+         return y * thresholdRaiser;
+      });
    return movingAverage;
 }
 } // namespace
-
-std::vector<float>
-GetNormalizedCircularAutocorr(const std::vector<float>& ux /* unaligned x*/)
-{
-   if (std::all_of(ux.begin(), ux.end(), [](float x) { return x == 0.f; }))
-      return ux;
-   const auto N = ux.size();
-   assert(IsPowOfTwo(N));
-   PffftSetupHolder setup { pffft_new_setup(N, PFFFT_REAL) };
-   PffftFloatVector x { ux.begin(), ux.end() };
-   PffftFloatVector work(N);
-   pffft_transform_ordered(
-      setup.get(), x.data(), x.data(), work.data(), PFFFT_FORWARD);
-
-   // Transform to a power spectrum, but preserving the layout expected by PFFFT
-   // in preparation for the inverse transform.
-   x[0] *= x[0];
-   x[1] *= x[1];
-   for (auto n = 2; n < N; n += 2)
-   {
-      x[n] = x[n] * x[n] + x[n + 1] * x[n + 1];
-      x[n + 1] = 0.f;
-   }
-
-   pffft_transform_ordered(
-      setup.get(), x.data(), x.data(), work.data(), PFFFT_BACKWARD);
-
-   // The second half of the circular autocorrelation is the mirror of the first
-   // half. We are economic and only keep the first half.
-   x.erase(x.begin() + N / 2 + 1, x.end());
-
-   const auto normalizer = 1 / x[0];
-   std::transform(x.begin(), x.end(), x.begin(), [normalizer](float x) {
-      return x * normalizer;
-   });
-   return { x.begin(), x.end() };
-}
 
 std::vector<float> GetOnsetDetectionFunction(
    const LteAudioReader& audio,

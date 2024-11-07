@@ -26,15 +26,11 @@ quality of classifier and possibly time performance, too.
 #include "LoopTempoEstimator/LteTypes.h"
 #include "LteDsp.h"
 #include "LteUtils.h"
-#include "MapToPositiveHalfIndex.h"
 #include <array>
-#include <cassert>
 #include <cmath>
-#include <map>
+#include <iterator>
 #include <numeric>
-#include <regex>
 #include <unordered_map>
-#include <unordered_set>
 
 namespace LTE
 {
@@ -222,80 +218,21 @@ double GetBpmLikelihood(double bpm)
    return std::exp(-.5 * tmp * tmp);
 }
 
-// To evaluate how likely a certain BPM is, we evaluate how much the ODF repeats
-// itself at that beat rate. We do this by looking at the auto-correlation of
-// the ODF, "comb-filtering" it at integer multiples of the beat period.
-double GetBeatSelfSimilarityScore(
-   double odfAutoCorrSampleRate, double bpm,
-   const std::vector<float>& odfAutoCorr, int odfAutocorrFullSize,
-   QuantizationFitDebugOutput* debugOutput)
-{
-   // Look for closest peak in `odfAutoCorr`:
-   const auto lag = odfAutoCorrSampleRate * 60 / bpm;
-   // Traverse all the auto-correlation by steps of `k*lag`, each time
-   // finding the closest peak, and average the values. Doing this rather
-   // than evaluating only just one peak is more robust to rhythms which
-   // miss beats.
-   auto periodIndex = 1;
-   auto sum = 0.;
-   auto numIndices = 0;
-   while (true)
-   {
-      auto j = static_cast<int>(periodIndex++ * lag + .5);
-      if (j >= odfAutoCorr.size())
-         break;
-      while (true)
-      {
-         const auto i = MapToPositiveHalfIndex(j - 1, odfAutocorrFullSize);
-         const auto k = MapToPositiveHalfIndex(j + 1, odfAutocorrFullSize);
-         if (
-            odfAutoCorr[i] <= odfAutoCorr[j] &&
-            odfAutoCorr[j] >= odfAutoCorr[k])
-            break;
-         j = odfAutoCorr[i] > odfAutoCorr[k] ? i : k;
-      }
-      sum += odfAutoCorr[j];
-      ++numIndices;
-      if (debugOutput)
-         debugOutput->odfAutoCorrPeakIndices.push_back(j);
-   }
-   return sum / numIndices;
-}
-
 size_t GetBestBarDivisionIndex(
    const std::vector<int>& possibleNumBars, double audioFileDuration,
    int numTatums, const std::vector<float>& odf,
    QuantizationFitDebugOutput* debugOutput)
 
 {
-   const auto odfAutoCorr = GetNormalizedCircularAutocorr(odf);
-   if (debugOutput)
-      debugOutput->odfAutoCorr = odfAutoCorr;
-   const auto odfAutocorrFullSize = 2 * (odfAutoCorr.size() - 1);
-   assert(IsPowOfTwo(odfAutocorrFullSize));
-   const auto odfAutoCorrSampleRate = odfAutocorrFullSize / audioFileDuration;
-
    std::vector<double> scores(possibleNumBars.size());
-   // These (still) only depend on the beat rate. We look at
-   // self-similarities at beat intervals, so to say, without examining the
-   // contents of the beats. Since several bar divisions may yield the same
-   // number of beats, we may be able to re-use some calculations.
-   std::unordered_map<int /*numBeats*/, double> autocorrScoreCache;
    std::transform(
       possibleNumBars.begin(), possibleNumBars.end(), scores.begin(),
       [&](int numBars)
       {
          const auto numBeats = numBars * beatsPerBar;
          const auto bpm = 1. * numBeats / audioFileDuration * 60;
-         if (!autocorrScoreCache.count(numBeats))
-            autocorrScoreCache[numBeats] = GetBeatSelfSimilarityScore(
-               odfAutoCorrSampleRate, bpm, odfAutoCorr, odfAutocorrFullSize,
-               debugOutput);
-         const auto selfSimilarityScore = autocorrScoreCache.at(numBeats);
-         const auto bpmLikelihood = GetBpmLikelihood(bpm);
-         return bpmLikelihood * selfSimilarityScore;
+         return GetBpmLikelihood(bpm);
       });
-
    return std::max_element(scores.begin(), scores.end()) - scores.begin();
 }
 

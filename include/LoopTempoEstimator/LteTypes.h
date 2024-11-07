@@ -72,7 +72,5 @@ struct QuantizationFitDebugOutput
    double odfSr = 0.;
    double audioFileDuration = 0.;
    std::vector<int> odfPeakIndices;
-   std::vector<float> odfAutoCorr;
-   std::vector<int> odfAutoCorrPeakIndices;
 };
 } // namespace LTE

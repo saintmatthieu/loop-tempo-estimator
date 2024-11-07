@@ -27,8 +27,6 @@ quality of classifier and possibly time performance, too.
 #include "LteUtils.h"
 #include "StftFrameProvider.h"
 
-#include "MemoryX.h"
-
 #include <array>
 #include <cassert>
 #include <cmath>

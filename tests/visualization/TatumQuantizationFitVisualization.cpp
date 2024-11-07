@@ -47,11 +47,6 @@ TEST_CASE("TatumQuantizationFitVisualization")
    PrintPythonVector(debug_output_module, debugOutput.rawOdf, "rawOdf");
    PrintPythonVector(
       debug_output_module, debugOutput.movingAverage, "movingAverage");
-   PrintPythonVector(
-      debug_output_module, debugOutput.odfAutoCorr, "odfAutoCorr");
-   PrintPythonVector(
-      debug_output_module, debugOutput.odfAutoCorrPeakIndices,
-      "odfAutoCorrPeakIndices");
 
    std::ofstream stft_log_module {
       std::string { CMAKE_SOURCE_DIR } +
