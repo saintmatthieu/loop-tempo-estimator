@@ -152,23 +152,23 @@ int GetOnsetLag(const std::vector<float>& odf, int numTatums)
 // recorded without post-editing still tend to achieve lower scores.
 double GetQuantizationDistance(
    const std::vector<int>& peakIndices, const std::vector<float>& peakValues,
-   size_t size, int numDivisions, int lag)
+   size_t odfSize, int tatumCount, int lag)
 {
    std::vector<double> peakDistances(peakIndices.size());
    const auto peakSum =
       std::accumulate(peakValues.begin(), peakValues.end(), 0.);
-   const auto odfSamplesPerDiv = 1. * size / numDivisions;
    std::transform(
       peakIndices.begin(), peakIndices.end(), peakDistances.begin(),
       [&](int peakIndex)
       {
-         const auto shiftedIndex = peakIndex - lag;
-         const auto closestDiv = std::round(shiftedIndex / odfSamplesPerDiv);
-         // Normalized distance between 0 and 1:
-         const auto distance =
-            (shiftedIndex - closestDiv * odfSamplesPerDiv) / odfSamplesPerDiv;
-         // Mutliply by two such that the error spans `[0, 1)`.
-         return 2 * std::abs(distance);
+         // range is [0, 1]
+         const auto peakPos = 1. * (peakIndex - lag) / odfSize;
+         const auto nearestTatumPos =
+            std::round(peakPos * tatumCount) / tatumCount;
+         // max is 0.5 / tatumCount
+         const auto distance = std::abs(peakPos - nearestTatumPos);
+         // we normalize back to 1
+         return 2 * distance * tatumCount;
       });
    // Calculate the score as the sum of the distances weighted by
    // the odf values:
