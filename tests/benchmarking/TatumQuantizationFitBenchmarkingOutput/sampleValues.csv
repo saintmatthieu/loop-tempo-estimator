@@ -32,7 +32,7 @@ true,0.953391,false,480,120,1,0,1,loops/Disco funk loops 001 simple mix 1 short 
 true,0.764425,false,150,150,0.5,0,0,loops/Dusty Lofi Melody Loop 75 BPM
 true,0.786327,false,352,88,1,-3.75702e-07,3,loops/Dusty Lofi Melody Loop 88 BPM
 true,0.879988,false,94.9999,94.9999,1,-9.54163e-07,3,loops/Dusty Lofi Melody Loop 95 BPM
-true,0.84087,false,248.509,248.509,0.5,0.00295821,1,loops/Guiro 2....124bpm
+true,0,false,0,0,0,0,0,loops/Guiro 2....124bpm
 true,0.897133,false,480,120,1,0,2,loops/Guitar loops 001 with drums short loop 120 bpm
 true,0.968627,false,480.001,120,1,2.04464e-06,1,loops/Guitar loops 003 with drums short loop 120 bpm
 true,1,false,487.08,121.77,1,-0.00272306,1,loops/Industrial house loop (1) 122 bpm
@@ -75,9 +75,9 @@ false,0.60358,false,101.367,101.367,0,0,1,non-loops/Air_PowerTool
 false,0.615308,false,40.3065,80.6131,0,0,0,non-loops/BangingOilTank
 false,0.551897,false,531.042,132.76,0,0,1,non-loops/Bathroom Extractor Fan, A
 false,0.585336,false,131.78,131.78,0,0,0,non-loops/Big Cinematic Spinning Sound
-false,0.372989,false,480,480,0,0,2,non-loops/Bow Loading
+false,0,false,0,0,0,0,0,non-loops/Bow Loading
 false,0.596171,false,38.9838,155.935,0,0,1,non-loops/Breaking Bones
-false,0.576622,false,121.599,243.199,0,0,1,non-loops/Cat 1
+false,0,false,0,0,0,0,0,non-loops/Cat 1
 false,0.748757,false,228.438,114.219,0,0,2,non-loops/Crash
 false,0,true,0,0,0,0,0,non-loops/Cup set Down
 false,0.546274,false,97.5163,97.5163,0,0,0,non-loops/Dark_Emptiness_003
@@ -88,7 +88,7 @@ false,0.611314,false,51.1328,102.266,0,0,2,non-loops/Footsteps_MountainBoots_Gra
 false,0,true,0,0,0,0,0,non-loops/Footsteps_Water_Light_006
 false,0.654256,false,508.546,127.136,0,0,1,non-loops/G38-15-Perfect Horse Whinny
 false,0.809449,false,43.6364,87.2727,0,0,2,non-loops/Game Pickup
-false,0.925989,false,59.9115,239.646,0,0,8,non-loops/Glass Putting down 1
+false,0.631025,false,239.646,79.882,0,0,3,non-loops/Glass Putting down 1
 false,0.705564,false,93.3333,186.667,0,0,2,non-loops/Healing Spell
 false,0.710345,false,21.9464,87.7855,0,0,2,non-loops/Heatpress squeaking and creaking
 false,0,true,0,0,0,0,0,non-loops/Interface3
@@ -97,21 +97,21 @@ false,0,true,0,0,0,0,0,non-loops/Left Gravel Footstep 2
 false,0.696048,false,320.141,106.714,0,0,2,non-loops/Location Crows NR.WAV
 false,0.739916,false,583.291,145.823,0,0,0,non-loops/Magic Fire Impact
 false,0.817184,false,201.186,100.593,0,0,0,non-loops/Magic Sound
-false,0.794889,false,66.2495,264.998,0,0,0,non-loops/Magic
+false,0,false,0,0,0,0,0,non-loops/Magic
 false,0.667194,false,21.5395,86.1579,0,0,3,non-loops/Metal Squeak Door
 false,0.71389,false,71.8748,143.75,0,0,1,non-loops/Monster Tripod horn
 false,0,true,0,0,0,0,0,non-loops/OpenBag
 false,0.650496,false,15.5556,62.2222,0,0,2,non-loops/Orchestra Lurking Cue
-false,0.674915,false,613.636,204.545,0,0,0,non-loops/Paper drawn with rustle
+false,0.581184,false,68.1818,136.364,0,0,0,non-loops/Paper drawn with rustle
 false,0,true,0,0,0,0,0,non-loops/Pickup
 false,0,true,0,0,0,0,0,non-loops/Ping pong ball hit
 false,0,true,0,0,0,0,0,non-loops/Pound of Flesh 2
 false,0.629511,false,12.6666,50.6664,0,0,40,non-loops/Prison Cell Door sound effect
 false,0.806011,false,220.805,73.6018,0,0,0,non-loops/Rock Splash
-false,0.677685,false,414.165,207.083,0,0,0,non-loops/Rock_Movement_Friction_01
+false,0,false,0,0,0,0,0,non-loops/Rock_Movement_Friction_01
 false,0.539329,false,71.379,142.758,0,0,6,non-loops/Rock_Movement_Friction_02
 false,0.653766,false,112.347,112.347,0,0,3,non-loops/Rustling Paper
-false,0.678887,false,449.122,224.561,0,0,2,non-loops/Screechy Toaster Oven
+false,0.664819,false,201.331,100.665,0,0,0,non-loops/Screechy Toaster Oven
 false,0.613862,false,144.132,144.132,0,0,0,non-loops/Success
 false,0.582209,false,338.899,112.966,0,0,0,non-loops/Thunder Clap And Rumble #2
 false,0.61402,false,160.522,160.522,0,0,0,non-loops/Treadmill
@@ -119,7 +119,7 @@ false,0.694535,false,23.1861,92.7444,0,0,1,non-loops/Tribal
 false,0.550011,false,47.9953,95.9907,0,0,0,non-loops/TunnelDrone
 false,0.597764,false,49.8418,99.6835,0,0,0,non-loops/Wind Chime
 false,0.552507,false,184.57,92.2852,0,0,0,non-loops/Winding Toy 2
-false,0.585251,false,203.085,203.085,0,0,1,non-loops/Wood Creak Single V3
+false,0,false,0,0,0,0,0,non-loops/Wood Creak Single V3
 false,0.563797,false,14.2159,56.8637,0,0,1,non-loops/Wood Creak
 false,0,true,0,0,0,0,0,non-loops/Wood Snare (Sample 3)wav
 false,0.621831,false,34.5799,138.32,0,0,0,non-loops/Wood_Creak_ 01
@@ -135,7 +135,7 @@ false,0,true,0,0,0,0,0,non-loops/infobleep
 false,0.598493,false,28.1076,112.431,0,0,2,non-loops/moving plant
 false,0.552807,false,260.591,86.8636,0,0,0,non-loops/portal 40 sec
 false,0,true,0,0,0,0,0,non-loops/single firework
-false,0.616984,false,705.644,235.215,0,0,2,non-loops/stone_on_stone_ST
+false,0.576679,false,213.831,106.916,0,0,2,non-loops/stone_on_stone_ST
 false,0,true,0,0,0,0,0,non-loops/tone beep lower slower
-false,0.786391,false,60.1027,240.411,0,0,1,non-loops/vintage camera flash bulb pops sound design
+false,0.722793,false,38.9856,77.9711,0,0,3,non-loops/vintage camera flash bulb pops sound design
 false,0.806155,false,21.8182,87.2727,0,0,8,non-loops/win

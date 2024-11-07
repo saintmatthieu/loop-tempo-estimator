@@ -52,10 +52,14 @@ using TatumCountToBarCounts =
 
 std::vector<int> GetPossibleNumberOfBars(double audioFileDuration)
 {
-   constexpr auto maxBarsPerMinute = 60.;
+   constexpr auto maxBarsPerMinute = maxBeatsPerMinute / beatsPerBar;
+   if (audioFileDuration * maxBarsPerMinute / 60 < 1)
+      // Even at the fastest realistic tempo, the input isn't long enough to
+      // fill a bar. Can't be a loop.
+      return {};
    const int minNumBars =
-      std::max(std::round(audioFileDuration * minBarsPerMinute / 60), 1.);
-   const int maxNumBars = std::round(audioFileDuration * maxBarsPerMinute / 60);
+      std::max(std::ceil(audioFileDuration * minBarsPerMinute / 60), 1.);
+   const int maxNumBars = std::floor(audioFileDuration * maxBarsPerMinute / 60);
    std::vector<int> possibleNumBars(maxNumBars - minNumBars + 1);
    std::iota(possibleNumBars.begin(), possibleNumBars.end(), minNumBars);
    return possibleNumBars;
