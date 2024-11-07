@@ -171,7 +171,7 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
    const auto audioFiles = GetBenchmarkingAudioFiles();
    std::stringstream sampleValueCsv;
    sampleValueCsv
-      << "truth,score,tatumRate,bpm,ts,octaveFactor,octaveError,lag,filename\n";
+      << "truth,score,isSingleEvent,tatumRate,bpm,ts,octaveFactor,octaveError,lag,filename\n";
 
    float checksum = 0.f;
    struct Sample
@@ -209,6 +209,7 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
                std::nullopt;
          sampleValueCsv << (truth ? "true" : "false") << ","
                         << debugOutput.score << ","
+                        << (debugOutput.isSingleEvent ? "true" : "false") << ","
                         << 60. * debugOutput.tatumQuantization.tatumCount /
                               debugOutput.audioFileDuration
                         << "," << debugOutput.bpm << ","

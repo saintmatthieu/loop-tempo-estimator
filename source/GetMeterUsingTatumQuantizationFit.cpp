@@ -292,8 +292,14 @@ std::optional<double> GetBpmInternal(
       return peakValues;
    })();
 
+   if (debugOutput)
+      debugOutput->isSingleEvent = false;
    if (IsSingleEvent(peakIndices, peakValues))
+   {
+      if (debugOutput)
+         debugOutput->isSingleEvent = true;
       return {};
+   }
 
    // Just based on audio duration and our prior knowledge of possible beat and
    // tatum rates, we can get a map of possible tatum counts and, for each of
