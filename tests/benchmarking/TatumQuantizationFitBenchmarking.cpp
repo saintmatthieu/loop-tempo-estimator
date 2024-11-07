@@ -171,7 +171,7 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
    const auto audioFiles = GetBenchmarkingAudioFiles();
    std::stringstream sampleValueCsv;
    sampleValueCsv
-      << "truth,score,isSingleEvent,tatumRate,bpm,ts,octaveFactor,octaveError,lag,filename\n";
+      << "truth,score,isSingleEvent,kurtosis,tatumRate,bpm,ts,octaveFactor,octaveError,lag,filename\n";
 
    float checksum = 0.f;
    struct Sample
@@ -210,6 +210,7 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
          sampleValueCsv << (truth ? "true" : "false") << ","
                         << debugOutput.score << ","
                         << (debugOutput.isSingleEvent ? "true" : "false") << ","
+                        << debugOutput.kurtosis << ","
                         << 60. * debugOutput.tatumQuantization.tatumCount /
                               debugOutput.audioFileDuration
                         << "," << debugOutput.bpm << ","
@@ -261,7 +262,7 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
    REQUIRE(
       ValueIsUnchanged(outputDir / "checksum.txt", previousChecksum, checksum));
 
-   constexpr auto previousAuc = 0.9258799171842648;
+   constexpr auto previousAuc = 0.9124489795918365;
    constexpr auto comparisonTolerance = 0.01;
    const auto classifierQualityIsUnchanged = ValueIsUnchanged(
       outputDir / "AUC.txt", previousAuc, rocInfo.areaUnderCurve,

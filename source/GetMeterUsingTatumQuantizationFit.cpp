@@ -253,18 +253,59 @@ double GetMostLikelyBpmFromQuantizationExperiment(
 }
 
 bool IsSingleEvent(
-   const std::vector<int>& peakIndices, const std::vector<float>& peakValues)
+   const std::vector<float>& odf, QuantizationFitDebugOutput* debugOutput)
 {
-   // Detect single-event recordings, e.g. only just one crash cymbal hit. This
-   // will translate as one large peak and maybe a few much smaller ones. In
-   // that case we can expect the average to be between these two groups.
-   const auto peakAvg =
-      std::accumulate(peakValues.begin(), peakValues.end(), 0.) /
-      peakIndices.size();
-   const auto numPeaksAboveAvg = std::count_if(
-      peakValues.begin(), peakValues.end(),
-      [&](float v) { return v > peakAvg; });
-   return numPeaksAboveAvg <= 1;
+   // Kurtosis is normally the metric of a PDF, which our ODF isn't.
+   // If it happens to be a single event, though, it will somewhat look like a
+   // normal distribution, with a reasonably low kurtosis.
+
+   const auto sum = std::accumulate(odf.begin(), odf.end(), 0.f);
+
+   // If it's a single event at the very beginning, since our ODF is circular, a
+   // relatively high value may figure at the end of the ODF. So what we do is,
+   // we find the largest ODF value, and shift it so that it's in the middle.
+   // (For now we make a copy, for simplicity, but we may want to optimize it.)
+   const auto shiftedOdf = [&]
+   {
+      const auto len = static_cast<int>(odf.size());
+      auto shiftedOdf = odf;
+      const auto maxIt = std::max_element(odf.begin(), odf.end());
+      const auto shift =
+         (len * 3 / 2 - std::distance(odf.begin(), maxIt)) % len;
+      std::rotate(
+         shiftedOdf.begin(), shiftedOdf.end() - shift, shiftedOdf.end());
+      return shiftedOdf;
+   }();
+
+   auto expectedValue = 0.;
+   for (auto i = 0; i < shiftedOdf.size(); ++i)
+      expectedValue += i * shiftedOdf[i];
+   expectedValue /= sum;
+
+   auto variance = 0.;
+   for (auto i = 0; i < shiftedOdf.size(); ++i)
+   {
+      const auto tmp = i - expectedValue;
+      variance += tmp * tmp * shiftedOdf[i];
+   }
+   variance /= sum;
+
+   auto kurtosis = 0.;
+   for (auto i = 0; i < shiftedOdf.size(); ++i)
+   {
+      const auto tmp = i - expectedValue;
+      kurtosis += tmp * tmp * tmp * tmp * shiftedOdf[i];
+   }
+   kurtosis /= sum * variance * variance;
+
+   const auto isSingleEvent = kurtosis > 20;
+   if (debugOutput)
+   {
+      debugOutput->kurtosis = kurtosis;
+      debugOutput->isSingleEvent = isSingleEvent;
+   }
+
+   return isSingleEvent;
 }
 } // namespace
 
@@ -296,14 +337,8 @@ std::optional<double> GetBpmInternal(
       return peakValues;
    })();
 
-   if (debugOutput)
-      debugOutput->isSingleEvent = false;
-   if (IsSingleEvent(peakIndices, peakValues))
-   {
-      if (debugOutput)
-         debugOutput->isSingleEvent = true;
+   if (IsSingleEvent(odf, debugOutput))
       return {};
-   }
 
    // Just based on audio duration and our prior knowledge of possible beat and
    // tatum rates, we can get a map of possible tatum counts and, for each of

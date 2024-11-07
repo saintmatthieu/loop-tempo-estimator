@@ -61,6 +61,7 @@ public:
 
 struct QuantizationFitDebugOutput
 {
+   double kurtosis = 0.;
    bool isSingleEvent = false;
    OnsetQuantization tatumQuantization;
    double bpm = 0;
