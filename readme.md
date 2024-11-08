@@ -20,7 +20,7 @@ Defaults to `ON`.<br/>If you want to consume this library in your own project, y
 
 #### `USE_LIBSNDFILE`
 Relevant if `BUILD_TESTS` is set to `ON`.<br/>
-The test framework uses minimp3 for to read mp3 files. If you want to run the algorithm on some wav file, either convert it to mp3 first, or have [libsnfile](https://github.com/libsndfile/libsndfile) installed and set `USE_LIBSNDFILE` to `ON`.
+The test framework uses minimp3 for to read mp3 files. If you want to run the algorithm on some wav file, either convert it to mp3 first, or have [libsndfile](https://github.com/libsndfile/libsndfile) installed and set `USE_LIBSNDFILE` to `ON`.
 
 ## Usage
 
