@@ -259,44 +259,41 @@ bool IsSingleEvent(
    // If it happens to be a single event, though, it will somewhat look like a
    // normal distribution, with a reasonably low kurtosis.
 
-   const auto sum = std::accumulate(odf.begin(), odf.end(), 0.f);
-
    // If it's a single event at the very beginning, since our ODF is circular, a
    // relatively high value may figure at the end of the ODF. So what we do is,
    // we find the largest ODF value, and shift it so that it's in the middle.
    // (For now we make a copy, for simplicity, but we may want to optimize it.)
-   const auto shiftedOdf = [&]
+   // We take this opportunity to normalize it so that it abides by the
+   // definition of a PDF.
+   const auto pdf = [&]
    {
       const auto len = static_cast<int>(odf.size());
       auto shiftedOdf = odf;
+      const auto sum = std::accumulate(odf.begin(), odf.end(), 0.f);
       const auto maxIt = std::max_element(odf.begin(), odf.end());
       const auto shift =
          (len * 3 / 2 - std::distance(odf.begin(), maxIt)) % len;
       std::rotate(
          shiftedOdf.begin(), shiftedOdf.end() - shift, shiftedOdf.end());
+      std::transform(
+         shiftedOdf.begin(), shiftedOdf.end(), shiftedOdf.begin(),
+         [&](float val) { return val / sum; });
       return shiftedOdf;
    }();
 
-   auto expectedValue = 0.;
-   for (auto i = 0; i < shiftedOdf.size(); ++i)
-      expectedValue += i * shiftedOdf[i];
-   expectedValue /= sum;
-
-   auto variance = 0.;
-   for (auto i = 0; i < shiftedOdf.size(); ++i)
-   {
-      const auto tmp = i - expectedValue;
-      variance += tmp * tmp * shiftedOdf[i];
-   }
-   variance /= sum;
+   const auto expectedValue = std::accumulate(
+      pdf.begin(), pdf.end(), 0.f,
+      [i = 0](float result, float val) mutable { return result + i++ * val; });
 
    auto kurtosis = 0.;
-   for (auto i = 0; i < shiftedOdf.size(); ++i)
+   auto variance = 0.;
+   for (auto i = 0; i < pdf.size(); ++i)
    {
       const auto tmp = i - expectedValue;
-      kurtosis += tmp * tmp * tmp * tmp * shiftedOdf[i];
+      variance += tmp * tmp * pdf[i];
+      kurtosis += tmp * tmp * tmp * tmp * pdf[i];
    }
-   kurtosis /= sum * variance * variance;
+   kurtosis /= variance * variance;
 
    const auto isSingleEvent = kurtosis > 20;
    if (debugOutput)
