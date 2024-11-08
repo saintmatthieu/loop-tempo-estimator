@@ -37,28 +37,22 @@ constexpr auto twoPi = 2 * 3.14159265358979323846;
 
 double GetHopSize(int sampleRate, long long numSamples)
 {
-   // Aim for a hop size closest to 10ms, yet dividing `numSamples` to a power
-   // of two. This will spare us the need for resampling when we need to get the
-   // autocorrelation of the ODF using an FFT.
-   const auto idealHopSize = 0.01 * sampleRate;
-   const int exponent = std::round(std::log2(numSamples / idealHopSize));
-   if (exponent < 0)
-      return 0;
-   const auto numFrames = 1 << exponent;
+   const auto numFrames =
+      StftFrameProvider::GetNumFrames(sampleRate, numSamples);
    return 1. * numSamples / numFrames;
 }
 } // namespace
+
+int StftFrameProvider::GetNumFrames(double sampleRate, int numSamples)
+{
+   const double centerHopSize = 0.01 * sampleRate;
+   return std::round(numSamples / centerHopSize);
+}
 
 int StftFrameProvider::GetFftSize(double sampleRate)
 {
    // 2048 frame size for sample rate 44.1kHz
    return 1 << (11 + (int)std::round(std::log2(sampleRate / 44100.)));
-}
-
-int StftFrameProvider::GetNumFrames(double sampleRate, int numSamples)
-{
-   const auto hopSize = GetHopSize(sampleRate, numSamples);
-   return hopSize > 0 ? static_cast<int>(std::round(numSamples / hopSize)) : 0;
 }
 
 StftFrameProvider::StftFrameProvider(const LteAudioReader& audio)
@@ -69,7 +63,6 @@ StftFrameProvider::StftFrameProvider(const LteAudioReader& audio)
     , mNumFrames { GetNumFrames(audio.GetSampleRate(), audio.GetNumSamples()) }
     , mNumSamples { audio.GetNumSamples() }
 {
-   assert(mNumFrames == 0 || IsPowOfTwo(mNumFrames));
 }
 
 bool StftFrameProvider::GetNextFrame(PffftFloatVector& frame)

@@ -1,2 +1,2 @@
-Strict Threshold: 0.9029126288641444
-Lenient Threshold: 0.7520486159580926
+Strict Threshold: 0.8988964786948215
+Lenient Threshold: 0.7407946773562752

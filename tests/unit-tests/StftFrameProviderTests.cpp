@@ -69,11 +69,6 @@ TEST_CASE("StftFrameProvider")
       PffftFloatVector frame;
       REQUIRE(!sut.GetNextFrame(frame));
    }
-   SECTION("has power-of-two number of frames")
-   {
-      StftFrameProvider sut { TestLteAudioReader { 123456 } };
-      REQUIRE(IsPowOfTwo(sut.GetNumFrames()));
-   }
    SECTION("respects LteAudioReader boundaries")
    {
       TestLteAudioReader reader { 123456 };

@@ -140,7 +140,6 @@ std::vector<float> GetOnsetDetectionFunction(
 
    // Close the loop.
    odf.push_back(GetNoveltyMeasure(prevPowSpec, firstPowSpec));
-   assert(IsPowOfTwo(odf.size()));
 
    const auto movingAverage =
       GetMovingAverage(odf, frameProvider.GetFrameRate());
