@@ -262,12 +262,12 @@ bool IsSingleEvent(
    // If it's a single event at the very beginning, since our ODF is circular, a
    // relatively high value may figure at the end of the ODF. So what we do is,
    // we find the largest ODF value, and shift it so that it's in the middle.
-   // (For now we make a copy, for simplicity, but we may want to optimize it.)
    // We take this opportunity to normalize it so that it abides by the
    // definition of a PDF.
    const auto pdf = [&]
    {
       const auto len = static_cast<int>(odf.size());
+      // For now we make a copy, for simplicity, but we may want to optimize it.
       auto shiftedOdf = odf;
       const auto sum = std::accumulate(odf.begin(), odf.end(), 0.f);
       const auto maxIt = std::max_element(odf.begin(), odf.end());
@@ -321,6 +321,7 @@ std::optional<double> GetBpmInternal(
    const auto peakIndices = GetPeakIndices(odf);
    if (debugOutput)
    {
+      debugOutput->odf = odf;
       debugOutput->audioFileDuration = audioFileDuration;
       debugOutput->odfSr = odfSr;
       debugOutput->odfPeakIndices = peakIndices;
@@ -375,9 +376,6 @@ std::optional<double> GetBpmInternal(
    {
       debugOutput->tatumQuantization = experiment;
       debugOutput->bpm = bpm;
-      debugOutput->odf = odf;
-      debugOutput->odfSr = odfSr;
-      debugOutput->audioFileDuration = audioFileDuration;
       debugOutput->score = score;
    }
 
