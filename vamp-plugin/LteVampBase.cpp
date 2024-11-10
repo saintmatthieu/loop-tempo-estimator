@@ -4,9 +4,6 @@
 #include <thread>
 #include <vamp-sdk/PluginAdapter.h>
 
-#ifdef NDEBUG
-#error For some obscure reason, the DLL doesn't get loaded by sonic visualiser when built in Release mode. If you can fix this then please remove this error.
-#endif
 
 namespace
 {
@@ -29,10 +26,6 @@ LteVampBase::LteVampBase(float inputSampleRate)
     , mSampleCount(LTE::FileUtils::ReadFromAppDataFile())
     , mAudioReader(inputSampleRate)
 {
-   // This was an unsuccessfuly attempt to make the plugin work in Sonic
-   // Visualiser also in Release mode. Doesn't work, but let's leave it here to
-   // show that the experiment has already been done.
-   (void*)&vampGetPluginDescriptor;
 }
 
 std::string LteVampBase::getIdentifier() const

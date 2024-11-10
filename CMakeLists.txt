@@ -9,6 +9,9 @@ option(BUILD_VAMP_PLUGIN "Build Vamp plugin" ON)
 set(CMAKE_CXX_STANDARD 17)
 
 if (MSVC)
+    # Fix crash on older runtimes: https://github.com/microsoft/STL/wiki/Changelog#vs-2022-1710
+    add_definitions(-D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR)
+    
     # Suppress specific MSVC warnings
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
     add_compile_options(
