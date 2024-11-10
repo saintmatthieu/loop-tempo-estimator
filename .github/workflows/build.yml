@@ -1,0 +1,43 @@
+name: Build and Publish Vamp Plugin
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        build_type: [Release]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lukka/get-cmake@latest
+
+      - name: Configure CMake
+        run: cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBUILD_VAMP_PLUGIN=ON -S .
+
+      - name: Build
+        run: cmake --build build --config ${{ matrix.build_type }}
+
+      - if: ${{ matrix.os == 'windows-latest' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: loop-tempo-estimator-vamp-windows
+          path: build/vamp-plugin/Release/loop-tempo-estimator-vamp.dll
+
+      - if: ${{ matrix.os == 'macos-latest' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: loop-tempo-estimator-vamp-macos
+          path: build/vamp-plugin/libloop-tempo-estimator-vamp.dylib
+
+      - if: ${{ matrix.os == 'ubuntu-latest' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: loop-tempo-estimator-vamp-linux
+          path: build/vamp-plugin/libloop-tempo-estimator-vamp.so
