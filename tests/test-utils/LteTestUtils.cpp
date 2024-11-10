@@ -22,14 +22,9 @@ quality of classifier and possibly time performance, too.
  */
 #include "LteTestUtils.h"
 
-#define USE_FILESYSTEM (__has_include(<filesystem>) && _WIN32)
-
-#if USE_FILESYSTEM
-#include <filesystem>
-#endif
-
 #include <array>
 #include <cmath>
+#include <filesystem>
 #include <iomanip>
 #include <iostream>
 #include <regex>
