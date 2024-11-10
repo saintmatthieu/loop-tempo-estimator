@@ -24,20 +24,39 @@ jobs:
       - name: Build
         run: cmake --build build --config ${{ matrix.build_type }}
 
+      - name: Copy descriptions
+        run: |
+          cp vamp-plugin/loop-tempo-estimator.cat build/vamp-plugin/
+          cp vamp-plugin/loop-tempo-estimator.n3 build/vamp-plugin/
+
+      - if: ${{ matrix.os == 'windows-latest' }}
+        run: |
+          cp vamp-plugin/loop-tempo-estimator.cat build/vamp-plugin/Release
+          cp vamp-plugin/loop-tempo-estimator.n3 build/vamp-plugin/Release
+
       - if: ${{ matrix.os == 'windows-latest' }}
         uses: actions/upload-artifact@v4
         with:
           name: loop-tempo-estimator-vamp-windows
-          path: build/vamp-plugin/Release/loop-tempo-estimator-vamp.dll
+          path: |
+            build/vamp-plugin/Release/loop-tempo-estimator-vamp.dll
+            build/vamp-plugin/Release/loop-tempo-estimator.cat
+            build/vamp-plugin/Release/loop-tempo-estimator.n3
 
       - if: ${{ matrix.os == 'macos-latest' }}
         uses: actions/upload-artifact@v4
         with:
           name: loop-tempo-estimator-vamp-macos
-          path: build/vamp-plugin/libloop-tempo-estimator-vamp.dylib
+          path: |
+            build/vamp-plugin/libloop-tempo-estimator-vamp.dylib
+            build/vamp-plugin/loop-tempo-estimator.cat
+            build/vamp-plugin/loop-tempo-estimator.n3
 
       - if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: actions/upload-artifact@v4
         with:
           name: loop-tempo-estimator-vamp-linux
-          path: build/vamp-plugin/libloop-tempo-estimator-vamp.so
+          path: |
+            build/vamp-plugin/libloop-tempo-estimator-vamp.so
+            build/vamp-plugin/loop-tempo-estimator.cat
+            build/vamp-plugin/loop-tempo-estimator.n3
