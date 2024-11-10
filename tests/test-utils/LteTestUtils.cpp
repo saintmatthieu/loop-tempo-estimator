@@ -25,7 +25,7 @@ quality of classifier and possibly time performance, too.
 #define USE_FILESYSTEM (__has_include(<filesystem>) && _WIN32)
 
 #if USE_FILESYSTEM
-#   include <filesystem>
+#include <filesystem>
 #endif
 
 #include <array>
@@ -34,9 +34,46 @@ quality of classifier and possibly time performance, too.
 #include <iostream>
 #include <regex>
 
-namespace LTE
+namespace
 {
-void ProgressBar(int width, int percent)
+const auto datasetRoot =
+   std::string(CMAKE_SOURCE_DIR) + "/tests/benchmarking/dataset";
+}
+
+std::vector<std::string> LTE::GetBenchmarkingAudioFiles()
+{
+   const auto pythonScriptPath =
+      std::string(CMAKE_SOURCE_DIR) +
+      "/tests/benchmarking/download-benchmarking-dataset.py";
+   const auto command = "python " + pythonScriptPath + " " + datasetRoot;
+   const auto returnCode = system(command.c_str());
+   if (returnCode != 0)
+      throw std::runtime_error("Failed to download benchmarking dataset!");
+
+   std::vector<std::string> files;
+   namespace fs = std::filesystem;
+   for (const auto& entry : fs::directory_iterator(datasetRoot))
+      for (const auto& subEntry : fs::recursive_directory_iterator(entry))
+         if (
+            subEntry.is_regular_file() && subEntry.path().extension() == ".mp3")
+            files.push_back(subEntry.path().string());
+   std::sort(files.begin(), files.end());
+   return files;
+}
+
+std::string LTE::Pretty(const std::string& filename)
+{
+   // Remove the dataset root from the filename ...
+   const auto datasetRootLength = datasetRoot.length();
+   auto tmp = filename.substr(datasetRootLength + 1);
+   // ... and now the .mp3 extension:
+   tmp = tmp.substr(0, tmp.length() - 4);
+   // Replace backslashes with forward slashes:
+   std::replace(tmp.begin(), tmp.end(), '\\', '/');
+   return tmp;
+}
+
+void LTE::ProgressBar(int width, int percent)
 {
    int progress = (width * percent) / 100;
    std::cout << "[";
@@ -49,24 +86,23 @@ void ProgressBar(int width, int percent)
    std::cout.flush();
 }
 
-OctaveError GetOctaveError(double expected, double actual)
+LTE::OctaveError LTE::GetOctaveError(double expected, double actual)
 {
    constexpr std::array<double, 5> factors { 1., 2., .5, 3., 1. / 3 };
    std::vector<OctaveError> octaveErrors;
    std::transform(
       factors.begin(), factors.end(), std::back_inserter(octaveErrors),
-      [&](double factor) {
+      [&](double factor)
+      {
          const auto remainder = std::log2(factor * actual / expected);
          return OctaveError { factor, remainder };
       });
    return *std::min_element(
-      octaveErrors.begin(), octaveErrors.end(),
-      [](const auto& a, const auto& b) {
-         return std::abs(a.remainder) < std::abs(b.remainder);
-      });
+      octaveErrors.begin(), octaveErrors.end(), [](const auto& a, const auto& b)
+      { return std::abs(a.remainder) < std::abs(b.remainder); });
 }
 
-std::optional<double> GetBpmFromFilename(const std::string& filename)
+std::optional<double> LTE::GetBpmFromFilename(const std::string& filename)
 {
    // regex matching a forward or backward slash:
 
@@ -90,4 +126,3 @@ std::optional<double> GetBpmFromFilename(const std::string& filename)
       }
    return {};
 }
-} // namespace LTE

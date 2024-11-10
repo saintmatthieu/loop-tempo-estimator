@@ -36,6 +36,10 @@ quality of classifier and possibly time performance, too.
 
 namespace LTE
 {
+
+std::vector<std::string> GetBenchmarkingAudioFiles();
+std::string Pretty(const std::string& filename);
+
 struct RocInfo
 {
    const double areaUnderCurve;
@@ -70,9 +74,9 @@ GetRocInfo(std::vector<Result> results, double allowedFalsePositiveRate = 0.)
    allowedFalsePositiveRate = std::clamp(allowedFalsePositiveRate, 0., 1.);
 
    // Sort the results by score, descending.
-   std::sort(results.begin(), results.end(), [](const auto& a, const auto& b) {
-      return a.score > b.score;
-   });
+   std::sort(
+      results.begin(), results.end(),
+      [](const auto& a, const auto& b) { return a.score > b.score; });
 
    const auto size = results.size();
    const auto numPositives = count_if(results.begin(), results.end(), truth);
