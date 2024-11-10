@@ -1,4 +1,6 @@
 #include "FloatVectorLteAudioReader.h"
+
+#include <algorithm>
 #include <numeric>
 
 FloatVectorLteAudioReader::FloatVectorLteAudioReader(double sampleRate)

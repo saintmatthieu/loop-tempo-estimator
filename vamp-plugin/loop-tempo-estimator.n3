@@ -1,0 +1,209 @@
+@prefix rdfs:     <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:      <http://www.w3.org/2001/XMLSchema#> .
+@prefix vamp:     <http://purl.org/ontology/vamp/> .
+@prefix plugbase: <https://github.com/saintmatthieu/loop-tempo-estimatorlibloop-tempo-estimator-vamp#> .
+@prefix owl:      <http://www.w3.org/2002/07/owl#> .
+@prefix dc:       <http://purl.org/dc/elements/1.1/> .
+@prefix af:       <http://purl.org/ontology/af/> .
+@prefix foaf:     <http://xmlns.com/foaf/0.1/> .
+@prefix doap:     <http://usefulinc.com/ns/doap#> .
+@prefix cc:       <http://web.resource.org/cc/> .
+@prefix :         <#> .
+
+
+## Properties of this document
+
+<> a vamp:PluginDescription ;
+    foaf:maker          <https://github.com/saintmatthieu> ;
+    foaf:maker         <http://vamp-plugins.org/rdf/template-generator> ;
+    foaf:primaryTopic  <https://github.com/saintmatthieu/loop-tempo-estimatorlibloop-tempo-estimator-vamp> .
+
+
+## Maker of the whole plugin library
+
+:library_maker
+    foaf:name  "The Audacity Team" ;
+#   foaf:page  <> ;  # Place maker's homepage URL in here and uncomment
+#   foaf:logo  <> ;  # URL of an image here, if you happen to have a logo
+    .
+
+
+## Properties of the plugin library, and references to the plugins it contains
+
+plugbase:library a vamp:PluginLibrary ;
+    vamp:identifier        "libloop-tempo-estimator-vamp" ;
+    foaf:maker             :library_maker ; 
+    vamp:available_plugin  plugbase:loop-tempo-estimator ; 
+    vamp:available_plugin  plugbase:loop_tempo_estimator_steps ; 
+#   dc:title               "" ;  # Place library name here and uncomment
+#   dc:description         "" ;  # Place library description here and uncomment
+#   foaf:page              <> ;  # Place more-info HTML page URL here and uncomment
+#   doap:download-page     <> ;  # Place download HTML page URL here and uncomment
+    .
+
+
+## Properties of the Loop Tempo Estimator plugin
+
+plugbase:loop-tempo-estimator a vamp:Plugin ;
+    dc:title              "Loop Tempo Estimator" ;
+    vamp:name             "Loop Tempo Estimator" ;
+    dc:description        """Estimate the tempo of a loop, if it is one.""" ;
+    foaf:maker            :library_maker ;
+    dc:rights             """GPL""" ;
+#   cc:license            <Place plugin license URI here and uncomment> ; 
+    vamp:identifier       "loop-tempo-estimator" ;
+    vamp:vamp_API_version vamp:api_version_2 ;
+    owl:versionInfo       "1" ;
+    vamp:input_domain     vamp:TimeDomain ;
+    vamp:parameter   plugbase:loop-tempo-estimator_param_threshold ;
+    vamp:parameter   plugbase:loop-tempo-estimator_param_attach_hack ;
+
+    vamp:output      plugbase:loop-tempo-estimator_output_tempo ;
+    .
+plugbase:loop-tempo-estimator_param_threshold a  vamp:QuantizedParameter ;
+    vamp:identifier     "threshold" ;
+    dc:title            "Threshold" ;
+    dc:format           "" ;
+    vamp:min_value       0 ;
+    vamp:max_value       1 ;
+    vamp:unit           "" ;
+    vamp:quantize_step   1  ;
+    vamp:default_value   0 ;
+    vamp:value_names     ( "Strict" "Lenient");
+    .
+plugbase:loop-tempo-estimator_param_attach_hack a  vamp:QuantizedParameter ;
+    vamp:identifier     "attach_hack" ;
+    dc:title            "Attach hack (dev only)" ;
+    dc:format           "" ;
+    vamp:min_value       0 ;
+    vamp:max_value       1 ;
+    vamp:unit           "" ;
+    vamp:quantize_step   1  ;
+    vamp:default_value   0 ;
+    vamp:value_names     ( "No" "Yes");
+    .
+plugbase:loop-tempo-estimator_output_tempo a  vamp:SparseOutput ;
+    vamp:identifier       "tempo" ;
+    dc:title              "Tempo" ;
+    dc:description        """Tempo (BPM) or 0 if not a loop"""  ;
+    vamp:fixed_bin_count  "true" ;
+    vamp:unit             "bpm" ;
+    vamp:bin_count        1 ;
+    vamp:sample_type      vamp:VariableSampleRate ;
+#   vamp:computes_event_type   <Place event type URI here and uncomment> ;
+#   vamp:computes_feature      <Place feature attribute URI here and uncomment> ;
+#   vamp:computes_signal_type  <Place signal type URI here and uncomment> ;
+    .
+
+## Properties of the Loop Tempo Estimator Steps plugin
+
+plugbase:loop_tempo_estimator_steps a vamp:Plugin ;
+    dc:title              "Loop Tempo Estimator Steps" ;
+    vamp:name             "Loop Tempo Estimator Steps" ;
+    dc:description        """Insight into the loop tempo estimation process.""" ;
+    foaf:maker            :library_maker ;
+    dc:rights             """GPL""" ;
+#   cc:license            <Place plugin license URI here and uncomment> ; 
+    vamp:identifier       "loop_tempo_estimator_steps" ;
+    vamp:vamp_API_version vamp:api_version_2 ;
+    owl:versionInfo       "1" ;
+    vamp:input_domain     vamp:TimeDomain ;
+    vamp:parameter   plugbase:loop_tempo_estimator_steps_param_attach_hack ;
+
+    vamp:output      plugbase:loop_tempo_estimator_steps_output_stft ;
+    vamp:output      plugbase:loop_tempo_estimator_steps_output_compressed_stft ;
+    vamp:output      plugbase:loop_tempo_estimator_steps_output_raw_odf ;
+    vamp:output      plugbase:loop_tempo_estimator_steps_output_moving_average ;
+    vamp:output      plugbase:loop_tempo_estimator_steps_output_enhanced_odf ;
+    vamp:output      plugbase:loop_tempo_estimator_steps_output_tatum_positions ;
+    .
+plugbase:loop_tempo_estimator_steps_param_attach_hack a  vamp:QuantizedParameter ;
+    vamp:identifier     "attach_hack" ;
+    dc:title            "Attach hack (dev only)" ;
+    dc:format           "" ;
+    vamp:min_value       0 ;
+    vamp:max_value       1 ;
+    vamp:unit           "" ;
+    vamp:quantize_step   1  ;
+    vamp:default_value   0 ;
+    vamp:value_names     ( "No" "Yes");
+    .
+plugbase:loop_tempo_estimator_steps_output_stft a  vamp:DenseOutput ;
+    vamp:identifier       "stft" ;
+    dc:title              "1. STFT" ;
+    dc:description        """Short-time Fourier transform of the looped audio,
+i.e., the last frame overlaps the end and the beginning of the audio."""  ;
+    vamp:fixed_bin_count  "true" ;
+    vamp:unit             "" ;
+    vamp:bin_count        513 ;
+#   vamp:computes_event_type   <Place event type URI here and uncomment> ;
+#   vamp:computes_feature      <Place feature attribute URI here and uncomment> ;
+#   vamp:computes_signal_type  <Place signal type URI here and uncomment> ;
+    .
+plugbase:loop_tempo_estimator_steps_output_compressed_stft a  vamp:DenseOutput ;
+    vamp:identifier       "compressed_stft" ;
+    dc:title              "2. Compressed STFT" ;
+    dc:description        """STFT is logarithmically compressed, c.f. Meinhard Müller's
+Fundamentals of Music Processing"""  ;
+    vamp:fixed_bin_count  "true" ;
+    vamp:unit             "" ;
+    vamp:bin_count        513 ;
+#   vamp:computes_event_type   <Place event type URI here and uncomment> ;
+#   vamp:computes_feature      <Place feature attribute URI here and uncomment> ;
+#   vamp:computes_signal_type  <Place signal type URI here and uncomment> ;
+    .
+plugbase:loop_tempo_estimator_steps_output_raw_odf a  vamp:DenseOutput ;
+    vamp:identifier       "raw_odf" ;
+    dc:title              "3. 'Raw' Onset Detection Function" ;
+    dc:description        """ODF with magnitude-based novelty measure"""  ;
+    vamp:fixed_bin_count  "true" ;
+    vamp:unit             "" ;
+    a                 vamp:KnownExtentsOutput ;
+    vamp:min_value    0  ;
+    vamp:max_value    1  ;
+    vamp:bin_count        1 ;
+#   vamp:computes_event_type   <Place event type URI here and uncomment> ;
+#   vamp:computes_feature      <Place feature attribute URI here and uncomment> ;
+#   vamp:computes_signal_type  <Place signal type URI here and uncomment> ;
+    .
+plugbase:loop_tempo_estimator_steps_output_moving_average a  vamp:DenseOutput ;
+    vamp:identifier       "moving_average" ;
+    dc:title              "4. ODF moving average" ;
+    dc:description        """Take a moving average of the ODF"""  ;
+    vamp:fixed_bin_count  "true" ;
+    vamp:unit             "" ;
+    a                 vamp:KnownExtentsOutput ;
+    vamp:min_value    0  ;
+    vamp:max_value    1  ;
+    vamp:bin_count        1 ;
+#   vamp:computes_event_type   <Place event type URI here and uncomment> ;
+#   vamp:computes_feature      <Place feature attribute URI here and uncomment> ;
+#   vamp:computes_signal_type  <Place signal type URI here and uncomment> ;
+    .
+plugbase:loop_tempo_estimator_steps_output_enhanced_odf a  vamp:DenseOutput ;
+    vamp:identifier       "enhanced_odf" ;
+    dc:title              "5. Enhanced ODF" ;
+    dc:description        """ODF less the moving average"""  ;
+    vamp:fixed_bin_count  "true" ;
+    vamp:unit             "" ;
+    a                 vamp:KnownExtentsOutput ;
+    vamp:min_value    0  ;
+    vamp:max_value    1  ;
+    vamp:bin_count        1 ;
+#   vamp:computes_event_type   <Place event type URI here and uncomment> ;
+#   vamp:computes_feature      <Place feature attribute URI here and uncomment> ;
+#   vamp:computes_signal_type  <Place signal type URI here and uncomment> ;
+    .
+plugbase:loop_tempo_estimator_steps_output_tatum_positions a  vamp:SparseOutput ;
+    vamp:identifier       "tatum_positions" ;
+    dc:title              "6. Tatum Positions" ;
+    dc:description        """Tatum Positions (based on estimated tatum rate)"""  ;
+    vamp:fixed_bin_count  "true" ;
+    vamp:unit             "" ;
+    vamp:bin_count        0 ;
+    vamp:sample_type      vamp:VariableSampleRate ;
+#   vamp:computes_event_type   <Place event type URI here and uncomment> ;
+#   vamp:computes_feature      <Place feature attribute URI here and uncomment> ;
+#   vamp:computes_signal_type  <Place signal type URI here and uncomment> ;
+    .
+

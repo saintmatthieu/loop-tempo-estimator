@@ -9,6 +9,9 @@ option(BUILD_VAMP_PLUGIN "Build Vamp plugin" ON)
 set(CMAKE_CXX_STANDARD 17)
 
 if (MSVC)
+    # Fix crash on older runtimes: https://github.com/microsoft/STL/wiki/Changelog#vs-2022-1710
+    add_definitions(-D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR)
+    
     # Suppress specific MSVC warnings
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
     add_compile_options(
@@ -19,7 +22,6 @@ if (MSVC)
         /wd4305  # Truncation from 'type1' to 'type2'
     )
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static")
     # Suppress equivalent GCC/Clang warnings
     add_compile_options(
         -D_CRT_SECURE_NO_WARNINGS  # Define macro (harmless on non-MSVC compilers)
@@ -60,6 +62,7 @@ add_library(loop-tempo-estimator ${SOURCES})
 
 # Link libraries
 target_link_libraries(loop-tempo-estimator PUBLIC pffft)
+set_target_properties(loop-tempo-estimator PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 target_include_directories(loop-tempo-estimator
    PUBLIC
