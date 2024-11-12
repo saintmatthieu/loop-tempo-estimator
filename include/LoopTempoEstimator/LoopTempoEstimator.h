@@ -24,6 +24,7 @@ quality of classifier and possibly time performance, too.
 
 #include "LoopTempoEstimator/LteTypes.h"
 
+#include <chrono>
 #include <functional>
 #include <optional>
 #include <string>
@@ -77,6 +78,7 @@ int GetOdfSize(double sampleRate, int numSamples);
 std::optional<double> GetBpm(
    const LteAudioReader& source, FalsePositiveTolerance tolerance,
    const std::function<void(double)>& progressCallback,
-   QuantizationFitDebugOutput* debugOutput = nullptr);
+   QuantizationFitDebugOutput* debugOutput = nullptr,
+   const std::optional<std::chrono::seconds>& upperTimeLimit = std::chrono::seconds{ 60 });
 
 } // namespace LTE

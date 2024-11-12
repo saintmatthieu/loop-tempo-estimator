@@ -48,12 +48,13 @@ int LTE::GetOdfSize(double sampleRate, int numSamples)
 std::optional<double> LTE::GetBpm(
    const LteAudioReader& audio, FalsePositiveTolerance tolerance,
    const std::function<void(double)>& progressCallback,
-   QuantizationFitDebugOutput* debugOutput)
+   QuantizationFitDebugOutput* debugOutput,
+   const std::optional<std::chrono::seconds>& maxDuration)
 {
    if (audio.GetSampleRate() <= 0)
       return {};
    const auto duration = 1. * audio.GetNumSamples() / audio.GetSampleRate();
-   if (duration > 60)
+   if (maxDuration.has_value() && duration > maxDuration->count())
       // A file longer than 1 minute is most likely not a loop, and processing
       // it would be costly.
       return {};

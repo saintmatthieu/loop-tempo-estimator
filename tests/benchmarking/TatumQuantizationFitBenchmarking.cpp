@@ -88,7 +88,8 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
          checksum += GetChecksum(audio);
          QuantizationFitDebugOutput debugOutput;
          std::function<void(double)> progressCb;
-         GetBpm(audio, lenientTolerance, progressCb, &debugOutput);
+         const std::optional<std::chrono::seconds> noUpperDuration;
+         GetBpm(audio, lenientTolerance, progressCb, &debugOutput, noUpperDuration);
 
          ProgressBar(progressBarWidth, 100 * count++ / numFiles);
          const auto expected = GetBpmFromFilename(audioFile);
