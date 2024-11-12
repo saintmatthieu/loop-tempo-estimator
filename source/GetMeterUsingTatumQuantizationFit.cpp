@@ -214,19 +214,10 @@ OnsetQuantization RunQuantizationExperiment(
    return { error, lag, mostLikelyNumTatums };
 }
 
-double GetBpmLikelihood(double bpm)
-{
-   constexpr auto expectedValue = 115.;
-   constexpr auto stdDev = 25.;
-   const auto tmp = (bpm - expectedValue) / stdDev;
-   return std::exp(-.5 * tmp * tmp);
-}
-
-size_t GetBestBarDivisionIndex(
+double GetMostLikelyBpmFromQuantizationExperiment(
+   const std::vector<float>& odf, int tatumsCount,
    const std::vector<int>& possibleNumBars, double audioFileDuration,
-   int numTatums, const std::vector<float>& odf,
    QuantizationFitDebugOutput* debugOutput)
-
 {
    std::vector<double> scores(possibleNumBars.size());
    std::transform(
@@ -235,18 +226,10 @@ size_t GetBestBarDivisionIndex(
       {
          const auto numBeats = numBars * beatsPerBar;
          const auto bpm = 1. * numBeats / audioFileDuration * 60;
-         return GetBpmLikelihood(bpm);
+         return std::abs(bpm - 120);
       });
-   return std::max_element(scores.begin(), scores.end()) - scores.begin();
-}
-
-double GetMostLikelyBpmFromQuantizationExperiment(
-   const std::vector<float>& odf, int tatumsCount,
-   const std::vector<int>& possibleNumBars, double audioFileDuration,
-   QuantizationFitDebugOutput* debugOutput)
-{
-   const auto winnerIndex = GetBestBarDivisionIndex(
-      possibleNumBars, audioFileDuration, tatumsCount, odf, debugOutput);
+   const auto winnerIndex =
+      std::max_element(scores.begin(), scores.end()) - scores.begin();
    const auto& numBars = possibleNumBars[winnerIndex];
    const auto numBeats = numBars * beatsPerBar;
    return 60. * numBeats / audioFileDuration;
