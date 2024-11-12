@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <title>
+      An Efficient Open-Source C++ Loop Classifier and Tempo Estimator
+    </title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js@4.4.0/dist/reset.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js@4.4.0/dist/reveal.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js@4.4.0/dist/theme/black.css"
+    />
+
+    <!-- Theme used for syntax highlighted code -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js@4.4.0/plugin/highlight/monokai.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+
+    <!-- Initialize highlight.js -->
+    <script>
+      hljs.highlightAll()
+    </script>
+
+    <style>
+      /* Own tag for an img with the properties: style="clip-path: inset(0px 0px 0px 25px); width: 700px; height: 700px;">*/
+      .sonic-visualiser {
+        clip-path: inset(0px 0px 0px 32px);
+        /* alignment */
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+      }
+
+      .reveal-viewport {
+        background-image: url("./background.png");
+        background-size: cover;
+        position: relative;
+      }
+      /* Overlay for transparency */
+      .reveal-viewport::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(
+          0,
+          0,
+          0,
+          0.85
+        ); /* Adjust the color and transparency */
+        z-index: 1;
+      }
+      /* add a layer that places ./Muse_logo.svg in the top left corner */
+      .reveal-viewport::after {
+        content: "";
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        width: 100%;
+        height: 100%;
+        background-image: url("./Muse_logo.svg");
+        background-size: 10%;
+        background-repeat: no-repeat;
+        background-position: 10px 10px;
+        z-index: 1;
+      }
+      /* Add a footer with "Matthieu Hodgkinson" */
+      .reveal::after {
+        content: "Matthieu Hodgkinson, An Efficient Open-Source C++ Loop Classifier and Tempo Estimator, ADC 2024";
+        position: absolute;
+        bottom: 20px;
+        left: 30px;
+        font-size: 16px;
+        color: white;
+        z-index: 2;
+        opacity: 0.7; /* Adjust as needed */
+      }
+      /* Content styling to make sure it's above the overlay */
+      .reveal {
+        position: relative;
+        z-index: 2;
+      }
+    </style>
+
+    <style>
+      .multiCol {
+        display: table;
+        table-layout: fixed;
+        width: 100%;
+        text-align: left;
+      }
+      .multiCol .col1 {
+        display: table-cell;
+        vertical-align: middle; /* Center the text vertically */
+        width: 70%;
+        padding: 0 0 2% 3%;
+      }
+      .multiCol .col2 {
+        display: table-cell;
+        vertical-align: middle; /* Center the text vertically */
+        width: 30%;
+        padding: 2% 0 2% 0;
+      }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/abcjs@6.0.0/dist/abcjs-basic-min.js"></script>
+
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      td,
+      th {
+        padding: 8px;
+        vertical-align: middle; /* Centers content vertically */
+      }
+    </style>
+  </head>
+
+  <body>
+    <audio
+      id="press-a-to-toggle-play"
+      src="[Drumbeats (Melodic)] 120 bpm house loop.mp3"
+    ></audio>
+    <audio
+      id="press-t-to-toggle-play"
+      src="[Drumbeats (Melodic)] 120 bpm house loop - with tatums.mp3"
+    ></audio>
+    <div class="reveal">
+      <div class="slides">
+        <section
+          data-background="./An Efficient Open-Source C++ Loop Classifier and Tempo Estimator_TitleCard.png"
+        ></section>
+
+        <section>
+          <h2>The algorithm's (new) home</h2>
+          <p>
+            <a href="https://github.com/saintmatthieu/loop-tempo-estimator"
+              >github.com/saintmatthieu/loop-tempo-estimator</a
+            >
+          </p>
+          <p>Released with Audacity 3.5, now has its own repo :</p>
+          <ul>
+            <li class="fragment">light-weight library</li>
+            <li class="fragment">simplifications & better performance !</li>
+            <li class="fragment">vamp plugin</li>
+            <li class="fragment">this presentation <code>:)</code></li>
+          </ul>
+        </section>
+
+        <!--section>
+          <section>
+            <h1>A CHRONOLOGY</h1>
+            <p>of Audacity's last 12 months</p>
+          </section>
+          <section>
+            <h3>November 2nd of last year</h3>
+            <p>Audacity 3.4 with new time stretching</p>
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/xgdYuSHdkso?si=iWWZMxCZsSlrxmRJ"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </section>
+          <section>
+            <h3>What next ?</h3>
+            <p class="fragment">Tempo detection, of course.</p>
+            <div class="fragment">
+              <p>&rarr; April 22nd of this year</p>
+              <iframe
+                width="560"
+                height="315"
+                src="https://www.youtube.com/embed/qEAZv_o0HuQ?si=qBoOlQ2X2jm5IwPD&amp;start=600"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </section>
+
+          <section>
+            <h3>July 30th</h3>
+            <p>This talk's proposal accepted for ADC</p>
+            <p class="fragment">
+              &rarr; extract algorithm from Audacity into
+              <a href="https://github.com/saintmatthieu/loop-tempo-estimator"
+                >github.com/saintmatthieu/loop-tempo-estimator</a
+              >
+              :
+            </p>
+            <ul>
+              <li class="fragment">light-weight library</li>
+              <li class="fragment">simplifications & better performance !</li>
+              <li class="fragment">vamp plugin</li>
+              <li class="fragment">this presentation <code>:)</code></li>
+            </ul>
+          </section>
+          <section data-auto-animate>
+            <h3>Will it be integrated back ?</h3>
+            <div class="multiCol">
+              <div class="col1">
+                <video data-id="audacity" src="./Audacity 3 - 4.mp4"></video>
+              </div>
+              <div class="col2">
+                <p>Not in Audacity 3, which is being sunset, but ...</p>
+              </div>
+            </div>
+          </section>
+          <section data-auto-animate>
+            <h3>Will it be integrated back ?</h3>
+            <div class="multiCol">
+              <div class="col1">
+                <video
+                  id="Audacity 3 - 4"
+                  data-id="audacity"
+                  src="./Audacity 3 - 4.mp4"
+                  autoplay
+                  muted
+                ></video>
+              </div>
+              <div class="col2">
+                <p>Not in Audacity 3, which is being sunset, but ...</p>
+                <p>in <strong>Audacity 4</strong> !</p>
+              </div>
+            </div>
+          </section>
+        </section-->
+
+        <section>
+          <section>
+            <h1>The Algorithm</h1>
+          </section>
+
+          <section>
+            <h3>Requirements</h3>
+            <ul>
+              <li class="fragment">Confidence value</li>
+              <li class="fragment">Short-file support</li>
+              <li class="fragment">Loop support</li>
+              <li class="fragment">4/4</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>First things first</h2>
+            <p>
+              Get a nice, <br />
+              <em>circular</em> <strong>Onset Detection Function</strong><br />
+              (ODF) that works for us.
+            </p>
+            <p class="fragment" style="font-size: 60%">
+              Largely taken from <em>Fundamentals of Music Processing</em> by Meinard Müller
+            </p>
+          </section>
+
+          <section>
+            <h3>ODF 1. Downsample by decimation</h3>
+            <ul>
+              <li class="fragment">improves efficiency</li>
+              <li class="fragment">aliasing won't hurt.</li>
+              <li class="fragment">&darr; to 24kHz or a bit less,<br/>i.e. 44.1 and 48kHz by 2</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>ODF 2. Circular STFT</h2>
+            <p>Short-Time Fourier Transform, aka</p>
+            <p>spectrogram.</p>
+          </section>
+
+          <section data-transition="slide-in fade-out">
+            <div class="multiCol">
+              <div class="col1">
+                <div style="position: relative; width: 100%; height: 600px">
+                  <img
+                    src="./py_stft.svg"
+                    style="
+                      position: absolute;
+                      top: 0;
+                      left: 0;
+                      width: 100%;
+                      height: 100%;
+                    "
+                  />
+                </div>
+              </div>
+              <div class="col2">
+                <p>We can discard phase and only keep the power spectrum.</p>
+              </div>
+            </div>
+          </section>
+
+          <section data-transition="fade-in slide-out">
+            <div class="multiCol">
+              <div class="col1">
+                <div style="position: relative; width: 100%; height: 600px">
+                  <img
+                    src="./py_stft.svg"
+                    style="
+                      position: absolute;
+                      top: 0;
+                      left: 0;
+                      width: 100%;
+                      height: 100%;
+                    "
+                  />
+                  <img
+                    src="./py_stft_zoomed.svg"
+                    style="
+                      position: absolute;
+                      top: 35%;
+                      left: 15%;
+                      width: 50%;
+                      opacity: 1;
+                    "
+                  />
+                </div>
+              </div>
+              <div class="col2">
+                <p>
+                  Let's see how we get each of these columns ...
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section data-transition="fade-in fade-out">
+            <h4>ODF 2. Circular STFT</h4>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./circular_stft_0.svg" />
+              </div>
+              <div class="col2"></div>
+            </div>
+          </section>
+          <section data-transition="none">
+            <h4>ODF 2. Circular STFT</h4>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./circular_stft_1.svg" />
+              </div>
+              <div class="col2">
+                <p>Even division closest to desired "hop size" (10ms)</p>
+              </div>
+            </div>
+          </section>
+          <section data-transition="none">
+            <h4>ODF 2. Circular STFT</h4>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./circular_stft_2.svg" />
+              </div>
+              <div class="col2">
+                <p>Take windows of about 45ms</p>
+              </div>
+            </div>
+          </section>
+          <section data-transition="none">
+            <h4>ODF 2. Circular STFT</h4>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./circular_stft_3.svg" />
+              </div>
+              <div class="col2">
+                <p>Take windows of about 45ms</p>
+              </div>
+            </div>
+          </section>
+          <section data-transition="none">
+            <h4>ODF 2. Circular STFT</h4>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./circular_stft_4.svg" />
+              </div>
+              <div class="col2">
+                <p>Take windows of about 45ms</p>
+              </div>
+            </div>
+          </section>
+          <section data-transition="none">
+            <h4>ODF 2. Circular STFT</h4>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./circular_stft_5.svg" />
+              </div>
+              <div class="col2">
+                <p>Make sure they wrap-around.</p>
+              </div>
+            </div>
+          </section>
+          <section data-transition="none">
+            <h4>ODF 2. Circular STFT</h4>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./circular_stft_6.svg" />
+              </div>
+              <div class="col2">
+                <p>Make sure they wrap-around.</p>
+                <p class="fragment">Note: window integrates to 1.</p>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h4>ODF 3. Logarithmic compression</h4>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./logarithmic_compression.svg" />
+              </div>
+              <div class="col2">
+                <p style="font-size:90%">Gives more prominence to low-energy components</p>
+                <p style="font-size:70%">(even more so than with regular<br/><code style="font-size: smaller;">log(spectrum)</code>)</p>
+              </div>
+            </div>
+          </section>
+
+          <!--section data-transition="slide-in none">
+            <h4>ODF 3. Logarithmic compression</h4>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./py_stft_raw.svg" />
+              </div>
+              <div class="col2">
+                <p>We now have our circular STFT</p>
+              </div>
+            </div>
+          </section>
+
+          <section data-transition="none">
+            <h4>ODF 3. Logarithmic compression</h4>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./py_stft_raw.svg" />
+              </div>
+              <div class="col2" style="text-align: center; font-size: 80%">
+                <p style="font-size: 120%">Enhance contrast applying this:</p>
+                <p>\( Y =\)</p>
+                <p>\( \log(1+100\sqrt X) \)</p>
+              </div>
+            </div>
+          </section>
+
+          <section data-transition="none">
+            <h4>ODF 3. Logarithmic compression</h4>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./py_stft.svg" />
+              </div>
+              <div class="col2" style="text-align: center; font-size: 80%">
+                <p style="font-size: 120%">Enhance contrast applying this:</p>
+                <p>\( Y =\)</p>
+                <p>\( \log(1+100\sqrt X) \)</p>
+              </div>
+            </div>
+          </section-->
+
+          <section data-transition="slide-in fade-out">
+            <h4>ODF 4. Novelty function</h4>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./py_stft_with_rawOdf.svg" />
+              </div>
+              <div class="col2" style="text-align: center">
+                <p>Summed energy increases between consecutive columns :</p>
+                <p style="font-size: 50%">
+                  \( O[n] = \)<br />
+                  \(\sum_k \max(0, X_{k,n} - X_{k, n-1}) \)
+                </p>
+              </div>
+            </div>
+          </section>
+          <section data-transition="fade-in fade-out">
+            <h4>ODF 4. Novelty function</h4>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./py_stft_with_rawOdf.svg" />
+              </div>
+              <div class="col2">
+                <p>Still noisy, though.</p>
+              </div>
+            </div>
+          </section>
+          <section data-transition="fade-in fade-out">
+            <h4>ODF 4. Novelty function</h4>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./py_stft_with_movingAverage.svg" />
+              </div>
+              <div class="col2">
+                <p>Take moving average<br />...</p>
+              </div>
+            </div>
+          </section>
+          <section data-transition="none">
+            <h4>ODF 4. Novelty function</h4>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./py_stft_with_odf.svg" />
+              </div>
+              <div class="col2">
+                <p>...</p>
+                <p>and subtract it.</p>
+              </div>
+            </div>
+          </section>
+          <section data-transition="fade-in slide-out">
+            <h4>Voilà !</h4>
+            <img src="./py_odf.svg"/>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Tatum quantization fit</h2>
+            <p style="font-size: 30%">What the heck is that?</p>
+          </section>
+          <section>
+            <h4>What the heck is a tatum ?</h4>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./py_stft_with_tatum_grid.svg" />
+              </div>
+              <div class="col2">
+                <p style="font-size:90%"><em>The smallest time interval between successive notes in a rhythmic phrase.</em></p>
+                <p style="font-size: smaller;">Jeff A. Blimes, 1993</p>
+              </div>
+            </div>
+          </section>
+          <section>
+            <h3>Tatum Quantization Fit</h3>
+            <p>
+              Try different tatum rate hypotheses and see they fit.
+            </p>
+            <p class="fragment">
+              !!! More hypotheses means more false positives !!!
+            </p>
+            <p class="fragment">
+              &rarr; Restrict hypotheses to musically realistic ones.
+            </p>
+          </section>
+
+          <section>
+            <h4>Restrict hypotheses 1 :<br/>Tatums-per-bar</h4>
+            <style>
+              audio {
+                height: 30px; /* Adjust as needed */
+              }
+            </style>
+            <table style="font-size: 0.5em">
+              <tr>
+                <td>1</td>
+                <td>
+                  <audio controls>
+                    <source
+                      src="./234301__waveplaysfx__synth-melody-melodramatic-melody.mp3"
+                      type="audio/mpeg"
+                    />
+                  </audio>
+                </td>
+                <td>
+                  <a
+                    href="https://freesound.org/people/waveplaySFX/sounds/234301/?"
+                    >[Synth melody] melodramatic melody by waveplaySFX</a
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>
+                  <audio controls>
+                    <source
+                      src="./690410__loopdilla__hip-hop-pad-loop-02.mp3"
+                      type="audio/mpeg"
+                    />
+                  </audio>
+                </td>
+                <td>
+                  <a
+                    href="https://freesound.org/people/LoopDilla/sounds/690410/"
+                    >Hip Hop Pad Loop 02 by LoopDilla</a
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>
+                  <audio controls>
+                    <source
+                      src="./517337__f-r-a-g-i-l-e__analog-80s-pad-subtle-reverse-loop.mp3"
+                      type="audio/mpeg"
+                    />
+                  </audio>
+                </td>
+                <td>
+                  <a
+                    href="https://freesound.org/people/f-r-a-g-i-l-e/sounds/517337/"
+                    >Analog 80's Pad, Subtle Reverse Loop by f-r-a-g-i-l-e</a
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td>
+                  <audio controls>
+                    <source
+                      src="./536488__jadis0x__piano-bass-melody-loop.mp3"
+                      type="audio/mpeg"
+                    />
+                  </audio>
+                </td>
+                <td>
+                  <a href="https://freesound.org/people/jadis0x/sounds/536488/?"
+                    >Piano + Bass Melody (Loop) by Jadis0x_</a
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td>12</td>
+                <td>
+                  <audio controls>
+                    <source
+                      src="./353120__timbre__looped-bit-2-of-jimrsbjorklunds-353081.mp3"
+                      type="audio/mpeg"
+                    />
+                  </audio>
+                </td>
+                <td>
+                  <a href="https://freesound.org/people/Timbre/sounds/353120/"
+                    >looped bit #2 of jimrsbjorklund's #353081.wav by Timbre</a
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td>16</td>
+                <td>
+                  <audio controls>
+                    <source
+                      src="./483494__josefpres__disco-guitar-loop-120-bpm.mp3"
+                      type="audio/mpeg"
+                    />
+                  </audio>
+                </td>
+                <td>
+                  <a
+                    href="https://freesound.org/people/josefpres/sounds/483494/"
+                    >Disco guitar loop 120 bpm.wav by josefpres</a
+                  >
+                </td>
+              </tr>
+              <tr>
+                <td>24</td>
+                <td>
+                  <audio controls>
+                    <source
+                      src="./568334__williamkitchener__f-minor-solo-synth-funk-loop-110bpm.mp3"
+                      type="audio/mpeg"
+                    />
+                  </audio>
+                </td>
+                <td>
+                  <a
+                    href="https://freesound.org/people/WilliamKitchener/sounds/568334/?"
+                    >F Minor Solo Synth Funk Loop 110bpm.wav by
+                    williamkitchener</a
+                  >
+                </td>
+              </tr>
+            </table>
+          </section>
+
+          <section>
+            <h4>Restrict hypotheses 2 :<br/>
+              Bar count</h4>
+            <div class="multiCol">
+              <div class="col1" style="width:50%">
+                <img src="./gtzan_bpm_histogram.svg" />
+              </div>
+              <div class="col2" style="width:50%; font-size: 90%;">
+                <p class="fragment">Loop assumption<br/>&rarr; round num. of bars<br/>(2, 3, 4, ... not 3.5 bars)</p>
+                <p class="fragment">Exclude bar counts implying unrealistic tempi<br/>(5s-loop can't be 10 bars)</p>
+              </div>
+            </div>
+          </section>
+
+          <section data-transition="none">
+            <h3>5s-audio Example</h3>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./possible_tatum_counts.svg" style="width: 700px" />
+              </div>
+              <div class="col2">
+                <p class="fragment" style="font-size: smaller">
+                  Restrict bar count to 2, 3 or 4 bars.
+                </p>
+                <p class="fragment" style="font-size: 60%">
+                  1 bar &rarr; 48 BPM ; too slow<br />
+                  5 bars &rarr; 240 BPM ; too fast<br />
+                </p>
+              </div>
+            </div>
+          </section>
+          <section data-transition="none">
+            <h3>5s-audio Example</h3>
+            <div class="multiCol">
+              <div class="col1">
+                <img
+                  src="./possible_tatum_counts_barred.svg"
+                  style="width: 700px"
+                />
+              </div>
+              <div class="col2">
+                <p>Restrict tatum rate</p>
+                  <div style="font-size: 60%;">
+                    <p class="fragment">
+                      48 tat / 5 s &rarr;<br />
+                      9.6 tat / s, still ok.
+                    </p>
+                    <p class="fragment">
+                      64 tat / 5 s &rarr;<br />
+                      12.8 tat / s, too fast.
+                    </p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Tatum quantization fit algorithm</h2>
+            <p>Now we have our set of hypotheses,<br />how do we try them ?</p>
+          </section>
+
+          <section>
+            <h3>ODF / tatum-rate match score</h3>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./tatum_quantization_fit_24_zoomed.svg" />
+              </div>
+              <div class="col2">
+                <p>
+                  For each peak, distance to nearest tatum times peak value.
+                </p>
+              </div>
+            </div>
+          </section>
+          <!--section>
+            <h3>Algorithm</h3>
+            <pre>
+              <code style="font-size:75%" class="language-python"># Tatum quantization fit pseudocode
+
+odf = [0, 1.3, 0, 0, 3.4, 0, ...]
+odf_peak_indices = [1, 4, ...]
+pv = [odf[i] for i in odf_peak_indices]  # peak values
+tatum_count_hypotheses = [8, 12, 16, ...]
+num_peaks = len(odf_peak_indices)
+
+def get_peak_distance(peak_index, tatum_count):
+    # range is [0, 1]
+    peak_pos = peak_index / len(odf)
+    # range is also [0, 1]
+    nearest_tatum_pos = round(peak_pos * tatum_count) / tatum_count
+    # max is 0.5 / tatum_count
+    distance = abs(peak_pos - nearest_tatum_pos)
+    # we normalize back to 1
+    return 2 * distance * tatum_count
+
+errors = []
+for tatum_count in tatum_count_hypotheses:
+    pd = [get_peak_distance(i, tatum_count) for i in odf_peak_indices]
+    weighted_average = sum([pd[i] * pv[i] for i in range(num_peaks)]) / sum(pv)
+    errors.append(weighted_average)
+
+# Tatum count with least error
+best_tatum_count = tatum_count_hypotheses[errors.index(min(errors))]</code>
+            </pre>
+          </section-->
+          <section data-transition="slide-in fade-out">
+            <h3>ODF / tatum-rate match score</h3>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./tatum_quantization_fit_24.svg" />
+              </div>
+              <div class="col2">
+                <p>Not great.</p>
+              </div>
+            </div>
+          </section>
+          <section data-transition="fade-in fade-out">
+            <h3>ODF / tatum-rate match score</h3>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./tatum_quantization_fit_36.svg" />
+              </div>
+              <div class="col2">
+                <p>Even worse.</p>
+                <p>Largest peaks exactly between tatums.</p>
+              </div>
+            </div>
+          </section>
+          <section data-transition="fade-in slide-out">
+            <h3>ODF / tatum-rate match score</h3>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./tatum_quantization_fit_32.svg" />
+              </div>
+              <div class="col2">
+                <p>Awesome.</p>
+                <p class="fragment">... but there's a problem ...</p>
+              </div>
+            </div>
+          </section>
+          <section>
+            <h3>Single events !</h3>
+            <img src="./single_event_perfect_fit.svg" />
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Single-event defense</h2>
+            <p style="font-size: 60%">
+              Snare hits and other single-event sounds fit perfectly any tatum
+              count.
+            </p>
+          </section>
+
+          <section data-auto-animate="">
+            <h3>Detect by Kurtosis</h3>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./kurtosis.svg" />
+              </div>
+              <div class="col2" style="font-size: 90%;">
+                <p>Normally feature of <em>Probability Density Functions</em>,<br/>but we pretend our ODF is one.</p>
+              </div>
+            </div>
+          </section>
+          <section data-auto-animate="">
+            <h3>Detect by Kurtosis</h3>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./kurtosis.svg" />
+              </div>
+              <div class="col2" style="font-size: 90%;">
+                <p>Normally feature of <em>Probability Density Functions</em>,<br/>but we pretend our ODF is one.</p>
+                <p>Will be higher for single events.</p>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h3>Some ODF Kurtoses</h3>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./is_single_event.svg" />
+              </div>
+              <div class="col2">
+                <p>&larr; ODFs, audio &darr;</p>
+                <audio controls>
+                  <source
+                    src="./Wood Snare (Sample 3)wav.mp3"
+                    type="audio/mpeg"
+                  />
+                </audio>
+                <audio controls>
+                  <source src="./win.mp3" type="audio/mpeg" />
+                </audio>
+                <audio controls>
+                  <source
+                    src="./[Drumloop] 120 bpm edm drum loop 010.mp3"
+                    type="audio/mpeg"
+                  />
+                </audio>
+                <p class="fragment">
+                  <code style="font-size: 70%"
+                    >isSingleEvent = kurtosis < 20</code
+                  >
+                </p>
+              </div>
+            </div>
+          </section>
+          <section data-auto-animate>
+            <h3>Now it works !</h3>
+          </section>
+          <section data-auto-animate>
+            <h3 style="font-size: smaller;">Does it ?</h3>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h1>Evaluation</h1>
+          </section>
+          <section>
+            <h3>Receiver Operating Characteristic</h3>
+            <div class="multiCol">
+              <div class="col1" style="width:60%">
+                <img src="./roc.svg" />
+              </div>
+              <div class="col2" style="width:40%">
+                <p class="fragment">Disclaimer : imperfect, depends on dataset !</p>
+                <p class="fragment">Used in repo's regression test ...</p>
+              </div>
+            </div>
+          </section>
+          <section data-auto-animate>
+            <h3>Regression test overview</h3>
+            <img
+              src="https://mermaid.ink/img/pako:eNqFkb9uwyAQh1_lxJy8gIdKiZ1O7dJsiTNc4GxQgLP406iy_O4lSWs56tCbOH7foQ8YhWRFohLwU53lq9QYErx9tB7m2hwbvnrLqCBRTBDRDZbiCdbrF9iOtSZ5idlNy5ltCcGZ6DBJfQdf0di_xBzXyyzmcx9w0NBxAMKCdMbSkgCoj2h7DiZp9zBpjvJmAp8RLJ7JnpY8ebVsm_vEbtzk-kl796_27ll7n6WkGMVKOAoOjSrvOd74ViRNjlpRlaXCcGlF66fCYU68__JSVClkWonAudei6tDG0uVBYaLGYLm_m3dJmcTh_fFdkn1n-nLSgP7A_EtN39Vxhj0?type=png"
+            />
+          </section>
+          <section data-auto-animate>
+            <h3>Regression test overview</h3>
+            <img
+              src="https://mermaid.ink/img/pako:eNqFkb9uwyAQh1_lxJy8gIdKiZ1O7dJsiTNc4GxQgLP406iy_O4lSWs56tCbOH7foQ8YhWRFohLwU53lq9QYErx9tB7m2hwbvnrLqCBRTBDRDZbiCdbrF9iOtSZ5idlNy5ltCcGZ6DBJfQdf0di_xBzXyyzmcx9w0NBxAMKCdMbSkgCoj2h7DiZp9zBpjvJmAp8RLJ7JnpY8ebVsm_vEbtzk-kl796_27ll7n6WkGMVKOAoOjSrvOd74ViRNjlpRlaXCcGlF66fCYU68__JSVClkWonAudei6tDG0uVBYaLGYLm_m3dJmcTh_fFdkn1n-nLSgP7A_EtN39Vxhj0?type=png"
+            />
+            <p>Checksum: our reference data must <em>not</em> change.</p>
+          </section>
+          <section data-auto-animate>
+            <h3>Regression test overview</h3>
+            <img
+              src="https://mermaid.ink/img/pako:eNqFkb9uwyAQh1_lxJy8gIdKiZ1O7dJsiTNc4GxQgLP406iy_O4lSWs56tCbOH7foQ8YhWRFohLwU53lq9QYErx9tB7m2hwbvnrLqCBRTBDRDZbiCdbrF9iOtSZ5idlNy5ltCcGZ6DBJfQdf0di_xBzXyyzmcx9w0NBxAMKCdMbSkgCoj2h7DiZp9zBpjvJmAp8RLJ7JnpY8ebVsm_vEbtzk-kl796_27ll7n6WkGMVKOAoOjSrvOd74ViRNjlpRlaXCcGlF66fCYU68__JSVClkWonAudei6tDG0uVBYaLGYLm_m3dJmcTh_fFdkn1n-nLSgP7A_EtN39Vxhj0?type=png"
+            />
+            <p>Checksum: our reference data must <em>not</em> change.</p>
+            <p>AuC: mismatch could also be for the better ...</p>
+          </section>
+          <section data-auto-animate id="dataset">
+            <h3>What's our Dataset ?</h3>
+            <p class="fragment">Perfect dataset would be<br/>all files imported to Audacity by all users over just 1h</p>
+            <p class="fragment" style="font-size: 60%">... but that's not possible.</p>
+          </section>
+          <section data-auto-animate id="dataset">
+            <h3>What's our Dataset ?</h3>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./freesound.org.png" />
+              </div>
+              <div class="col2">
+                <p>
+                  70 loops and 70 non-loops from freesound.org
+                </p>
+              </div>
+            </div>
+          </section>
+          <section>
+            <h3>Quality looks good,<br/>but what's with ...</h3>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h1>Performance</h1>
+          </section>
+          <section>
+            <h3>Algorithm overview</h3>
+            <p>... with our performance spectacles.</p>
+            <!-- URL obtained on https://mermaid-js.github.io/mermaid-live-editor/, then copying the markdown link (the part in the first rounded brackets) -->
+            <img
+              src="https://mermaid.ink/img/pako:eNpNj8GqAjEMRX-lZK1-wAiCPHGjI_ic1bMuwjR2irYZ0nZAxH9_dUQxq3tvDuHmDi0bggqsYN-p7e9cB1VmRa3zmBwHNZ0u1KFZN6P4Yd8LxVgWxy3b2XdwGokdD3RNt1HXy2PNgwtWLQcStPRCNlkSRxdH0-zXMAFP4tGZUuT-LKAhdeRJQ1WkQblo0OFROMyJD7fQQpUk0wSEs-2gOuM1Fpd7g4lWDss3_pOScYmlfv3Zcjg7Wy71GP6Y39TjH0nQV0Y?type=png"
+            />
+          </section>
+          <section>
+            <h3>Performance test</h3>
+            <div class="multiCol" style="font-size: smaller;">
+              <div class="col1" style="width: 60%;">
+                <p>Number of files: 140<br />
+                  Accumulated duration: 2664.89s<br />
+                  Computation time: 692 ms<br />
+                  &rarr; 3850.99 times real-time
+                </p>
+              </div>
+              <div class="col2" style="width: 40%;">
+                <p>
+                  Windows laptop<br />
+                  12th Gen Intel Core<br />
+                  i7-12800HX processor<br />
+                  32GB of RAM<br />
+                </p>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section>
+          <section data-auto-animate>
+            <h3>That's it for now !</h3>
+          </section>
+          <section data-auto-animate>
+            <h3>That's it for now !</h3>
+            <h4>Hold on, I forgot something ...</h4>
+          </section>
+          <section>
+            <h2>Tatum-to-beat rate</h2>
+            <div class="multiCol">
+              <div class="col1" style="width: 60%;">
+                <img
+                  src="./tatum-to-beat-rate.png"
+                  style="width: 500px"
+                />
+              </div>
+              <div class="col2" style="width: 40%;">
+                <p style="font-size: 90%;">Now we have tatum count winner,<br />
+                  pick remaining bar count that gets us<br />closest to 120 BPM.</p>
+                </p>
+                <p>5s example:
+                <ul class="fragment" style="font-size: 70%">
+                   <li>2 bars &rarr; 96 BPM</li>
+                  <li><s>4 bars &rarr; 192 BPM</s></li>
+                </ul>
+                </p>
+              </div>
+            </div>
+          </section>
+          <section data-auto-animate>
+            <h3>Now that's it for now !</h3>
+          </section>
+          <section data-auto-animate>
+            <h3>Now that's it for now !</h3>
+            <h4>What's next ?</h4>
+            <ul>
+              <p class="fragment">More elaborate tatum-to-beat disambiguation</p>
+              <p class="fragment">Time-signature recognition ?</p>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <section data-auto-animate>
+            <h3>special thanks</h3>
+              <img src="./Muse_logo.svg" style="width:200px"/>
+          </section>
+
+          <section data-auto-animate>
+            <h3>special thanks</h3>
+            <p>My team</p>
+            <img src="./AudacityTeam.png"/>
+          </section>
+
+          <section data-auto-animate>
+            <h3>special thanks</h3>
+            <p>Some great projects :</p>
+            <ul>
+              <li class="fragment">freesound.org</li>
+              <li class="fragment">Vamp and Sonic Visualiser</li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <h1>Questions ?</h1>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.4.0/dist/reveal.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.4.0/plugin/notes/notes.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.4.0/plugin/markdown/markdown.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.4.0/plugin/highlight/highlight.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.4.0/plugin/math/math.js"></script>
+    <script>
+      // More info about initialization & config:
+      // - https://revealjs.com/initialization/
+      // - https://revealjs.com/config/
+      Reveal.initialize({
+        hash: true,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealNotes,
+          RevealMath.KaTeX,
+        ],
+      })
+    </script>
+
+    <script>
+      const a = document.getElementById("press-a-to-toggle-play")
+      const t = document.getElementById("press-t-to-toggle-play")
+      let aIsPlaying = false
+      let tIsPlaying = false
+
+      a.addEventListener("ended", () => {
+        aIsPlaying = false
+      })
+      t.addEventListener("ended", () => {
+        tIsPlaying = false
+      })
+
+      function toggleA() {
+        if (aIsPlaying) {
+          a.pause()
+          a.currentTime = 0
+        } else {
+          a.play()
+        }
+        aIsPlaying = !aIsPlaying
+      }
+
+      function toggleT() {
+        if (tIsPlaying) {
+          t.pause()
+          t.currentTime = 0
+        } else {
+          t.play()
+        }
+        tIsPlaying = !tIsPlaying
+      }
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key.toLowerCase() === "a") {
+          toggleA()
+        } else if (event.key.toLowerCase() === "t") {
+          toggleT()
+        }
+      })
+    </script>
+  </body>
+</html>

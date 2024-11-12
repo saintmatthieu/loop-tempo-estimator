@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "live-server": "^1.2.2",
+    "mermaid": "^11.4.0"
+  },
+  "scripts": {
+    "presentation": "live-server ./ADC-2024"
+  }
+}

@@ -14,12 +14,28 @@ The main product of this repository is the `loop-tempo-estimator` library. It on
 
 ## Vamp plugin
 
-Find the latest build of `loop-tempo-estimator-vamp` [here](https://github.com/saintmatthieu/loop-tempo-estimator/actions?query=branch%3Amaster) :<br/>click on the latest master build, you should find the Windows, MacOS and Linux builds at the bottom of the page.<br/>You can also build it yourself by following the instructions of the build section.
+Download the latest `loop-tempo-estimator-vamp` release,<br />or build it yourself by following the instructions of the build section.
+
+## Presentation
+
+The slides of the ADC-2024 presentation of the algorithm are checked in this repo, and you may run then locally.
+
+Installation prerequisites:
+* [Git LFS](https://git-lfs.github.com)
+* [Node.js](https://nodejs.org/fr)
+
+From the root of the repository, run:
+
+```sh
+npm install # only the first time
+npm run presentation
+```
 
 ## Benchmarking
 
 The algorithm's development was largely test-driven.<br/>
 The `benchmarking` target
+
 1. downloads a carefully selected mixture of 140 loops and non-loops from freesound.org,
 2. makes a checksum verification to ensure the files haven't changed since the last run,
 3. runs the algorithm on all of them,
