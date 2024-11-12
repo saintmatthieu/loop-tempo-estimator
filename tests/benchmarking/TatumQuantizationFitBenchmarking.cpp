@@ -149,7 +149,7 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
    REQUIRE(
       ValueIsUnchanged(outputDir / "checksum.txt", previousChecksum, checksum, 1.0f));
 
-   constexpr auto previousAuc = 0.9124489795918365;
+   constexpr auto previousAuc = 0.9295918367346937;
    constexpr auto comparisonTolerance = 0.01;
    const auto classifierQualityIsUnchanged = ValueIsUnchanged(
       outputDir / "AUC.txt", previousAuc, rocInfo.areaUnderCurve,
