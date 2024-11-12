@@ -1,0 +1,45 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python Debugger: Current File with Arguments",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "console": "integratedTerminal",
+      "args": "${command:pickArgs}"
+    },
+    {
+      "processId": "${command:pickProcess}",
+      "name": "(Windows) Attach",
+      "type": "cppvsdbg",
+      "request": "attach",
+    },
+    {
+      "name": "vampl-simple-host",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "preLaunchTask": "CMake: build",
+      "program": "${workspaceFolder}/build/_deps/vamp-plugin-sdk-build/Debug/vamp-simple-host.exe",
+      "args": [
+        "loop-tempo-estimator-vamp.dll:loop-tempo-estimator",
+        // "C:/Users/saint/Downloads/Voice loop 001 only guitar synth simple mix 120 bpm.wav",
+        "C:/Users/saint/git/github/saintmatthieu/loop-tempo-estimator/tests/benchmarking/dataset/non-loops/Wood Snare (Sample 3)wav.mp3",
+        // "-o",
+        // "C:/Users/saint/Downloads/loop-tempo-estimator-vamp.txt"
+      ],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [
+        {
+          "name": "VAMP_PATH",
+          "value": "${workspaceFolder}/build/vamp-plugin/Debug"
+        }
+      ],
+      "console": "integratedTerminal"
+    }
+  ]
+}

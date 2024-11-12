@@ -1,0 +1,43 @@
+<section>
+  <section>
+    <h1>Let's go<br />test-driven</h1>
+  </section>
+  <section>
+    <h2>benchmarking framework</h2>
+    <p>What running the <code>benchmarking</code> target does :</p>
+    <div class="mermaid">
+        flowchart LR
+          A[Download test samples] --> B{Checksum}
+          B -- mismatch --> Fail
+          B -- match --> C
+          subgraph for each file
+            C[algorithm] --> D[check vs label]
+          end
+          D --> E{AuC}
+          E -- mismatch --> Fail
+          E -- match --> Success
+      </div>
+  </section>
+
+  <section>
+    <h2>ROC</h2>
+  </section>
+
+  <section>
+    <h3>The role of the benchmarking framework</h3>
+
+    - Ultimate goal: satisfy largest percentage of our users - Ideal
+    database: one day of dropped audio files ; perfect representation -
+    Not possible ...
+  </section>
+
+  <section>
+    <h3>[freesound.org]("https://freesound.org/")</h3>
+
+    <img width="400" src="./freesound.org.png" />
+
+    - Loop tag doesn't mean it's a loop - Absence of loop tag doesn't
+    mean it's not a loop Examples: 326615 (one-shot) `->` large-scale
+    dataset not possible
+  </section>
+</section>

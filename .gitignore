@@ -12,3 +12,8 @@ debug_output.py
 
 .cache
 .vscode/settings.json
+
+# Sonic Visualizer project files
+*.sv
+
+node_modules/
