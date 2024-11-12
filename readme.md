@@ -1,7 +1,6 @@
 [![GitHub License](https://img.shields.io/github/license/saintmatthieu/loop-tempo-estimator)](https://github.com/saintmatthieu/loop-tempo-estimator/blob/main/LICENSE)
 [![Version](https://img.shields.io/github/v/release/saintmatthieu/loop-tempo-estimator)](https://github.com/saintmatthieu/loop-tempo-estimator/releases/latest)
-[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/saintmatthieu/loop-tempo-estimator/build.yml?logo=audacity&label=vamp-plugin
-)](https://github.com/saintmatthieu/loop-tempo-estimator/actions/workflows/build.yml)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/saintmatthieu/loop-tempo-estimator/vamp-plugin.yml?logo=audacity&label=vamp-plugin)](https://github.com/saintmatthieu/loop-tempo-estimator/actions/workflows/vamp-plugin.yml)
 
 # Loop Tempo Estimation library
 
