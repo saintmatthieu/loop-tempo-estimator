@@ -1,3 +1,8 @@
+[![GitHub License](https://img.shields.io/github/license/saintmatthieu/loop-tempo-estimator)](https://github.com/saintmatthieu/loop-tempo-estimator/blob/main/LICENSE)
+[![Version](https://img.shields.io/github/v/release/saintmatthieu/loop-tempo-estimator)](https://github.com/saintmatthieu/loop-tempo-estimator/releases/latest)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/saintmatthieu/loop-tempo-estimator/build.yml?logo=audacity&label=vamp-plugin
+)](https://github.com/saintmatthieu/loop-tempo-estimator/actions/workflows/build.yml)
+
 # Loop Tempo Estimation library
 
 [Upcoming talk at the 2024 Audio Developer Conference](https://conference.audio.dev/session/2024/an-efficient-open-source-c-loop-classifier-and-tempo-estimator/)
