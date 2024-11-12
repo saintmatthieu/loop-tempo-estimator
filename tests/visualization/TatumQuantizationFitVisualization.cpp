@@ -8,6 +8,26 @@
 
 namespace LTE
 {
+namespace
+{
+void printStft(
+   std::ofstream& dst, const std::string& name,
+   std::vector<std::vector<float>> stft)
+{
+   dst << name << " = [";
+   std::for_each(
+      stft.begin(), stft.end(),
+      [&](const auto& row)
+      {
+         dst << "[";
+         std::for_each(
+            row.begin(), row.end(), [&](float x) { dst << x << ","; });
+         dst << "],";
+      });
+   dst << "]\n";
+}
+} // namespace
+
 TEST_CASE("TatumQuantizationFitVisualization")
 {
    // This test produces python files containing data. Besides being useful for
@@ -38,6 +58,9 @@ TEST_CASE("TatumQuantizationFitVisualization")
                        << "\n";
    debug_output_module << "bpm = " << (result.value_or(0.)) << "\n";
    debug_output_module << "lag = " << debugOutput.tatumQuantization.lag << "\n";
+   debug_output_module << "isSingleEvent = " << debugOutput.isSingleEvent
+                       << "\n";
+   debug_output_module << "kurtosis = " << debugOutput.kurtosis << "\n";
    debug_output_module << "odf_peak_indices = [";
    std::for_each(
       debugOutput.odfPeakIndices.begin(), debugOutput.odfPeakIndices.end(),
@@ -55,18 +78,8 @@ TEST_CASE("TatumQuantizationFitVisualization")
    stft_log_module << "wavFile = \"" << wavFile << "\"\n";
    stft_log_module << "sampleRate = " << audio.GetSampleRate() << "\n";
    stft_log_module << "frameRate = " << debugOutput.odfSr << "\n";
-   stft_log_module << "stft = [";
-   std::for_each(
-      debugOutput.postProcessedStft.begin(),
-      debugOutput.postProcessedStft.end(),
-      [&](const auto& row)
-      {
-         stft_log_module << "[";
-         std::for_each(
-            row.begin(), row.end(),
-            [&](float x) { stft_log_module << x << ","; });
-         stft_log_module << "],";
-      });
-   stft_log_module << "]\n";
+
+   printStft(stft_log_module, "rawStft", debugOutput.stft);
+   printStft(stft_log_module, "stft", debugOutput.postProcessedStft);
 }
 } // namespace LTE
