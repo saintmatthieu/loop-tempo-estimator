@@ -44,6 +44,8 @@ struct RocInfo
 {
    const double areaUnderCurve;
    const double threshold;
+   const std::vector<double> truePositiveRates;
+   const std::vector<double> falsePositiveRates;
 };
 
 /*!
@@ -136,7 +138,7 @@ GetRocInfo(std::vector<Result> results, double allowedFalsePositiveRate = 0.)
    const auto index = it - falsePositiveRates.begin();
    const auto threshold = (results[index - 1].score + results[index].score) / 2;
 
-   return { auc, threshold };
+   return { auc, threshold, truePositiveRates, falsePositiveRates };
 }
 
 void ProgressBar(int width, int percent);

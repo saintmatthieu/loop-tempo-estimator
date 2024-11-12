@@ -142,6 +142,16 @@ TEST_CASE("TatumQuantizationFitBenchmarking")
    const auto outputDir { std::filesystem::path(__FILE__).parent_path() /
                           "TatumQuantizationFitBenchmarkingOutput" };
 
+   constexpr auto printRoc = false;
+   if (printRoc)
+   {
+      std::ofstream pythonFile { outputDir / "roc.py" };
+      PrintPythonVector(pythonFile, rocInfo.truePositiveRates, "tpr");
+      PrintPythonVector(pythonFile, rocInfo.falsePositiveRates, "fpr");
+      pythonFile << "AUC = " << rocInfo.areaUnderCurve << "\n";
+      pythonFile << "threshold = " << rocInfo.threshold << "\n";
+   }
+
    // Verify that the input has not changed between this run and the previous
    // one, or peformance of the algorithm can't be compared either.
    constexpr auto previousChecksum = -177205.328125f;
