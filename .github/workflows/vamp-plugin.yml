@@ -30,7 +30,7 @@ jobs:
         run: cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBUILD_VAMP_PLUGIN=ON -S .
 
       - name: Build
-        run: cmake --build build --config ${{ matrix.build_type }}
+        run: cmake --build build --target loop-tempo-estimator-vamp --config ${{ matrix.build_type }}
 
       - name: Package
         id: package

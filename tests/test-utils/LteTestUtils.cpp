@@ -40,7 +40,7 @@ std::vector<std::string> LTE::GetBenchmarkingAudioFiles()
    const auto pythonScriptPath =
       std::string(CMAKE_SOURCE_DIR) +
       "/tests/benchmarking/download-benchmarking-dataset.py";
-   const auto command = "python " + pythonScriptPath + " " + datasetRoot;
+   const auto command = "python3 " + pythonScriptPath + " " + datasetRoot;
    const auto returnCode = system(command.c_str());
    if (returnCode != 0)
       throw std::runtime_error("Failed to download benchmarking dataset!");
