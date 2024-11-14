@@ -16,6 +16,10 @@ The main product of this repository is the `loop-tempo-estimator` library. It on
 
 Download the latest `loop-tempo-estimator-vamp` release,<br />or build it yourself by following the instructions of the build section.
 
+Please try it, it's fun ! It does not only show the final tempo estimation, you can also visualize the intermediary analysis steps, such as the compressed STFT or the Onset Detection Function. The image below is of [Sonic Visualizer](https://sonicvisualiser.org/) using the `loop-tempo-estimator` plugin :
+
+![Vamp demo](./ADC-2024/sonic-visualiser.png)
+
 ## Presentation
 
 The slides of the ADC-2024 presentation of the algorithm are checked in this repo, and you may run then locally.
