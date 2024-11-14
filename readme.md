@@ -27,6 +27,7 @@ Installation prerequisites:
 From the root of the repository, run:
 
 ```sh
+git lfs pull
 npm install # only the first time
 npm run presentation
 ```
