@@ -156,19 +156,108 @@
         ></section>
 
         <section>
-          <h2>The algorithm's (new) home</h2>
-          <p>
-            <a href="https://github.com/saintmatthieu/loop-tempo-estimator"
-              >github.com/saintmatthieu/loop-tempo-estimator</a
-            >
-          </p>
-          <p>Released with Audacity 3.5, now has its own repo :</p>
-          <ul>
-            <li class="fragment">light-weight library</li>
-            <li class="fragment">simplifications & better performance !</li>
-            <li class="fragment">vamp plugin</li>
-            <li class="fragment">this presentation <code>:)</code></li>
-          </ul>
+          <section>
+            <h2>The algorithm's (new) home</h2>
+            <p>
+              <a href="https://github.com/saintmatthieu/loop-tempo-estimator"
+                >github.com/saintmatthieu/loop-tempo-estimator</a
+              >
+            </p>
+            <p>Released with Audacity 3.5, now has its own repo :</p>
+            <ul>
+              <li class="fragment">light-weight library</li>
+              <li class="fragment">simplifications & better performance !</li>
+              <li class="fragment">vamp plugin</li>
+              <li class="fragment">this presentation <code>:)</code></li>
+            </ul>
+          </section>
+
+          <section data-auto-animate>
+            <h3>Will it be integrated back ?</h3>
+            <div class="multiCol">
+              <div class="col1">
+                <video data-id="audacity" src="./Audacity 3 - 4.mp4"></video>
+              </div>
+              <div class="col2">
+                <p>Not in Audacity 3, which is being sunset, but ...</p>
+              </div>
+            </div>
+          </section>
+          <section data-auto-animate>
+            <h3>Will it be integrated back ?</h3>
+            <div class="multiCol">
+              <div class="col1">
+                <video
+                  id="Audacity 3 - 4"
+                  data-id="audacity"
+                  src="./Audacity 3 - 4.mp4"
+                  autoplay
+                  muted
+                ></video>
+              </div>
+              <div class="col2">
+                <p>Not in Audacity 3, which is being sunset, but ...</p>
+                <p>in <strong>Audacity 4</strong> !</p>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h1>Evaluation</h1>
+          </section>
+          <section>
+            <h3>Receiver Operating Characteristic</h3>
+            <div class="multiCol">
+              <div class="col1" style="width:60%">
+                <img src="./roc.svg" />
+              </div>
+              <div class="col2" style="width:40%">
+                <p class="fragment">Disclaimer : imperfect, depends on dataset !</p>
+                <p class="fragment">Used in repo's regression test ...</p>
+              </div>
+            </div>
+          </section>
+          <section data-auto-animate>
+            <h3>Regression test overview</h3>
+            <img
+              src="https://mermaid.ink/img/pako:eNqFkb9uwyAQh1_lxJy8gIdKiZ1O7dJsiTNc4GxQgLP406iy_O4lSWs56tCbOH7foQ8YhWRFohLwU53lq9QYErx9tB7m2hwbvnrLqCBRTBDRDZbiCdbrF9iOtSZ5idlNy5ltCcGZ6DBJfQdf0di_xBzXyyzmcx9w0NBxAMKCdMbSkgCoj2h7DiZp9zBpjvJmAp8RLJ7JnpY8ebVsm_vEbtzk-kl796_27ll7n6WkGMVKOAoOjSrvOd74ViRNjlpRlaXCcGlF66fCYU68__JSVClkWonAudei6tDG0uVBYaLGYLm_m3dJmcTh_fFdkn1n-nLSgP7A_EtN39Vxhj0?type=png"
+            />
+          </section>
+          <section data-auto-animate>
+            <h3>Regression test overview</h3>
+            <img
+              src="https://mermaid.ink/img/pako:eNqFkb9uwyAQh1_lxJy8gIdKiZ1O7dJsiTNc4GxQgLP406iy_O4lSWs56tCbOH7foQ8YhWRFohLwU53lq9QYErx9tB7m2hwbvnrLqCBRTBDRDZbiCdbrF9iOtSZ5idlNy5ltCcGZ6DBJfQdf0di_xBzXyyzmcx9w0NBxAMKCdMbSkgCoj2h7DiZp9zBpjvJmAp8RLJ7JnpY8ebVsm_vEbtzk-kl796_27ll7n6WkGMVKOAoOjSrvOd74ViRNjlpRlaXCcGlF66fCYU68__JSVClkWonAudei6tDG0uVBYaLGYLm_m3dJmcTh_fFdkn1n-nLSgP7A_EtN39Vxhj0?type=png"
+            />
+            <p>Checksum: our reference data must <em>not</em> change.</p>
+          </section>
+          <section data-auto-animate>
+            <h3>Regression test overview</h3>
+            <img
+              src="https://mermaid.ink/img/pako:eNqFkb9uwyAQh1_lxJy8gIdKiZ1O7dJsiTNc4GxQgLP406iy_O4lSWs56tCbOH7foQ8YhWRFohLwU53lq9QYErx9tB7m2hwbvnrLqCBRTBDRDZbiCdbrF9iOtSZ5idlNy5ltCcGZ6DBJfQdf0di_xBzXyyzmcx9w0NBxAMKCdMbSkgCoj2h7DiZp9zBpjvJmAp8RLJ7JnpY8ebVsm_vEbtzk-kl796_27ll7n6WkGMVKOAoOjSrvOd74ViRNjlpRlaXCcGlF66fCYU68__JSVClkWonAudei6tDG0uVBYaLGYLm_m3dJmcTh_fFdkn1n-nLSgP7A_EtN39Vxhj0?type=png"
+            />
+            <p>Checksum: our reference data must <em>not</em> change.</p>
+            <p>AuC: mismatch could also be for the better ...</p>
+          </section>
+          <section data-auto-animate id="dataset">
+            <h3>What's our Dataset ?</h3>
+            <p class="fragment">Perfect dataset would be<br/>all files imported to Audacity by all users over just 1h</p>
+            <p class="fragment" style="font-size: 60%">... but that's not possible.</p>
+          </section>
+          <section data-auto-animate id="dataset">
+            <h3>What's our Dataset ?</h3>
+            <div class="multiCol">
+              <div class="col1">
+                <img src="./freesound.org.png" />
+              </div>
+              <div class="col2">
+                <p>
+                  70 loops and 70 non-loops from freesound.org
+                </p>
+              </div>
+            </div>
+          </section>
         </section>
 
         <!--section>
@@ -320,7 +409,7 @@
             </div>
           </section>
 
-          <section data-transition="fade-in slide-out">
+          <!--section data-transition="fade-in slide-out">
             <div class="multiCol">
               <div class="col1">
                 <div style="position: relative; width: 100%; height: 600px">
@@ -429,7 +518,7 @@
                 <p class="fragment">Note: window integrates to 1.</p>
               </div>
             </div>
-          </section>
+          </section-->
 
           <section>
             <h4>ODF 3. Logarithmic compression</h4>
@@ -438,6 +527,8 @@
                 <img src="./logarithmic_compression.svg" />
               </div>
               <div class="col2">
+                <p>\( y =\)</p>
+                <p>\( \log(1+100\sqrt x) \)</p>
                 <p style="font-size:90%">Gives more prominence to low-energy components</p>
                 <p style="font-size:70%">(even more so than with regular<br/><code style="font-size: smaller;">log(spectrum)</code>)</p>
               </div>
@@ -904,7 +995,7 @@ best_tatum_count = tatum_count_hypotheses[errors.index(min(errors))]</code>
                 </audio>
                 <p class="fragment">
                   <code style="font-size: 70%"
-                    >isSingleEvent = kurtosis < 20</code
+                    >isSingleEvent = kurtosis > 20</code
                   >
                 </p>
               </div>
@@ -914,110 +1005,7 @@ best_tatum_count = tatum_count_hypotheses[errors.index(min(errors))]</code>
             <h3>Now it works !</h3>
           </section>
           <section data-auto-animate>
-            <h3 style="font-size: smaller;">Does it ?</h3>
-          </section>
-        </section>
-
-        <section>
-          <section>
-            <h1>Evaluation</h1>
-          </section>
-          <section>
-            <h3>Receiver Operating Characteristic</h3>
-            <div class="multiCol">
-              <div class="col1" style="width:60%">
-                <img src="./roc.svg" />
-              </div>
-              <div class="col2" style="width:40%">
-                <p class="fragment">Disclaimer : imperfect, depends on dataset !</p>
-                <p class="fragment">Used in repo's regression test ...</p>
-              </div>
-            </div>
-          </section>
-          <section data-auto-animate>
-            <h3>Regression test overview</h3>
-            <img
-              src="https://mermaid.ink/img/pako:eNqFkb9uwyAQh1_lxJy8gIdKiZ1O7dJsiTNc4GxQgLP406iy_O4lSWs56tCbOH7foQ8YhWRFohLwU53lq9QYErx9tB7m2hwbvnrLqCBRTBDRDZbiCdbrF9iOtSZ5idlNy5ltCcGZ6DBJfQdf0di_xBzXyyzmcx9w0NBxAMKCdMbSkgCoj2h7DiZp9zBpjvJmAp8RLJ7JnpY8ebVsm_vEbtzk-kl796_27ll7n6WkGMVKOAoOjSrvOd74ViRNjlpRlaXCcGlF66fCYU68__JSVClkWonAudei6tDG0uVBYaLGYLm_m3dJmcTh_fFdkn1n-nLSgP7A_EtN39Vxhj0?type=png"
-            />
-          </section>
-          <section data-auto-animate>
-            <h3>Regression test overview</h3>
-            <img
-              src="https://mermaid.ink/img/pako:eNqFkb9uwyAQh1_lxJy8gIdKiZ1O7dJsiTNc4GxQgLP406iy_O4lSWs56tCbOH7foQ8YhWRFohLwU53lq9QYErx9tB7m2hwbvnrLqCBRTBDRDZbiCdbrF9iOtSZ5idlNy5ltCcGZ6DBJfQdf0di_xBzXyyzmcx9w0NBxAMKCdMbSkgCoj2h7DiZp9zBpjvJmAp8RLJ7JnpY8ebVsm_vEbtzk-kl796_27ll7n6WkGMVKOAoOjSrvOd74ViRNjlpRlaXCcGlF66fCYU68__JSVClkWonAudei6tDG0uVBYaLGYLm_m3dJmcTh_fFdkn1n-nLSgP7A_EtN39Vxhj0?type=png"
-            />
-            <p>Checksum: our reference data must <em>not</em> change.</p>
-          </section>
-          <section data-auto-animate>
-            <h3>Regression test overview</h3>
-            <img
-              src="https://mermaid.ink/img/pako:eNqFkb9uwyAQh1_lxJy8gIdKiZ1O7dJsiTNc4GxQgLP406iy_O4lSWs56tCbOH7foQ8YhWRFohLwU53lq9QYErx9tB7m2hwbvnrLqCBRTBDRDZbiCdbrF9iOtSZ5idlNy5ltCcGZ6DBJfQdf0di_xBzXyyzmcx9w0NBxAMKCdMbSkgCoj2h7DiZp9zBpjvJmAp8RLJ7JnpY8ebVsm_vEbtzk-kl796_27ll7n6WkGMVKOAoOjSrvOd74ViRNjlpRlaXCcGlF66fCYU68__JSVClkWonAudei6tDG0uVBYaLGYLm_m3dJmcTh_fFdkn1n-nLSgP7A_EtN39Vxhj0?type=png"
-            />
-            <p>Checksum: our reference data must <em>not</em> change.</p>
-            <p>AuC: mismatch could also be for the better ...</p>
-          </section>
-          <section data-auto-animate id="dataset">
-            <h3>What's our Dataset ?</h3>
-            <p class="fragment">Perfect dataset would be<br/>all files imported to Audacity by all users over just 1h</p>
-            <p class="fragment" style="font-size: 60%">... but that's not possible.</p>
-          </section>
-          <section data-auto-animate id="dataset">
-            <h3>What's our Dataset ?</h3>
-            <div class="multiCol">
-              <div class="col1">
-                <img src="./freesound.org.png" />
-              </div>
-              <div class="col2">
-                <p>
-                  70 loops and 70 non-loops from freesound.org
-                </p>
-              </div>
-            </div>
-          </section>
-          <section>
-            <h3>Quality looks good,<br/>but what's with ...</h3>
-          </section>
-        </section>
-
-        <section>
-          <section>
-            <h1>Performance</h1>
-          </section>
-          <section>
-            <h3>Algorithm overview</h3>
-            <p>... with our performance spectacles.</p>
-            <!-- URL obtained on https://mermaid-js.github.io/mermaid-live-editor/, then copying the markdown link (the part in the first rounded brackets) -->
-            <img
-              src="https://mermaid.ink/img/pako:eNpNj8GqAjEMRX-lZK1-wAiCPHGjI_ic1bMuwjR2irYZ0nZAxH9_dUQxq3tvDuHmDi0bggqsYN-p7e9cB1VmRa3zmBwHNZ0u1KFZN6P4Yd8LxVgWxy3b2XdwGokdD3RNt1HXy2PNgwtWLQcStPRCNlkSRxdH0-zXMAFP4tGZUuT-LKAhdeRJQ1WkQblo0OFROMyJD7fQQpUk0wSEs-2gOuM1Fpd7g4lWDss3_pOScYmlfv3Zcjg7Wy71GP6Y39TjH0nQV0Y?type=png"
-            />
-          </section>
-          <section>
-            <h3>Performance test</h3>
-            <div class="multiCol" style="font-size: smaller;">
-              <div class="col1" style="width: 60%;">
-                <p>Number of files: 140<br />
-                  Accumulated duration: 2664.89s<br />
-                  Computation time: 692 ms<br />
-                  &rarr; 3850.99 times real-time
-                </p>
-              </div>
-              <div class="col2" style="width: 40%;">
-                <p>
-                  Windows laptop<br />
-                  12th Gen Intel Core<br />
-                  i7-12800HX processor<br />
-                  32GB of RAM<br />
-                </p>
-              </div>
-            </div>
-          </section>
-        </section>
-
-        <section>
-          <section data-auto-animate>
-            <h3>That's it for now !</h3>
-          </section>
-          <section data-auto-animate>
-            <h3>That's it for now !</h3>
+            <h3>Now it works !</h3>
             <h4>Hold on, I forgot something ...</h4>
           </section>
           <section>
@@ -1042,16 +1030,38 @@ best_tatum_count = tatum_count_hypotheses[errors.index(min(errors))]</code>
               </div>
             </div>
           </section>
-          <section data-auto-animate>
-            <h3>Now that's it for now !</h3>
+        </section>
+
+        <section>
+          <section>
+            <h1>Performance</h1>
           </section>
-          <section data-auto-animate>
-            <h3>Now that's it for now !</h3>
-            <h4>What's next ?</h4>
-            <ul>
-              <p class="fragment">More elaborate tatum-to-beat disambiguation</p>
-              <p class="fragment">Time-signature recognition ?</p>
-            </ul>
+          <!--section>
+            <h3>Algorithm overview</h3>
+            <p>... with our performance spectacles.</p>
+            <img
+              src="https://mermaid.ink/img/pako:eNpNj8GqAjEMRX-lZK1-wAiCPHGjI_ic1bMuwjR2irYZ0nZAxH9_dUQxq3tvDuHmDi0bggqsYN-p7e9cB1VmRa3zmBwHNZ0u1KFZN6P4Yd8LxVgWxy3b2XdwGokdD3RNt1HXy2PNgwtWLQcStPRCNlkSRxdH0-zXMAFP4tGZUuT-LKAhdeRJQ1WkQblo0OFROMyJD7fQQpUk0wSEs-2gOuM1Fpd7g4lWDss3_pOScYmlfv3Zcjg7Wy71GP6Y39TjH0nQV0Y?type=png"
+            />
+          </section-->
+          <section>
+            <h3>Performance</h3>
+            <div class="multiCol" style="font-size: smaller;">
+              <div class="col1" style="width: 60%;">
+                <p>Number of files: 140<br />
+                  Accumulated duration: 2664.89s<br />
+                  Computation time: 692 ms<br />
+                  &rarr; 3850.99 times real-time
+                </p>
+              </div>
+              <div class="col2" style="width: 40%;">
+                <p>
+                  Windows laptop<br />
+                  12th Gen Intel Core<br />
+                  i7-12800HX processor<br />
+                  32GB of RAM<br />
+                </p>
+              </div>
+            </div>
           </section>
         </section>
 
@@ -1063,7 +1073,7 @@ best_tatum_count = tatum_count_hypotheses[errors.index(min(errors))]</code>
 
           <section data-auto-animate>
             <h3>special thanks</h3>
-            <p>My team</p>
+            <p>The Audacity team</p>
             <img src="./AudacityTeam.png"/>
           </section>
 
