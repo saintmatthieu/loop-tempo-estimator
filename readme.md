@@ -20,6 +20,18 @@ Please try it, it's fun ! It does not only show the final tempo estimation, you 
 
 ![Vamp demo](./ADC-2024/sonic-visualiser.png)
 
+### Note
+
+The first time you run the plugin on a given file, you'll run into this error :
+
+<img src="./ADC-2024/sonic-visualiser-layer-generation-failed.png" width=40%>
+
+Please ignore this and run the plugin again. From now on, and until you run the plugin on a new file, it should work.
+
+The reason for this is that Vamp does not communicate to plugins the audio file duration at initialization time. The algorithm, though, depends on the duration of the file, without which it cannot provide the information needed by Sonic Visualser at initialization time.<br />
+Workaround: during the first run, the wrapper will count the number of samples given by the host and cache it.<br />
+Next time you run the algorithm on the same file, it will find the the value it needs in the cache and should run properly.
+
 ## Presentation
 
 The slides of the ADC-2024 presentation of the algorithm are checked in this repo, and you may run then locally.
