@@ -4,9 +4,11 @@
 
 # Loop Tempo Estimation library
 
-[Upcoming talk at the 2024 Audio Developer Conference](https://conference.audio.dev/session/2024/an-efficient-open-source-c-loop-classifier-and-tempo-estimator/)
-
-![An Efficient, Open-Source C++ Loop Classifier and Tempo Estimator](./ADC-2024/An%20Efficient%20Open-Source%20C++%20Loop%20Classifier%20and%20Tempo%20Estimator_TitleCard.png)
+<a href="https://www.youtube.com/watch?v=yMbewdnupwU" target="_blank" style="position:relative; display:inline-block;">
+  <img src="./ADC-2024/An%20Efficient%20Open-Source%20C++%20Loop%20Classifier%20and%20Tempo%20Estimator_TitleCard.png - YT.png" alt="Video Thumbnail" style="position:relative;"/>
+</a>
+<br/>
+<br/>
 
 ## Library
 
