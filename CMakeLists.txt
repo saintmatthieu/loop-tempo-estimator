@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD 17)
 if (MSVC)
     # Fix crash on older runtimes: https://github.com/microsoft/STL/wiki/Changelog#vs-2022-1710
     add_definitions(-D_DISABLE_CONSTEXPR_MUTEX_CONSTRUCTOR)
-    
+
     # Suppress specific MSVC warnings
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
     add_compile_options(
@@ -35,41 +35,7 @@ endif()
 
 include(pffft.cmake)
 
-set(SOURCES
-   include/LoopTempoEstimator/LoopTempoEstimator.h
-   include/LoopTempoEstimator/LteTypes.h
-   source/DecimatingLteAudioReader.cpp
-   source/DecimatingLteAudioReader.h
-   source/GetMeterUsingTatumQuantizationFit.cpp
-   source/GetMeterUsingTatumQuantizationFit.h
-   source/IteratorX.cpp
-   source/IteratorX.h
-   source/LoopTempoEstimator.cpp
-   source/LteDsp.cpp
-   source/LteDsp.h
-   source/LteUtils.cpp
-   source/LteUtils.h
-   source/MapToPositiveHalfIndex.h
-   source/MathApprox.h
-   source/PowerSpectrumGetter.cpp
-   source/PowerSpectrumGetter.h
-   source/StftFrameProvider.cpp
-   source/StftFrameProvider.h
-)
-
-# Create the executable
-add_library(loop-tempo-estimator ${SOURCES})
-
-# Link libraries
-target_link_libraries(loop-tempo-estimator PUBLIC pffft)
-set_target_properties(loop-tempo-estimator PROPERTIES POSITION_INDEPENDENT_CODE ON)
-
-target_include_directories(loop-tempo-estimator
-   PUBLIC
-      ${CMAKE_CURRENT_SOURCE_DIR}/include
-   PRIVATE
-      ${CMAKE_CURRENT_SOURCE_DIR}/source
-)
+add_subdirectory(source)
 
 if (BUILD_TESTS)
     add_subdirectory(tests)
