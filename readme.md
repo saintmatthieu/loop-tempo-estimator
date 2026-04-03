@@ -14,6 +14,20 @@
 
 The main product of this repository is the `loop-tempo-estimator` library. It only has a dependency on PFFFT, and should be easy to integrate into your project.
 
+To use it in your project without integrating this repo entirely (including test and presentation assets), you may want to use the `loop-tempo-estimator-v<x.x.x>.tar.gz` release artifact, as it only the library source code. If your project is CMake-based, it may then look like
+
+```
+set(LTE_VERSION "v0.0.3")
+
+FetchContent_Declare(
+  loop-tempo-estimator
+  URL https://github.com/saintmatthieu/loop-tempo-estimator/releases/download/${LTE_VERSION}/loop-tempo-estimator-${LTE_VERSION}.tar.gz
+  SOURCE_SUBDIR source
+)
+FetchContent_MakeAvailable(loop-tempo-estimator)
+target_link_libraries(your_target PRIVATE loop-tempo-estimator)
+```
+
 ## Vamp plugin
 
 Download the latest `loop-tempo-estimator-vamp` release,<br />or build it yourself by following the instructions of the build section.
@@ -39,8 +53,9 @@ Next time you run the algorithm on the same file, it will find the the value it 
 The slides of the ADC-2024 presentation of the algorithm are checked in this repo, and you may run then locally.
 
 Installation prerequisites:
-* [Git LFS](https://git-lfs.github.com)
-* [Node.js](https://nodejs.org/fr)
+
+- [Git LFS](https://git-lfs.github.com)
+- [Node.js](https://nodejs.org/fr)
 
 From the root of the repository, run:
 
