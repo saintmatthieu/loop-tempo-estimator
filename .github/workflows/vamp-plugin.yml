@@ -77,7 +77,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: steps.is-release.outputs.IS_RELEASE
         with:
+          token: ${{ secrets.PersonalAccessToken }}
           files: |
             ${{ steps.package.outputs.PKG_PATH }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.PersonalAccessToken }}
