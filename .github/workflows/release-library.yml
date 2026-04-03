@@ -1,0 +1,40 @@
+name: Release Library Sources
+
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Package library sources
+        id: package
+        run: |
+          GIT_TAG=${GITHUB_REF#refs/tags/}
+          PKG_BASENAME="loop-tempo-estimator-${GIT_TAG}"
+          PKG_NAME="${PKG_BASENAME}.tar.gz"
+
+          STAGING=$(mktemp -d)
+          TARGET="${STAGING}/${PKG_BASENAME}"
+          mkdir -p "${TARGET}"
+
+          cp -r source/ "${TARGET}/"
+          cp LICENSE "${TARGET}/"
+          cp readme.md "${TARGET}/"
+
+          tar -czf "${PKG_NAME}" -C "${STAGING}" "${PKG_BASENAME}"
+
+          echo "PKG_NAME=${PKG_NAME}" >> "$GITHUB_OUTPUT"
+          echo "GIT_TAG=${GIT_TAG}" >> "$GITHUB_OUTPUT"
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ steps.package.outputs.GIT_TAG }}
+          files: ${{ steps.package.outputs.PKG_NAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PersonalAccessToken }}

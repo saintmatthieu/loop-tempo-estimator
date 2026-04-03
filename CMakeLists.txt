@@ -33,7 +33,7 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     )
 endif()
 
-include(pffft.cmake)
+include(source/cmake/pffft.cmake)
 
 add_subdirectory(source)
 

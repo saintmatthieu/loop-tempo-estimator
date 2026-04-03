@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 17)
 # Use pffft from parent project if available,
 # otherwise fetch and build it.
 if (NOT TARGET pffft)
-    include(${CMAKE_CURRENT_SOURCE_DIR}/../pffft.cmake)
+    include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/pffft.cmake)
 endif()
 
 set(SOURCES
