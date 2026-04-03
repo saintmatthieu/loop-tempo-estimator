@@ -1,0 +1,136 @@
+name: Build and Publish Library
+
+env:
+  CICD_INTERMEDIATES_DIR: "_cicd-intermediates"
+
+on:
+  push:
+    branches: [master]
+    tags: ['v*']
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        build_type: [Release]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lukka/get-cmake@latest
+
+      - name: Configure CMake
+        run: cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DBUILD_VAMP_PLUGIN=OFF -DBUILD_TESTS=OFF -S .
+
+      - name: Build
+        run: cmake --build build --target loop-tempo-estimator --config ${{ matrix.build_type }}
+
+      - name: Package
+        id: package
+        shell: bash
+        run: |
+          GIT_TAG=$(git describe --tags --match "v[0-9]*" --abbrev=0 2>/dev/null || git rev-parse --short HEAD)
+          OS_NAME=$(echo "${{ matrix.os }}" | sed 's/-latest//')
+
+          PKG_BASENAME="loop-tempo-estimator-${GIT_TAG}-${OS_NAME}"
+          PKG_STAGING="${{ env.CICD_INTERMEDIATES_DIR }}/package"
+          PKG_NAME="${PKG_BASENAME}.zip"
+          ARCHIVE_DIR="${PKG_STAGING}/${PKG_BASENAME}"
+          mkdir -p "${ARCHIVE_DIR}/lib" "${ARCHIVE_DIR}/include"
+          echo "PKG_NAME=${PKG_NAME}" >> $GITHUB_OUTPUT
+
+          # Copy library binary
+          case ${{ matrix.os }} in
+            windows* ) cp build/source/Release/loop-tempo-estimator.lib "${ARCHIVE_DIR}/lib" ;;
+            *        ) cp build/source/libloop-tempo-estimator.a "${ARCHIVE_DIR}/lib"        ;;
+          esac
+
+          # Copy pffft dependency
+          case ${{ matrix.os }} in
+            windows* ) cp build/Release/pffft.lib "${ARCHIVE_DIR}/lib" ;;
+            *        ) cp build/libpffft.a "${ARCHIVE_DIR}/lib"        ;;
+          esac
+
+          # Copy public headers
+          cp -r source/include/LoopTempoEstimator "${ARCHIVE_DIR}/include/"
+
+          pushd "${PKG_STAGING}/" > /dev/null
+          7z -y a "${PKG_NAME}" "${PKG_BASENAME}"/* | tail -2
+          popd > /dev/null
+
+          echo "PKG_PATH=${PKG_STAGING}/${PKG_NAME}" >> $GITHUB_OUTPUT
+
+      - name: Artifact upload
+        uses: actions/upload-artifact@master
+        with:
+          name: ${{ steps.package.outputs.PKG_NAME }}
+          path: ${{ steps.package.outputs.PKG_PATH }}
+
+      - name: Check for release
+        id: is-release
+        shell: bash
+        run: |
+          unset IS_RELEASE ; if [[ $GITHUB_REF =~ ^refs/tags/v[0-9].* ]]; then IS_RELEASE='true' ; fi
+          echo "IS_RELEASE=${IS_RELEASE}" >> $GITHUB_OUTPUT
+
+      - name: Publish archives
+        uses: softprops/action-gh-release@v2
+        if: steps.is-release.outputs.IS_RELEASE
+        with:
+          files: |
+            ${{ steps.package.outputs.PKG_PATH }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PersonalAccessToken }}
+
+  source:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Package source
+        id: package
+        shell: bash
+        run: |
+          GIT_TAG=$(git describe --tags --match "v[0-9]*" --abbrev=0 2>/dev/null || git rev-parse --short HEAD)
+
+          PKG_BASENAME="loop-tempo-estimator-${GIT_TAG}-source"
+          PKG_STAGING="${{ env.CICD_INTERMEDIATES_DIR }}/package"
+          PKG_NAME="${PKG_BASENAME}.zip"
+          ARCHIVE_DIR="${PKG_STAGING}/${PKG_BASENAME}"
+          mkdir -p "${ARCHIVE_DIR}"
+          echo "PKG_NAME=${PKG_NAME}" >> $GITHUB_OUTPUT
+
+          cp -r source "${ARCHIVE_DIR}/"
+          cp pffft.cmake "${ARCHIVE_DIR}/"
+
+          pushd "${PKG_STAGING}/" > /dev/null
+          7z -y a "${PKG_NAME}" "${PKG_BASENAME}"/* | tail -2
+          popd > /dev/null
+
+          echo "PKG_PATH=${PKG_STAGING}/${PKG_NAME}" >> $GITHUB_OUTPUT
+
+      - name: Artifact upload
+        uses: actions/upload-artifact@master
+        with:
+          name: ${{ steps.package.outputs.PKG_NAME }}
+          path: ${{ steps.package.outputs.PKG_PATH }}
+
+      - name: Check for release
+        id: is-release
+        shell: bash
+        run: |
+          unset IS_RELEASE ; if [[ $GITHUB_REF =~ ^refs/tags/v[0-9].* ]]; then IS_RELEASE='true' ; fi
+          echo "IS_RELEASE=${IS_RELEASE}" >> $GITHUB_OUTPUT
+
+      - name: Publish archives
+        uses: softprops/action-gh-release@v2
+        if: steps.is-release.outputs.IS_RELEASE
+        with:
+          files: |
+            ${{ steps.package.outputs.PKG_PATH }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.PersonalAccessToken }}
