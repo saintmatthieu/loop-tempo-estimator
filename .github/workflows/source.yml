@@ -31,7 +31,6 @@ jobs:
           echo "PKG_NAME=${PKG_NAME}" >> $GITHUB_OUTPUT
 
           cp -r source "${ARCHIVE_DIR}/"
-          cp pffft.cmake "${ARCHIVE_DIR}/"
 
           pushd "${PKG_STAGING}/" > /dev/null
           7z -y a "${PKG_NAME}" "${PKG_BASENAME}"/* | tail -2
