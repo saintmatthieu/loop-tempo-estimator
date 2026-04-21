@@ -46,4 +46,23 @@ class SquareWaveLteAudioReader : public LteAudioReader
    }
 };
 
+class SilenceLteAudioReader : public LteAudioReader
+{
+   const int period = 3;
+   const int sampleRate = 44100;
+
+   double GetSampleRate() const override
+   {
+      return sampleRate;
+   }
+   long long GetNumSamples() const override
+   {
+      return period * sampleRate;
+   }
+   void ReadFloats(float* buffer, long long, size_t numFrames) const override
+   {
+      std::fill(buffer, buffer + numFrames, 0.f);
+   }
+};
+
 } // namespace LTE

@@ -1,4 +1,5 @@
 add_executable(unit-tests
+        GetBpmTest.cpp
         MathApproxTest.cpp
         StftFrameProviderTests.cpp
 )
