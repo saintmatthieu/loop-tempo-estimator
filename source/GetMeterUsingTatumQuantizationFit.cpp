@@ -123,9 +123,10 @@ int GetOnsetLag(const std::vector<float>& odf, int numTatums)
    // train of frequency `numTatums / odf.size()`. We take the position of the
    // first peak to be the lag.
    const auto pulseTrainPeriod = 1. * odf.size() / numTatums;
+   const auto maxLag = static_cast<int>(std::round(pulseTrainPeriod));
    auto max = std::numeric_limits<float>::lowest();
-   auto lag = 0;
-   while (true)
+   auto bestLag = 0;
+   for(int lag = 0; lag < maxLag; ++lag)
    {
       auto val = 0.f;
       for (auto i = 0; i < numTatums; ++i)
@@ -134,11 +135,12 @@ int GetOnsetLag(const std::vector<float>& odf, int numTatums)
          val += (j < odf.size() ? odf[j] : 0.f);
       }
       if (val < max)
-         break;
-      max = val;
-      ++lag;
+      {
+         max = val;
+         bestLag = lag;
+      }
    }
-   return lag - 1;
+   return bestLag;
 }
 
 // This is the fundament of the algorithm. It gives a weighted average of the
