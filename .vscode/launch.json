@@ -19,6 +19,27 @@
       "request": "attach",
     },
     {
+      "name": "(Windows) Debug CMake target",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "preLaunchTask": "CMake: build",
+      "program": "${command:cmake.launchTargetPath}",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${command:cmake.launchTargetDirectory}",
+      "environment": [
+        {
+          "name": "PATH",
+          "value": "${workspaceFolder}/.vscode/shims;${command:cmake.launchTargetDirectory};${env:PATH}"
+        },
+        {
+          "name": "VAMP_PATH",
+          "value": "${workspaceFolder}/build/vamp-plugin"
+        }
+      ],
+      "console": "integratedTerminal"
+    },
+    {
       "name": "vampl-simple-host",
       "type": "cppvsdbg",
       "request": "launch",
