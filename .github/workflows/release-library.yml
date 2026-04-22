@@ -2,11 +2,14 @@ name: Release Library Sources
 
 on:
   push:
-    tags: ['v*']
+    tags: ["v*"]
 
 jobs:
   release:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
 
     steps:
       - uses: actions/checkout@v4
@@ -36,5 +39,3 @@ jobs:
         with:
           name: ${{ steps.package.outputs.GIT_TAG }}
           files: ${{ steps.package.outputs.PKG_NAME }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.PersonalAccessToken }}

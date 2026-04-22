@@ -6,10 +6,9 @@ env:
 on:
   push:
     branches: [master]
-    tags: ['v*']
+    tags: ["v*"]
   pull_request:
     branches: [master]
-
 
 jobs:
   build:
@@ -17,6 +16,10 @@ jobs:
       PROJECT_NAME: "loop-tempo-estimator-vamp"
 
     runs-on: ${{ matrix.os }}
+
+    permissions:
+      contents: write
+
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -79,5 +82,3 @@ jobs:
         with:
           files: |
             ${{ steps.package.outputs.PKG_PATH }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.PersonalAccessToken }}
