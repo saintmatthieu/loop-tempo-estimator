@@ -34,7 +34,7 @@ set(SOURCES
 
 add_library(loop-tempo-estimator ${SOURCES})
 
-target_link_libraries(loop-tempo-estimator PUBLIC pffft)
+target_link_libraries(loop-tempo-estimator PRIVATE pffft)
 set_target_properties(loop-tempo-estimator PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 target_include_directories(loop-tempo-estimator
